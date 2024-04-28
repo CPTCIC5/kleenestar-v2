@@ -1,12 +1,12 @@
-import Link from "next/link";
+import { Icons } from "@/assets/icons";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 import { cn } from "@/lib/utils";
 
-import { buttonVariants } from "@/components/ui/button";
-import { BackgroundBeams } from "../../components/ui/background-beams";
-import { Icons } from "@/assets/icons";
-import { LoginForm } from "@/components/custom/LoginForm";
-
-export default function LoginPage() {
+export default function AuthLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
     return (
         <>
             <div className="relative w-full h-screen flex">
@@ -27,17 +27,8 @@ export default function LoginPage() {
                     </div>
                     <BackgroundBeams />
                 </div>
-                <div className="relative w-full flex items-center justify-center flex-1 bg-background">
-                    <Link
-                        href="/examples/authentication"
-                        className={cn(
-                            buttonVariants({ variant: "secondary" }),
-                            "absolute right-4 top-[34px] md:right-8 max-xs:top-[30px] ",
-                        )}
-                    >
-                        Register
-                    </Link>
-                    <LoginForm />
+                <div className="w-full flex h-screen items-center justify-center flex-1 ">
+                    {children}
                 </div>
             </div>
         </>
