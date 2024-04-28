@@ -21,7 +21,9 @@ const config = {
         },
         extend: {
             fontFamily: {
-                sans: ["var(--font-sans)", ...fontFamily.sans],
+                inter: ["var(--font-inter)", ...fontFamily.sans],
+                montserrat: ["var(--font-montserrat)"],
+                mainhead: ["var(--font-syne)", ...fontFamily.serif],
             },
             colors: {
                 border: "hsl(var(--border))",
@@ -76,6 +78,9 @@ const config = {
             animation: {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
+            },
+            screens: {
+                xs: "380px",
             },
         },
     },
