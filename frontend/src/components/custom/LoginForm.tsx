@@ -16,20 +16,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/assets/icons";
 import { PasswordInput } from "@/components/custom/PasswordInput";
+import { useForm } from "react-hook-form";
+import { LoginFormSchema } from "@/lib/zod/schemas/schema";
+import { LoginFormSchemaTypes } from "../../lib/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+    } = useForm<LoginFormSchemaTypes>({
+        resolver: zodResolver(LoginFormSchema),
+        mode: "onChange",
+    });
 
-    async function onSubmit(event: React.SyntheticEvent) {
-        event.preventDefault();
-        setIsLoading(true);
+    const onSubmit = async (data: LoginFormSchemaTypes) => {
+        console.log(data);
 
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 3000);
-    }
+        reset();
+    };
 
     return (
         <Card className="mx-auto max-w-sm outline-none shadow-none border-none">
@@ -38,7 +48,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 <CardDescription>Enter your details below to login to your account</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={onSubmit} className="mb-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
@@ -46,9 +56,23 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                 id="email"
                                 type="email"
                                 placeholder="mail@example.com"
-                                disabled={isLoading}
-                                required
+                                disabled={isSubmitting}
+                                {...register("email")}
                             />
+                            {errors.email ? (
+                                <span className="pl-[10px] text-[10px] text-destructive">
+                                    {errors.email.message}
+                                </span>
+                            ) : (
+                                <div className="w-full">
+                                    <div className="flex gap-[5px] items-center">
+                                        <InfoCircledIcon className="h-[10px] w-[10px]" />
+                                        <span className="text-[10px]">
+                                            enter the email address you used to login
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
@@ -65,12 +89,24 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                             <PasswordInput
                                 id="password"
                                 type="password"
-                                disabled={isLoading}
-                                required
+                                placeholder="password"
+                                disabled={isSubmitting}
+                                {...register("password")}
                             />
+                            {errors.password && (
+                                <span className="pl-[10px] text-[10px] text-destructive">
+                                    {errors.password.message}
+                                </span>
+                            )}
                         </div>
-                        <Button disabled={isLoading} type="submit" className="w-full">
-                            {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                        <Button
+                            disabled={Object.keys(errors).length > 0 || isSubmitting}
+                            type="submit"
+                            className="w-full"
+                        >
+                            {isSubmitting && (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             Login
                         </Button>
                     </div>
@@ -88,10 +124,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 <Button
                     variant="outline"
                     type="button"
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                     className="flex items-center w-full"
                 >
-                    {isLoading ? (
+                    {isSubmitting ? (
                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                         <Icons.google className="mr-2 h-4 w-4" />
