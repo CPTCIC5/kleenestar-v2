@@ -15,23 +15,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/assets/icons";
-import { PasswordInput } from "@/components/custom/PasswordInput";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useForm } from "react-hook-form";
+import { ForgotPasswordFormSchema } from "@/lib/zod/schemas/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ForgotPasswordFormSchemaTypes } from "@/lib/types/types";
 
 interface ForgotPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+    } = useForm<ForgotPasswordFormSchemaTypes>({
+        resolver: zodResolver(ForgotPasswordFormSchema),
+        mode: "onChange",
+    });
 
-    async function onSubmit(event: React.SyntheticEvent) {
-        event.preventDefault();
-        setIsLoading(true);
+    const onSubmit = async (data: ForgotPasswordFormSchemaTypes) => {
+        console.log(data);
 
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 3000);
-    }
+        reset();
+    };
 
     return (
         <Card className="mx-auto max-w-sm outline-none shadow-none border-none mt-[15px]">
@@ -40,7 +47,7 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                 <CardDescription>Enter your details below to get a reset link</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={onSubmit} className="mb-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
@@ -48,21 +55,33 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                                 id="email"
                                 type="email"
                                 placeholder="mail@example.com"
-                                disabled={isLoading}
-                                required
+                                disabled={isSubmitting}
+                                {...register("email")}
                             />
-                            <div className="w-full">
-                                <div className="flex gap-[5px] items-center">
-                                    <InfoCircledIcon className="h-[10px] w-[10px]" />
-                                    <span className="text-[10px]">
-                                        enter the email address you used to login / register
-                                    </span>
+                            {errors.email ? (
+                                <span className="pl-[10px] text-[10px] text-destructive">
+                                    {errors.email.message}
+                                </span>
+                            ) : (
+                                <div className="w-full">
+                                    <div className="flex gap-[5px] items-center">
+                                        <InfoCircledIcon className="h-[10px] w-[10px]" />
+                                        <span className="text-[10px]">
+                                            enter the email address you used to login / register
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
 
-                        <Button disabled={isLoading} type="submit" className="w-full mt-[12px]">
-                            {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                        <Button
+                            disabled={Object.keys(errors).length > 0 || isSubmitting}
+                            type="submit"
+                            className="w-full mt-[12px]"
+                        >
+                            {isSubmitting && (
+                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin disabled:bg-green-200" />
+                            )}
                             Send Reset Link
                         </Button>
                     </div>
