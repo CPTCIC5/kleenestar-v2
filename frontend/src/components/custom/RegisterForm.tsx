@@ -91,7 +91,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             />
                             <label
                                 htmlFor="terms"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xs"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                                 Send me emails with tips, news, and offers.
                             </label>

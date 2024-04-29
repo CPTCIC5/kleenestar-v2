@@ -54,7 +54,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                             <div className="flex items-center">
                                 <Label htmlFor="password">Password</Label>
                                 {/* add forgot password page */}
-                                <Link href="#" className="ml-auto inline-block text-sm underline">
+                                <Link
+                                    href="/forgot-password"
+                                    className="ml-auto inline-block text-sm underline"
+                                >
                                     Forgot your password?
                                 </Link>
                             </div>
