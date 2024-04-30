@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fade up animation - animate-fade-in-up */
+
+@layer keyframes {
+  @keyframes fadeInUp {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 1.5s;
+  }
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
