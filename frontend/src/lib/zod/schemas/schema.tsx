@@ -42,7 +42,7 @@ export const RegisterFormSchema = z
             .refine((value) => /\W|_/.test(value), {
                 message: "Password need a  special character",
             }),
-        confirmPassword: z.string(),
+        confirmPassword: z.string().min(1, "Password is required"),
         newsletter: z.boolean().default(false).optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
