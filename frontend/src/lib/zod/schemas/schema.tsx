@@ -16,7 +16,7 @@ export const LoginFormSchema = z.object({
         .refine((value) => value.includes("@") && value.includes("."), {
             message: "Enter a valid email",
         }),
-    password: z.string().min(8, "Min. 8 characters"),
+    password: z.string().min(1, "Password is required"),
 });
 
 export const RegisterFormSchema = z
@@ -42,7 +42,7 @@ export const RegisterFormSchema = z
             .refine((value) => /\W|_/.test(value), {
                 message: "Password need a  special character",
             }),
-        confirmPassword: z.string(),
+        confirmPassword: z.string().min(1, "Password is required"),
         newsletter: z.boolean().default(false).optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
