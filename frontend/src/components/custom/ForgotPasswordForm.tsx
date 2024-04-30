@@ -22,27 +22,16 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Icons } from "@/assets/icons";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
-import { ForgotPasswordFormSchema } from "@/lib/zod/schemas/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ForgotPasswordFormSchema } from "@/lib/zod/schemas/schema";
 import { ForgotPasswordFormSchemaTypes } from "@/lib/types/types";
 
 interface ForgotPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormProps) {
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     formState: { errors, isSubmitting },
-    //     reset,
-    // } = useForm<ForgotPasswordFormSchemaTypes>({
-    //     resolver: zodResolver(ForgotPasswordFormSchema),
-    //     mode: "onChange",
-    // });
-
     const form = useForm<ForgotPasswordFormSchemaTypes>({
         resolver: zodResolver(ForgotPasswordFormSchema),
         mode: "onChange",
@@ -51,7 +40,9 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
     const onSubmit = async (data: ForgotPasswordFormSchemaTypes) => {
         console.log(data);
 
-        form.reset();
+        form.reset({
+            email: "",
+        });
     };
 
     return (
@@ -79,7 +70,7 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage className="flex gap-[5px] items-center">
+                                        <FormMessage className="flex gap-[5px] items-center text-[10px]">
                                             <InfoCircledIcon className="h-[10px] w-[10px] text-foreground" />
                                             <span className="text-[10px] text-foreground">
                                                 enter the email address you used to login / register
