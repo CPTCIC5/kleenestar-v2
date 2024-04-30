@@ -12,25 +12,28 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Icons } from "@/assets/icons";
 import { PasswordInput } from "@/components/custom/PasswordInput";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormSchema } from "@/lib/zod/schemas/schema";
 import { LoginFormSchemaTypes } from "../../lib/types/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        reset,
-    } = useForm<LoginFormSchemaTypes>({
+    const form = useForm<LoginFormSchemaTypes>({
         resolver: zodResolver(LoginFormSchema),
         mode: "onChange",
     });
@@ -38,7 +41,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const onSubmit = async (data: LoginFormSchemaTypes) => {
         console.log(data);
 
-        reset();
+        form.reset({
+            email: "",
+            password: "",
+        });
     };
 
     return (
@@ -48,69 +54,79 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 <CardDescription>Enter your details below to login to your account</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
-                    <div className="grid gap-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="mail@example.com"
-                                disabled={isSubmitting}
-                                {...register("email")}
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
+                        <div className="grid gap-4">
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="email"
+                                                type="email"
+                                                placeholder="mail@example.com"
+                                                disabled={form.formState.isSubmitting}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="flex gap-[5px] items-center text-[10px]">
+                                            <InfoCircledIcon className="h-[10px] w-[10px] text-foreground" />
+                                            <span className="text-[10px] text-foreground">
+                                                enter the email address you used to login / register
+                                            </span>
+                                        </FormMessage>
+                                    </FormItem>
+                                )}
                             />
-                            {errors.email ? (
-                                <span className="pl-[10px] text-[10px] text-destructive">
-                                    {errors.email.message}
-                                </span>
-                            ) : (
-                                <div className="w-full">
-                                    <div className="flex gap-[5px] items-center">
-                                        <InfoCircledIcon className="h-[10px] w-[10px]" />
-                                        <span className="text-[10px]">
-                                            enter the email address you used to login
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="grid gap-2">
-                            <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
-                                {/* add forgot password page */}
-                                <Link
-                                    href="/forgot-password"
-                                    className="ml-auto inline-block text-sm underline"
-                                >
-                                    Forgot your password?
-                                </Link>
-                            </div>
 
-                            <PasswordInput
-                                id="password"
-                                type="password"
-                                placeholder="password"
-                                disabled={isSubmitting}
-                                {...register("password")}
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <div className="flex items-center">
+                                            <FormLabel>Password</FormLabel>
+                                            {/* add forgot password page */}
+                                            <Link
+                                                href="/forgot-password"
+                                                className="ml-auto inline-block text-sm underline"
+                                            >
+                                                Forgot your password?
+                                            </Link>
+                                        </div>
+                                        <FormControl>
+                                            <PasswordInput
+                                                id="password"
+                                                type="password"
+                                                placeholder="password"
+                                                disabled={form.formState.isSubmitting}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="text-[10px]" />
+                                    </FormItem>
+                                )}
                             />
-                            {errors.password && (
-                                <span className="pl-[10px] text-[10px] text-destructive">
-                                    {errors.password.message}
-                                </span>
-                            )}
+
+                            <Button
+                                disabled={
+                                    Object.keys(form.formState.errors).length > 0 ||
+                                    form.formState.isSubmitting
+                                }
+                                type="submit"
+                                className="w-full"
+                            >
+                                {form.formState.isSubmitting && (
+                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                )}
+                                Login
+                            </Button>
                         </div>
-                        <Button
-                            disabled={Object.keys(errors).length > 0 || isSubmitting}
-                            type="submit"
-                            className="w-full"
-                        >
-                            {isSubmitting && (
-                                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                            )}
-                            Login
-                        </Button>
-                    </div>
-                </form>
+                    </form>
+                </Form>
                 <div className="relative mb-4">
                     <div className="absolute inset-0 flex items-center">
                         <span className="w-full border-t" />
@@ -124,10 +140,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 <Button
                     variant="outline"
                     type="button"
-                    disabled={isSubmitting}
+                    disabled={form.formState.isSubmitting}
                     className="flex items-center w-full"
                 >
-                    {isSubmitting ? (
+                    {form.formState.isSubmitting ? (
                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                         <Icons.google className="mr-2 h-4 w-4" />
