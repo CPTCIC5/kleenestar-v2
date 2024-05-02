@@ -54,7 +54,7 @@ export default function CreateWorkspace({
 			<CardHeader>
 				<div className="mx-auto">
 					<Icons.logoDark className="h-[37px] w-[37px] mx-auto" />
-					<p className="text-2xl max-xl:text-lg mt-4 text-black font-bold font-mainhead text-center">
+					<p className="text-2xl max-xl:text-lg mt-4 text-background dark:text-foreground font-bold font-mainhead text-center">
 						Create a new workspace
 					</p>
 					{/* <p className="text-gray-500 underline text-center text-sm">What is a workspace?</p> */}
@@ -77,6 +77,7 @@ export default function CreateWorkspace({
 												className={cn("text-[16px] font-inter bg-clip-text")}
 												id="business_name"
 												type="text"
+												placeholder="Your business name"
 												disabled={form.formState.isSubmitting}
 												{...field}
 											/>
@@ -91,13 +92,14 @@ export default function CreateWorkspace({
 								render={({ field }) => (
 									<FormItem className="my-4">
 										<FormLabel className={cn("text-lg font-inter")}>
-											Website Url
+											Website URL
 										</FormLabel>
 										<FormControl>
 											<Input
 												className={cn("text-[16px] font-inter bg-clip-text")}
 												id="Website"
 												type="text"
+												placeholder="Your website url"
 												disabled={form.formState.isSubmitting}
 												{...field}
 											/>
@@ -122,7 +124,7 @@ export default function CreateWorkspace({
 												<SelectTrigger>
 													<SelectValue
 														className="text-lg font-inter"
-														placeholder="Select an Industry"
+														placeholder="Select your Industry"
 													/>
 												</SelectTrigger>
 											</FormControl>
@@ -136,7 +138,6 @@ export default function CreateWorkspace({
 									</FormItem>
 								)}
 							/>
-
 							{/* <FormSuccess
 								message={
 									(form.formState.isSubmitted && form.formState.isValid)

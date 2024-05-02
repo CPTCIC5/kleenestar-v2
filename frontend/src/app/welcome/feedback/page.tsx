@@ -14,6 +14,7 @@ export default function Feedback(){
 			addRef.current.click()
 		}
 	}
+
 	const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if(file)
@@ -28,7 +29,7 @@ export default function Feedback(){
 		}
 	}
 	return (
-		<div className="mx-auto pt-[99.5px] max-w-[692px] w-[90%] pb-[50px]">
+		<div className="mx-auto pt-[70.5px] max-w-[692px] w-[90%] max-xl:pb-20">
 			<div className="gap-[15px] flex items-center">
 				<p className="text-[18px] font-mainhead">Support and feedback </p>
 				<QuestionMarkCircledIcon />

@@ -8,10 +8,10 @@ export default function GetStarted() {
 	return (
 		<div className="flex-col animate-fade-in-up  w-fit  mx-auto pt-[10%] max-xl:pt-[30%]">
 			<Icons.logoDark className=" w-[150px] h-[150px] mx-auto max-xl:w-[50px] max-xl:h-[50px]" />
-			<p className="text-5xl  max-xl:text-2xl  text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-black to-neutral-500 py-8">
+			<p className="text-5xl  max-xl:text-2xl  text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-background dark:from-foreground to-neutral-500 dark:to-background-500 py-8">
 				Welcome to Kleenestar
 			</p>
-			<div className="max-xl:text-[14px] px-[15%] font-inter text-gray-500 text-[18px] text-center">
+			<div className="max-xl:text-[14px] px-[15%] font-inter text-background dark:text-foreground text-[18px] text-center">
 				<p>
 					Kleenestar help you get valuable insights from your marketing
 					campaings and grow your marketing business
@@ -23,7 +23,7 @@ export default function GetStarted() {
 						className={
 							(buttonVariants({ variant: "secondary" }),
 							cn(
-								" max-xl:text-[12px] cursor-pointer max-xl:px-[20px] max-xl:py-[5px] rounded-[2.5rem] text-[20px] px-[40px] py-[25px] bg-gray-700"
+								"bg-background text-foreground dark:bg-foreground dark:text-background max-xl:text-[12px] cursor-pointer max-xl:px-[20px] max-xl:py-[5px] rounded-[2.5rem] text-[20px] px-[40px] py-[25px] bg-gray-700"
 							))
 						}>
 						Get Started

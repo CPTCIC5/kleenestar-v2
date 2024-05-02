@@ -1,6 +1,6 @@
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import React from "react"
+import React, { useState } from "react"
 import {
 	Form,
 	FormControl,
@@ -44,7 +44,10 @@ export default function FeedbackForm() {
 		}
 		console.log(selectedEmoji)
 	}
-
+	const [validations, setValidations] = useState<{options: string, emoji: string}>({
+		options: "",
+		emoji: ""
+	})
 	const form = useForm<FeedbackFormSchemaTypes>({
 		resolver: zodResolver(FeedbackFormSchema),
 		mode: "onChange",
@@ -52,6 +55,17 @@ export default function FeedbackForm() {
 
 	const onSubmit = (values: FeedbackFormSchemaTypes) => {
 		const data  = {...values, selectedEmoji, selectedOption }
+		if(!selectedOption){
+			setValidations({...validations, options: "This field is required"})
+		}else{
+			setValidations({ ...validations, options: "" })
+		}
+		
+		if(selectedEmoji.length === 0){
+			setValidations({...validations, emoji: "Please select a emoji"})
+		}else{
+			setValidations({...validations, emoji: ""})	
+		}
 		console.log(data)
 	}
 
@@ -93,6 +107,11 @@ export default function FeedbackForm() {
 											})}
 										</div>
 									</div>
+									{validations.options && (
+										<p className="text-[0.8rem] font-medium text-destructive">
+											{validations.options}
+										</p>
+									)}
 								</div>
 								<div>
 									<p className="text-[14px] font-inter">Subject</p>
@@ -254,6 +273,11 @@ export default function FeedbackForm() {
 											</button>
 										</div>
 									</div>
+									{validations.emoji && (
+										<p className="text-[0.8rem] font-medium text-destructive">
+											{validations.emoji}
+										</p>
+									)}
 								</div>
 							</CardContent>
 						</Card>
