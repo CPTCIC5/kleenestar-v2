@@ -6,6 +6,7 @@ import {
     BookText,
     ClipboardList,
     DatabaseZap,
+    LogOut,
     MessageCircleMore,
     PanelLeft,
     Speech,
@@ -15,6 +16,7 @@ import {
 import { Button } from "../ui/button";
 import { Icons } from "@/assets/icons";
 import { Separator } from "../ui/separator";
+import { ModeToggle } from "./ModeToggle";
 
 export default function Sidebar() {
     return (
@@ -117,9 +119,23 @@ export default function Sidebar() {
                         <TooltipContent side="right">Support and feedback</TooltipContent>
                     </Tooltip>
                 </nav>
+                <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="#"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <LogOut className="h-5 w-5" />
+                                <span className="sr-only">Sign out</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Sign out</TooltipContent>
+                    </Tooltip>
+                </nav>
             </aside>
             <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 sm:bg-muted/40">
-                <header className="fixed top-0 inset-x-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+                <header className="fixed top-0 inset-x-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent justify-between sm:justify-end  sm:px-6">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button size="icon" variant="outline" className="sm:hidden">
@@ -185,9 +201,19 @@ export default function Sidebar() {
                                     <Speech className="h-5 w-5" />
                                     Support and feedback
                                 </Link>
+                                <Link
+                                    href="#"
+                                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                                >
+                                    <LogOut className="h-5 w-5" />
+                                    Sign out
+                                </Link>
                             </nav>
                         </SheetContent>
                     </Sheet>
+                    <div>
+                        <ModeToggle />
+                    </div>
                 </header>
             </div>
         </div>

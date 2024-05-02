@@ -3,6 +3,7 @@ import { Inter, Montserrat, Syne } from "next/font/google";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/lib/theme-provider/ThemeProvider";
 
 const fontInter = Inter({
     subsets: ["latin"],
@@ -40,7 +41,14 @@ export default function RootLayout({
                     fontSyne.variable)
                 }
             >
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );
