@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
     CreateWorkspaceFormSchema,
+    FeedbackFormSchema,
     ForgotPasswordFormSchema,
     LoginFormSchema,
     RegisterFormSchema,
@@ -14,3 +15,6 @@ export type RegisterFormSchemaTypes = z.infer<typeof RegisterFormSchema>;
 
 
 export type CreateWorkspaceFormSchemaTypes = z.infer<typeof CreateWorkspaceFormSchema>;
+
+
+export type FeedbackFormSchemaTypes = z.infer<typeof FeedbackFormSchema>;

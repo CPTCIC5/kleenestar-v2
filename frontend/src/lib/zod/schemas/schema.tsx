@@ -74,3 +74,14 @@ export const CreateWorkspaceFormSchema = z.object({
 			message: "Invalid option selected. Please select a valid option.",
 		}),
 })
+
+export const FeedbackFormSchema = z.object({
+	subject: z
+		.string()
+		.min(1, { message: "Subject is Required" })
+		.max(100, { message: "Subject cannot exceed 100 characters" }),
+	message: z
+		.string()
+		.min(1, { message: "Message is Required" })
+		.max(500, { message: "Message cannot exceed 500 characters" }),
+})

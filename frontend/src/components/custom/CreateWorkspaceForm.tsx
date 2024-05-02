@@ -77,11 +77,11 @@ export default function CreateWorkspace({
 												className={cn("text-[16px] font-inter bg-clip-text")}
 												id="business_name"
 												type="text"
-												disabled={false}
+												disabled={form.formState.isSubmitting}
 												{...field}
 											/>
 										</FormControl>
-										<FormMessage/>
+										<FormMessage />
 									</FormItem>
 								)}
 							/>
@@ -98,7 +98,7 @@ export default function CreateWorkspace({
 												className={cn("text-[16px] font-inter bg-clip-text")}
 												id="Website"
 												type="text"
-												disabled={false}
+												disabled={form.formState.isSubmitting}
 												{...field}
 											/>
 										</FormControl>
@@ -115,6 +115,7 @@ export default function CreateWorkspace({
 											Industry
 										</FormLabel>
 										<Select
+											disabled={form.formState.isSubmitting}
 											onValueChange={field.onChange}
 											defaultValue={field.value}>
 											<FormControl>
@@ -131,7 +132,7 @@ export default function CreateWorkspace({
 												<SelectItem value="Enterprise">Enterprise</SelectItem>
 											</SelectContent>
 										</Select>
-										<FormMessage/>
+										<FormMessage />
 									</FormItem>
 								)}
 							/>
@@ -144,9 +145,18 @@ export default function CreateWorkspace({
 								}
 							/> */}
 							<Button
+								disabled={
+									Object.keys(form.formState.errors).length > 0 ||
+									form.formState.isSubmitting
+								}
+								type="submit"
 								className={cn("w-full my-4 font-inter text-[18px] py-[20px]")}>
+								{form.formState.isSubmitting && (
+									<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+								)}
 								Create Workspace
 							</Button>
+
 						</div>
 					</form>
 				</Form>
