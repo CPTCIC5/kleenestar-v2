@@ -1,13 +1,14 @@
 import * as React from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "./card";
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "./button";
+import { Button, buttonVariants } from "../ui/button";
 import { ImageIcon, Pencil2Icon } from "@radix-ui/react-icons";
-import { Input } from "./input";
+import { Input } from "../ui/input";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { useTheme } from "next-themes";
 
 interface CreateBlocknoteEditProps {
     note: {
@@ -28,6 +29,8 @@ export default function CreateBlocknoteEdit({
     isEditing,
     setEditing,
 }: CreateBlocknoteEditProps) {
+    const { theme } = useTheme();
+
     return (
         <Card key={note.id}>
             <CardHeader className="p-3">
@@ -48,6 +51,7 @@ export default function CreateBlocknoteEdit({
                             {openEmojiPicker === note.id && (
                                 <div className="absolute left-[32px] top-[32px] z-10">
                                     <Picker
+                                        theme={theme === "dark" ? "light" : "dark"}
                                         navPosition={"none"}
                                         previewPosition={"none"}
                                         dynamicWidth={true}

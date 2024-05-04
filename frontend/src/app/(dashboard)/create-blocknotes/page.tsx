@@ -2,7 +2,7 @@
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import CreateBlocknoteEdit from "@/components/ui/CreateBlocknoteEdit";
+import CreateBlocknoteEdit from "@/components/custom/CreateBlocknoteEdit";
 import { Input } from "@/components/ui/input";
 import { blocknotes } from "@/constants/constants";
 import { cn } from "@/lib/utils";
@@ -18,8 +18,10 @@ import * as React from "react";
 
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { useTheme } from "next-themes";
 
 export default function CreateBlocknotesPage() {
+    const { theme } = useTheme();
     const [isEditing, setIsEditing] = React.useState<number>(-1);
     console.log(isEditing);
     const [openEmojiPicker, setOpenEmojiPicker] = React.useState<number>(-2);
@@ -75,6 +77,7 @@ export default function CreateBlocknotesPage() {
                                 {openEmojiPicker === -1 && (
                                     <div className="absolute left-[32px] bottom-[32px] z-10">
                                         <Picker
+                                            theme={theme === "dark" ? "light" : "dark"}
                                             navPosition={"none"}
                                             previewPosition={"none"}
                                             dynamicWidth={true}
