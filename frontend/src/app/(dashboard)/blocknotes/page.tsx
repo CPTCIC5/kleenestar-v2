@@ -46,7 +46,7 @@ export default function BlocknotesPage() {
                                 <Card key={note.id} className="max-w-[206px] w-full">
                                     <CardHeader className="pb-2">
                                         <div className="flex items-center justify-between ">
-                                            <Avatar className="w-[20px] h-[20px] rounded-full ">
+                                            <Avatar className="w-[30px] h-[30px] rounded-full ">
                                                 <AvatarImage
                                                     className="rounded-full border-2 border-muted"
                                                     src="https://github.com/shadcn.png"

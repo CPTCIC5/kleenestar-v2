@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useTheme } from "next-themes";
+import { BlocknotesAccessDialog } from "./BlocknotesAccessDialog";
 
 interface CreateBlocknoteEditProps {
     note: {
@@ -106,9 +107,7 @@ export default function CreateBlocknoteEdit({
                         >
                             <Pencil2Icon className="h-[20px] w-[20px]" />
                         </div>
-                        <Link href="/access" className={cn(buttonVariants({ variant: "outline" }))}>
-                            Give access
-                        </Link>
+                        <BlocknotesAccessDialog />
                     </div>
                 )}
             </CardHeader>

@@ -59,3 +59,30 @@ export const blocknotes = [
         last_modified: "15/4/2024, 12:12:45 PM",
     },
 ];
+
+export const workspacePeople = [
+    {
+        id: 1,
+        name: "Tristan Guillero",
+        imageId: "sdfsdfs",
+        access: "can edit",
+    },
+    {
+        id: 2,
+        name: "Evelyn Demour",
+        imageId: "sdfsdfs",
+        access: "can view",
+    },
+    {
+        id: 3,
+        name: "Maria Sanchez",
+        imageId: "sdfsdfs",
+        access: "can edit",
+    },
+    {
+        id: 4,
+        name: "Mark Romero",
+        imageId: "sdfsdfs",
+        access: "can view",
+    },
+];
