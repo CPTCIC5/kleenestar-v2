@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { blocknotes } from "@/constants/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DotsHorizontalIcon, InfoCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function BlocknotesPage() {
     return (
@@ -21,12 +22,14 @@ export default function BlocknotesPage() {
                         placeholder="Search notebook, or note…"
                         className="max-w-[420px] w-full bg-muted/60"
                     />
-                    <Button>
-                        <div className="flex items-center justify-center gap-[6px]">
-                            <PlusCircledIcon className="h-[17px] w-[17px]" />
-                            <span className="text-[15px]">Create new</span>
-                        </div>
-                    </Button>
+                    <Link href={"/create-blocknotes"}>
+                        <Button>
+                            <div className="flex items-center justify-center gap-[6px]">
+                                <PlusCircledIcon className="h-[17px] w-[17px]" />
+                                <span className="text-[15px]">Create new</span>
+                            </div>
+                        </Button>
+                    </Link>
                 </div>
 
                 {blocknotes?.length === 0 ? (

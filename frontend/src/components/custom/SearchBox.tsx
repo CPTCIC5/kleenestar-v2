@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { SearchIcon } from "lucide-react";
+import { TooltipProvider } from "../ui/tooltip";
 
 export interface SearchBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 

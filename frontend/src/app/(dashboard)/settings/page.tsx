@@ -1,3 +1,5 @@
+"use client";
+
 import { SettingsNotificationForm } from "@/components/custom/SettingsNotificationForm";
 import { SettingsProfileForm } from "@/components/custom/SettingsProfileForm";
 import { SettingsSecurityForm } from "@/components/custom/SettingsSecurityForm";

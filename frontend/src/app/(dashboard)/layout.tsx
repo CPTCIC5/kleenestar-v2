@@ -14,9 +14,8 @@ export default function DashboardLayout({
     return (
         <>
             <div className="flex min-h-screen h-full w-full flex-col ">
-                <TooltipProvider>
-                    <Sidebar />
-                </TooltipProvider>
+                <Sidebar />
+
                 <div className="w-full h-full  sm:pl-[55.2px]">{children}</div>
             </div>
         </>
