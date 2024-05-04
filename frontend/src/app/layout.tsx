@@ -35,7 +35,7 @@ export default function RootLayout({
         <html lang="en">
             <body
                 className={
-                    (cn("min-h-screen bg-background font-inter antialiased"),
+                    (cn("min-h-screen h-full bg-background font-inter antialiased"),
                     fontInter.variable,
                     fontMontserrat.variable,
                     fontSyne.variable)
@@ -43,7 +43,7 @@ export default function RootLayout({
             >
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="system"
+                    defaultTheme="light"
                     enableSystem
                     disableTransitionOnChange
                 >
