@@ -78,7 +78,7 @@ const webAnalytics = [
 
 export default function Connect_Channels() {
 	return (
-		<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20">
+		<div className="mx-auto pt-[70.5px]  max-w-[692px] max-xl:w-[90%] max-xl:pb-20">
 			<div className="gap-[15px] flex items-center">
 				<p className="text-[18px] font-mainhead">Connect channels </p>
 				<QuestionMarkCircledIcon />
@@ -91,8 +91,8 @@ export default function Connect_Channels() {
 								<Image
 									className={
 										channel.name === "Twitter" || channel.name === "TikTok"
-											? "dark:filter dark:brightness-0 dark:invert"
-											: "w-10"
+											? "dark:filter dark:brightness-0 dark:invert p-[5px]"
+											: "w-10 p-[5px] "
 									}
 									width={35}
 									height={35}
@@ -115,6 +115,7 @@ export default function Connect_Channels() {
 						<Card className="w-[321.46px] h-[50px] px-[18px] items-center justify-between flex">
 							<div className="flex gap-[16px] items-center">
 								<Image
+									className="p-[5px]"
 									width={35}
 									height={35}
 									src={channel.icon}

@@ -295,3 +295,83 @@ export const dummySheetNotesData = [
 		color: "FFCCCC",
 	},
 ]
+
+export const dummyBillingDetails = [
+	{
+		Invoice: "Scale - Dec 2023",
+		Amount: 309.0,
+		Date: "Dec 1, 2023",
+		Status: "pending",
+		Users: "['A','B','C','D']",
+	},
+	{
+		Invoice: "Scale - Nov 2023",
+		Amount: 324.0,
+		Date: "Nov 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C','D','E]",
+	},
+	{
+		Invoice: "Scale - Oct 2023",
+		Amount: 309.0,
+		Date: "Oct 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C','D']",
+	},
+	{
+		Invoice: "Scale - Sept 2023",
+		Amount: 324.0,
+		Date: "Sept 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C','D','E]",
+	},
+	{
+		Invoice: "Scale - Aug 2023",
+		Amount: 394.0,
+		Date: "Aug 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C','D']",
+	},
+	{
+		Invoice: "Scale - Jul 2023",
+		Amount: 309.0,
+		Date: "Jul 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C']",
+	},
+	{
+		Invoice: "Scale - Jun 2023",
+		Amount: 109.0,
+		Date: "Jun 1, 2023",
+		Status: "paid",
+		Users: "['A','B']",
+	},
+	{
+		Invoice: "Scale - Jul 2023",
+		Amount: 309.0,
+		Date: "Jul 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C']",
+	},
+	{
+		Invoice: "Scale - Jun 2023",
+		Amount: 109.0,
+		Date: "Jun 1, 2023",
+		Status: "paid",
+		Users: "['A','B']",
+	},
+	{
+		Invoice: "Scale - Jul 2023",
+		Amount: 309.0,
+		Date: "Jul 1, 2023",
+		Status: "paid",
+		Users: "['A','B','C']",
+	},
+	{
+		Invoice: "Scale - Jun 2023",
+		Amount: 109.0,
+		Date: "Jun 1, 2023",
+		Status: "paid",
+		Users: "['A','B']",
+	},
+]
