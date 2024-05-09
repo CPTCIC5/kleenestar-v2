@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@/assets/icons";
 import Sidebar from "@/components/custom/Sidebar";
 import { BackgroundBeams } from "@/components/ui/background-beams";
@@ -11,10 +13,9 @@ export default function DashboardLayout({
 }>) {
     return (
         <>
-            <div className="flex min-h-screen w-full flex-col ">
-                <TooltipProvider>
-                    <Sidebar />
-                </TooltipProvider>
+            <div className="flex min-h-screen h-full w-full flex-col ">
+                <Sidebar />
+
                 <div className="w-full h-full  sm:pl-[55.2px]">{children}</div>
             </div>
         </>

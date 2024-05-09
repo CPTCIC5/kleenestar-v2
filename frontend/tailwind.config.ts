@@ -29,6 +29,9 @@ const config = {
                 montserrat: ["var(--font-montserrat)"],
                 mainhead: ["var(--font-syne)", ...fontFamily.serif],
             },
+            gridTemplateRows: {
+                "auto-min": "min-content",
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
