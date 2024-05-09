@@ -23,7 +23,7 @@ export default function Create() {
 			{/* The input query card */}
 			<Card
 				className={cn(
-					"max-w-[672.08px] dark:text-background text-foreground w-full bg-transparent shadow-none outline-none border-none "
+					"max-w-[672.08px] w-full bg-transparent shadow-none outline-none border-none "
 				)}>
 				<CardContent className="px-[0px] flex justify-start">
 					<div className="flex justify-between gap-[33.21px]">
@@ -56,7 +56,7 @@ export default function Create() {
 			{/* The kleenstar output card */}
 			<Card
 				className={cn(
-					"max-w-[672.08px] mb-20 text-foreground dark:bg-background bg-gray-200 dark:text-foreground text-[15px] pt-[29.26px] w-full  shadow-none outline-none border-none "
+					"max-w-[672.08px] mb-20  dark:bg-primary-foreground bg-gray-200  text-[15px] pt-[29.26px] w-full  shadow-none outline-none border-none "
 				)}>
 				<CardContent className="px-[27px] flex justify-start">
 					{/* Response */}

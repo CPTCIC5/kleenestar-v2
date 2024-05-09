@@ -98,7 +98,7 @@ export default function Connect_Channels() {
 									height={35}
 									src={channel.icon}
 									alt="icon"></Image>
-								<p className="text-[15px] font-medium font-inter">
+								<p className="text-[15px] font-medium ">
 									{channel.name}
 								</p>
 							</div>
@@ -120,7 +120,7 @@ export default function Connect_Channels() {
 									height={35}
 									src={channel.icon}
 									alt="icon"></Image>
-								<p className="text-[15px] font-medium font-inter">
+								<p className="text-[15px] font-medium ">
 									{channel.name}
 								</p>
 							</div>

@@ -39,7 +39,7 @@ export default function ChatFeedbackForm() {
 				<div className="font-mainhead text-[18px] text-foreground">
 					Provide additional feeback
 				</div>
-				<div className="text-[14px] font-inter ">
+				<div className="text-[14px]  ">
 					Your feedback is gold and helps us improve.
 				</div>
 			</DialogHeader>
@@ -49,9 +49,7 @@ export default function ChatFeedbackForm() {
 						setSelectedOption(1)
 					}}
 					className={cn(
-						selectedOption === 1
-							? "text-background  dark:text-background dark:bg-foreground bg-foreground"
-							: "text-foreground  bg-background border-foreground border-2 dark:text-foreground dark:bg-background",
+						selectedOption === 1 ? "bg-foreground text-background" : "border-2",
 						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]   whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
 					)}>
 					Don’t like the style
@@ -61,10 +59,8 @@ export default function ChatFeedbackForm() {
 						setSelectedOption(2)
 					}}
 					className={cn(
-						selectedOption === 2
-							? "text-background dark:text-background dark:bg-foreground bg-foreground"
-							: "text-foreground bg-background border-foreground border-2 dark:text-foreground dark:bg-background",
-						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]  whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
+						selectedOption === 2 ? "bg-foreground text-background" : "border-2",
+						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]   whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
 					)}>
 					Not factually correct
 				</div>
@@ -74,10 +70,8 @@ export default function ChatFeedbackForm() {
 						setSelectedOption(3)
 					}}
 					className={cn(
-						selectedOption === 3
-							? "text-background dark:text-background dark:bg-foreground bg-foreground"
-							: "text-foreground bg-background border-foreground border-2 dark:text-foreground dark:bg-background",
-						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]  whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
+						selectedOption === 3 ? "bg-foreground text-background" : "border-2",
+						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]   whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
 					)}>
 					Being lazy
 				</div>
@@ -86,10 +80,8 @@ export default function ChatFeedbackForm() {
 						setSelectedOption(4)
 					}}
 					className={cn(
-						selectedOption === 4
-							? "text-background dark:text-background dark:bg-foreground bg-foreground"
-							: "text-foreground bg-background dark:text-foreground border-foreground border-2 dark:bg-background",
-						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]  whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
+						selectedOption === 4 ? "bg-foreground text-background" : "border-2",
+						"px-[18px] py-[7px] max-xl:px-[10px] max-xl:py-[7px] max-xl:w-full max-xl:max-w-[145px]   whitespace-nowrap cursor-pointer rounded-[10px] text-[14px]"
 					)}>
 					Other
 				</div>
@@ -101,7 +93,7 @@ export default function ChatFeedbackForm() {
 				onChange={handleChange}
 				value={feedbackMsg}
 				placeholder="Say something here (optional)..."
-				className={cn("text-[14px]  font-inter resize-none h-[130px]")}
+				className={cn("text-[14px]   resize-none h-[130px]")}
 			/>
 
 			<div className="pt-[30.54px] flex justify-end pb-[25px]">

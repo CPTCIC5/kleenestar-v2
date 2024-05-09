@@ -77,7 +77,7 @@ export default function FeedbackForm() {
 						<Card>
 							<CardContent className="px-[23.48px] py-[25.50px]">
 								<div>
-									<p className="text-[14px] font-inter">How urgent is it?</p>
+									<p className="text-[14px] ">How urgent is it?</p>
 									<div className="pt-[10px] pb-[14px]">
 										<div className="w-full flex  gap-[10.33px] max-xl:flex-wrap max-xl:flex-col max-xl:items-center">
 											{options.map((optionslist, index) => {
@@ -114,7 +114,7 @@ export default function FeedbackForm() {
 									)}
 								</div>
 								<div>
-									<p className="text-[14px] font-inter">Subject</p>
+									<p className="text-[14px] ">Subject</p>
 									<div className="pt-[10px] pb-[14px]">
 										<FormField
 											control={form.control}
@@ -124,7 +124,7 @@ export default function FeedbackForm() {
 													<FormControl>
 														<Input
 															className={cn(
-																"text-[14px] font-inter bg-clip-text h-[45px]"
+																"text-[14px]  bg-clip-text h-[45px]"
 															)}
 															id="subject"
 															type="text"
@@ -139,7 +139,7 @@ export default function FeedbackForm() {
 									</div>
 								</div>
 								<div>
-									<p className="text-[14px] font-inter">Message</p>
+									<p className="text-[14px] ">Message</p>
 									<div className="pt-[10px] pb-[14px]">
 										<FormField
 											control={form.control}
@@ -149,7 +149,7 @@ export default function FeedbackForm() {
 													<FormControl>
 														<Textarea
 															placeholder="Write your message here..."
-															className="text-[14px] font-inter resize-none h-[130px]"
+															className="text-[14px]  resize-none h-[130px]"
 															{...field}
 														/>
 													</FormControl>
@@ -159,7 +159,7 @@ export default function FeedbackForm() {
 									</div>
 								</div>
 								<div>
-									<p className="text-[14px] font-inter">Give us emoji</p>
+									<p className="text-[14px] ">Give us emoji</p>
 									<div className="pt-[10px] pb-[14px]">
 										{" "}
 										<div className="flex gap-[17px] flex-wrap">

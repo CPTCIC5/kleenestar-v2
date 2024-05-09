@@ -26,7 +26,7 @@ export default function ChatLayout({
 			<div className="w-full h-[100vh] flex items-center justify-center">
 				<Sheet>
 					<SheetTrigger asChild>
-						<div className="absolute z-10 rounded-ss-[25px] border-2 border-foreground pl-1 py-1 hover:pr-4 transform duration-200 rounded-bl-[25px] bg-background text-foreground  dark:text-foreground   w-fit right-0 top-[45%]">
+						<div className="absolute z-10 rounded-ss-[25px] border-2 border-foreground pl-1 py-1 hover:pr-4 transform duration-200 rounded-bl-[25px] w-fit right-0 top-[45%]">
 							<Icons.drag_out className="h-[15px] w-[15px]" />
 						</div>
 					</SheetTrigger>
@@ -48,7 +48,7 @@ export default function ChatLayout({
 									placeholder="Ask anything..."
 								/>
 							</div>
-							<span className="cursor-pointer flex items-center gap-1 text-[12px] dark:text-foreground font-inter">
+							<span className="cursor-pointer flex items-center gap-1 text-[12px]">
 								<Icons.send className="w-[20px] h-[20px]" />
 								SEND
 							</span>

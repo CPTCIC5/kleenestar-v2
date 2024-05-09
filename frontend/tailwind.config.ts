@@ -26,7 +26,7 @@ const config = {
         extend: {
             scrollbar: ["dark"],
             fontFamily: {
-                inter: ["var(--font-inter)", ...fontFamily.sans],
+                inter: ["var(--)", ...fontFamily.sans],
                 montserrat: ["var(--font-montserrat)"],
                 mainhead: ["var(--font-syne)", ...fontFamily.serif],
             },

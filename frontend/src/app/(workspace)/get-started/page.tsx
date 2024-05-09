@@ -13,7 +13,7 @@ export default function GetStarted() {
             <p className="text-5xl  max-xl:text-2xl  text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-background dark:from-foreground to-neutral-500 dark:to-background-500 py-8">
                 Welcome to Kleenestar
             </p>
-            <div className="max-xl:text-[14px] px-[15%] font-inter  text-[18px] text-center">
+            <div className="max-xl:text-[14px] px-[15%]   text-[18px] text-center">
                 <p>
                     Kleenestar help you get valuable insights from your marketing campaings and grow
                     your marketing business

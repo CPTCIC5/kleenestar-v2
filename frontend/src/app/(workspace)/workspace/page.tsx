@@ -24,14 +24,14 @@ export default function ChooseStart() {
                 </div>
             </div>
 
-            <div className="animate-fade-in-up font-inter max-xl:px-10">
+            <div className="animate-fade-in-up  max-xl:px-10">
                 <div>
                     <Icons.logoDark className=" w-[50px] h-[50px] mx-auto max-xl:w-[50px] max-xl:h-[50px]" />
                 </div>
                 <div className="text-[30px] text-center font-bold font-mainhead pt-4">
                     {"Let's get started"}
                 </div>
-                <div className="w-[45%] max-xl:w-[90%] mx-auto pt-4 font-inter text-gray-700">
+                <div className="w-[45%] max-xl:w-[90%] mx-auto pt-4  text-gray-700">
                     <div className="text-center  text-lg w-fit">
                         Join a Workspace to collaborate with your team by entering your workspace
                         code or accepting an invite, or Create a Workspace to set up your own and

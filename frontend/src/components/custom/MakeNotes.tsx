@@ -42,7 +42,7 @@ export default function MakeNotes({note}: {note: string}){
 							<div className=" font-mainhead text-[18px] text-foreground">
 								Make a note
 							</div>
-							<div className="text-[14px] font-inter ">
+							<div className="text-[14px]  ">
 								Save your important findings as notes and find them in your
 								blocknote space.
 							</div>
@@ -103,7 +103,7 @@ export default function MakeNotes({note}: {note: string}){
 												noteColor === ""
 													? "text-foreground"
 													: "dark:text-background text-foreground",
-												"text-[14px]  font-inter resize-none h-[130px]"
+												"text-[14px]   resize-none h-[130px]"
 											)}
 											{...field}
 										/>

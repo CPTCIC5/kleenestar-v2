@@ -32,7 +32,7 @@ useEffect(() => {
 						return (
 							<Card
 								key={index}
-								className="max-w-[320px] mx-auto w-full h-[103px] dark:text-</div>foreground">
+								className="max-w-[320px] mx-auto w-full h-[103px]">
 								<div className="py-[15px] w-full">
 									<CardContent className="text-[13</div>px]">
 										<div className="text-[15px] pb-[8px] font-medium whitespace-nowrap">
@@ -51,7 +51,7 @@ useEffect(() => {
 						return (
 							<Card
 								key={index}
-								className="max-w-[320px] mx-auto w-full h-[114px]  dark:text-foreground">
+								className="max-w-[320px] mx-auto w-full h-[114px]">
 								<div className="py-[15px] w-full">
 									<CardContent className="text-[13</div>px]">
 										<div className="text-[15px] pb-[8px] font-medium whitespace-nowrap">

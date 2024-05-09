@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/lib/theme-provider/ThemeProvider";
 
 const fontInter = Inter({
     subsets: ["latin"],
-    variable: "--font-inter",
+    variable: "--",
 });
 
 const fontMontserrat = Montserrat({
@@ -35,7 +35,7 @@ export default function RootLayout({
         <html lang="en">
             <body
                 className={
-                    (cn("min-h-screen h-full bg-background font-inter antialiased"),
+                    (cn("min-h-screen h-full bg-background  antialiased"),
                     fontInter.variable,
                     fontMontserrat.variable,
                     fontSyne.variable)

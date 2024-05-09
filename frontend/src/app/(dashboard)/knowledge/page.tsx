@@ -38,7 +38,7 @@ export default function Knowledge() {
 				<p className="text-[18px] font-mainhead">Knowledge </p>
 				<QuestionMarkCircledIcon />
 			</div>
-			<div className="pt-[20px]  font-inter">
+			<div className="pt-[20px]  ">
 				<Card className="h-[53.74px] flex items-center w-full">
 					<div className="flex justify-between gap-[20px] w-full mx-auto px-[20px] max-xl:px-[10px]">
 						<div className="flex gap-2 items-center">
