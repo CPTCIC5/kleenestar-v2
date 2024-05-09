@@ -7,7 +7,7 @@ export default function WelcomeLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="relative max-h-full h-[100vh]">
+		<div className="relative max-h-full h-screen">
 			<GridBackground />
 			{children}
 		</div>
