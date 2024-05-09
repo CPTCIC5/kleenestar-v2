@@ -4,7 +4,7 @@ import { defaultPrompts } from "@/constants/constants"
 import {useEffect, useState} from 'react'
 
 
-export default function ChatPage() {
+export default function NewChatBody() {
     
 const [windowSize, setWindowSize] = useState("")
 
