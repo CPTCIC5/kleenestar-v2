@@ -110,3 +110,10 @@ export const FeedbackFormSchema = z.object({
 		.min(1, { message: "Message is Required" })
 		.max(500, { message: "Message cannot exceed 500 characters" }),
 })
+
+
+export const MakeNoteFormSchema = z.object({
+    notes: z.string().min(1, {message: "Note is required"}).max(500, {
+        message: "A Note cannot exceed 500 characters"
+    })
+})

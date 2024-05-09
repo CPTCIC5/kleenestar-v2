@@ -14,7 +14,6 @@ export default function Feedback(){
 			addRef.current.click()
 		}
 	}
-
 	const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if(file)
@@ -29,7 +28,7 @@ export default function Feedback(){
 		}
 	}
 	return (
-		<div className="mx-auto pt-[70.5px] max-w-[692px] w-[90%] max-xl:pb-20">
+		<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20">
 			<div className="gap-[15px] flex items-center">
 				<p className="text-[18px] font-mainhead">Support and feedback </p>
 				<QuestionMarkCircledIcon />
@@ -59,7 +58,7 @@ export default function Feedback(){
 									onChange={handleImageUpload}
 								/>
 								<Image
-									className="w-[20px] h-[20px] max-xl:w-[15px] max-xl:h-[15px]"
+									className="w-[20px] dark:filter dark:brightness-0 dark:invert h-[20px] max-xl:w-[15px] max-xl:h-[15px]"
 									src={add_image}
 									alt={"add_image"}
 								/>
