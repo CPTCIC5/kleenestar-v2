@@ -143,3 +143,90 @@ export const notes = [
             "Prompt: Generate a cartoon representation of a physical retail store with exposed sportswear evoking summer activities. Utilize our color scheme and branding.",
     },
 ];
+
+export const chatToday = [
+    {
+        id: 1,
+        title: "Campaign overview",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+    {
+        id: 2,
+        title: "Strategy improvement",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+    {
+        id: 3,
+        title: "KPI analysis on Google Ads",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+    {
+        id: 4,
+        title: "Keywords brainstorming",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+];
+
+export const chatPrevious = [
+    {
+        id: 5,
+        title: "New campaign analysis",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+    {
+        id: 6,
+        title: "Brand sentiment overview",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+    {
+        id: 7,
+        title: "Weekly keywords preview",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: 3,
+    },
+    {
+        id: 8,
+        title: "Market insight recommadations",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: 2,
+    },
+    {
+        id: 9,
+        title: "Biding adjustment insights",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: 1,
+    },
+    {
+        id: 10,
+        title: "Biding adjustment insights",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+    {
+        id: 11,
+        title: "Biding adjustment insights",
+        date: "15/4/2024, 12:12:45 PM",
+        folder_id: null,
+    },
+];
+
+export const folders = [
+    {
+        id: 1,
+        title: "Content",
+    },
+    {
+        id: 2,
+        title: "Images",
+    },
+    {
+        id: 3,
+        title: "Market research",
+    },
+];

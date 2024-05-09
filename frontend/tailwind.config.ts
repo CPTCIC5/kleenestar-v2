@@ -24,6 +24,7 @@ const config = {
             },
         },
         extend: {
+            scrollbar: ["dark"],
             fontFamily: {
                 inter: ["var(--font-inter)", ...fontFamily.sans],
                 montserrat: ["var(--font-montserrat)"],
@@ -94,6 +95,7 @@ const config = {
         },
     },
     plugins: [
+        require("tailwind-scrollbar"),
         require("tailwindcss-animate"),
         addVariablesForColors,
         function ({ matchUtilities, theme }: any) {
