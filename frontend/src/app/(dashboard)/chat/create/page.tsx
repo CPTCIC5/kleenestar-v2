@@ -19,7 +19,7 @@ import avatar from '@/assets/images/avatar.jpg'
 export default function Create() {
 
 	return (
-		<div className="w-full max-xl:w-[90%] max-w-[672.08px] h-[78vh] absolute top-8 overflow-auto scrollbar-hide">
+		<div className="w-full max-xl:w-[90%] ms:px-[30px] max-w-[672.08px] max-xl:top-20 h-[78vh] absolute top-8 overflow-auto scrollbar-hide">
 			{/* The input query card */}
 			<Card
 				className={cn(
@@ -30,9 +30,9 @@ export default function Create() {
 						<div className="">
 							<div className="w-fit h-fit rounded-full bg-red-100 border-gray-600 border-2">
 								<Image
-									width={40}
+									width={45}
 									className="rounded-full"
-									height={40}
+									height={45}
 									loading="lazy"
 									src={avatar}
 									alt="avatar"></Image>

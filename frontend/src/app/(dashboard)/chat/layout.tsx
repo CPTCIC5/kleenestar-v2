@@ -33,7 +33,7 @@ export default function ChatLayout({
 					<NoteSheet />
 				</Sheet>
 				{children}
-				<div className="w-full absolute bottom-[5px] max-xl:bottom-[10px] flex-col justify-center">
+				<div className="w-[100vw] absolute bottom-[5px] max-xl:bottom-[10px] flex-col justify-center">
 					<Card className="w-full max-xl:w-[90%] flex items-center mx-auto max-w-[672.08px] rounded-[10px] h-[52px]">
 						<div className="flex justify-center items-center w-full px-[23px] gap-4">
 							<div className="flex items-center gap-2">
