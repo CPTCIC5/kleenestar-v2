@@ -14,20 +14,19 @@ import {
 
 import { Separator } from "../ui/separator";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
-import { z } from "zod";
 import { SettingsProfileFormSchema } from "@/lib/zod/schemas/schema";
 import { SettingsProfileFormSchemaTypes } from "@/lib/types/types";
+import useUserStore from "@/lib/store/UserStore";
 
 export function SettingsProfileForm() {
+    const user = useUserStore((state) => state.user);
+
     const form = useForm<SettingsProfileFormSchemaTypes>({
         resolver: zodResolver(SettingsProfileFormSchema),
-        defaultValues: {},
     });
 
     function onSubmit(data: SettingsProfileFormSchemaTypes) {
@@ -35,7 +34,10 @@ export function SettingsProfileForm() {
     }
 
     return (
-        <Card>
+        <Card className="relative">
+            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+                Delete workspace
+            </Button>
             <CardHeader className="pt-3 pb-5">
                 <CardDescription>This is how others will see you on the workspace.</CardDescription>
                 <Separator />
@@ -45,7 +47,7 @@ export function SettingsProfileForm() {
                 {/* image and image upload section */}
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="username"
                             render={({ field }) => (
@@ -61,11 +63,12 @@ export function SettingsProfileForm() {
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
+                        /> */}
 
                         <FormField
                             control={form.control}
                             name="email"
+                            disabled={true}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
@@ -73,6 +76,7 @@ export function SettingsProfileForm() {
                                         <Input
                                             type="email"
                                             placeholder="mail@gmail.com"
+                                            defaultValue={user?.email}
                                             {...field}
                                         />
                                     </FormControl>
@@ -84,7 +88,9 @@ export function SettingsProfileForm() {
                             )}
                         />
                         <div className="flex justify-end">
-                            <Button type="submit">Update notifications</Button>
+                            <Button type="submit" disabled={true} className="max-sm:px-2">
+                                Update profile
+                            </Button>
                         </div>
                     </form>
                 </Form>

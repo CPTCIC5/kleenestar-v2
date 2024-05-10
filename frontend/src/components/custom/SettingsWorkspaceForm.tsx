@@ -33,21 +33,48 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SettingsWorkspaceFormSchemaTypes } from "../../lib/types/types";
 import { SettingsWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
+import useUserStore from "@/lib/store/UserStore";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 export function WorkspaceNotificationForm() {
+    const user = useUserStore((state) => state.user);
+    const setUser = useUserStore((state) => state.setUser);
+
     const form = useForm<SettingsWorkspaceFormSchemaTypes>({
         resolver: zodResolver(SettingsWorkspaceFormSchema),
-        defaultValues: {
-            name: "",
-        },
     });
 
-    function onSubmit(data: SettingsWorkspaceFormSchemaTypes) {
-        console.log(data);
+    async function onSubmit(data: SettingsWorkspaceFormSchemaTypes) {
+        try {
+            if (user === null) console.error("No user found");
+            const response = await axios.patch(
+                `http://127.0.0.1:8000/api/auth/users/${user?.id}/`,
+                {
+                    first_name: data.firstName,
+                    last_name: data.lastName,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                },
+            );
+            toast.success("Name updated successfully");
+            setUser(response.data);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
-        <Card>
+        <Card className="relative">
+            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+                Delete workspace
+            </Button>
             <CardHeader className="pt-3 pb-5">
                 <CardDescription>
                     Update your workspace settings. Set your preferred language and timezone.
@@ -57,22 +84,51 @@ export function WorkspaceNotificationForm() {
             <CardContent>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input type="text" placeholder="John Doe" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        This is the name that will be displayed on your workspace.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="space-y-2">
+                            <div className="flex gap-3 w-full max-ms:flex-col">
+                                <FormField
+                                    control={form.control}
+                                    name="firstName"
+                                    defaultValue={user?.first_name}
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>First Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    placeholder="First Name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="lastName"
+                                    defaultValue={user?.last_name}
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>Last Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    placeholder="Last Name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <CardDescription>
+                                This is the name that will be displayed on your workspace.
+                            </CardDescription>
+                        </div>
 
                         <FormField
                             control={form.control}
@@ -81,8 +137,9 @@ export function WorkspaceNotificationForm() {
                                 <FormItem>
                                     <FormLabel>Timezone</FormLabel>
                                     <Select
+                                        disabled={true}
                                         onValueChange={field.onChange}
-                                        defaultValue={field.value}
+                                        defaultValue={"ist"}
                                     >
                                         <FormControl>
                                             <SelectTrigger className="max-w-[280px] w-full">
@@ -102,7 +159,7 @@ export function WorkspaceNotificationForm() {
                                                 <SelectItem value="mst">
                                                     Mountain Standard Time (MST)
                                                 </SelectItem>
-                                                <SelectItem     value="pst">
+                                                <SelectItem value="pst">
                                                     Pacific Standard Time (PST)
                                                 </SelectItem>
                                                 <SelectItem value="akst">
@@ -195,7 +252,9 @@ export function WorkspaceNotificationForm() {
                             )}
                         />
                         <div className="flex justify-end">
-                            <Button type="submit">Update workspace</Button>
+                            <Button type="submit" className="max-sm:px-2">
+                                Update workspace
+                            </Button>
                         </div>
                     </form>
                 </Form>

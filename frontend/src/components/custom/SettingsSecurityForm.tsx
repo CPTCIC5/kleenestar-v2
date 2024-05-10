@@ -21,53 +21,74 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { z } from "zod";
-
-const FormSchema = z
-    .object({
-        current_password: z.string().min(1, { message: "Password can't be empty" }),
-        new_password: z
-            .string()
-            .min(8, "Min. 8 characters")
-            .refine((value) => /[a-z]/.test(value), {
-                message: "Password need a lowercase",
-            })
-            .refine((value) => /[A-Z]/.test(value), {
-                message: "Password need a  uppercase",
-            })
-            .refine((value) => /\d/.test(value), {
-                message: "Password need a  number",
-            })
-            .refine((value) => /\W|_/.test(value), {
-                message: "Password need a  special character",
-            }),
-        confirm_new_password: z.string().min(1, "Password is required"),
-        google_auth: z.boolean().optional(),
-        two_factor_auth: z.boolean().optional(),
-    })
-    .refine((data) => data.new_password === data.confirm_new_password, {
-        message: "Passwords do not match",
-        path: ["confirm_new_password"],
-    });
+import { SettingsSecurityFormSchemaTypes } from "@/lib/types/types";
+import { SettingsSecurityFormSchema } from "@/lib/zod/schemas/schema";
+import axios, { AxiosError } from "axios";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 export function SettingsSecurityForm() {
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const form = useForm<SettingsSecurityFormSchemaTypes>({
+        resolver: zodResolver(SettingsSecurityFormSchema),
         mode: "onChange",
         defaultValues: {
             current_password: "",
             new_password: "",
             confirm_new_password: "",
-            google_auth: false,
-            two_factor_auth: false,
         },
     });
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log(data);
+    async function onSubmit(data: SettingsSecurityFormSchemaTypes) {
+        if (data.new_password !== data.confirm_new_password) {
+            form.setError("confirm_new_password", {
+                message: "Password confirmation does not match!",
+            });
+            return;
+        }
+
+        if (data.new_password === data.current_password) {
+            form.setError("new_password", {
+                message: "New password should be different from the current password!",
+            });
+            form.setError("confirm_new_password", {
+                message: "New password should be different from the current password!",
+            });
+            return;
+        }
+
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/auth/change-password/",
+                {
+                    current_password: data.current_password,
+                    new_password: data.new_password,
+                    confirm_new_password: data.confirm_new_password,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-CSRFToken": Cookies.get("csrfToken"),
+                    },
+                },
+            );
+            console.log(response.data.message);
+            toast.success(response.data.message);
+        } catch (error) {
+            const err = error as AxiosError<{ error: string }>;
+            const message = err?.response?.data?.error;
+            if (message) {
+                form.setError("current_password", {
+                    message: message,
+                });
+            }
+        }
     }
 
     return (
-        <Card>
+        <Card className="relative">
+            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+                Delete workspace
+            </Button>
             <CardHeader className="pt-3 pb-5">
                 <CardDescription>Update your security settings.</CardDescription>
                 <Separator />
@@ -156,6 +177,7 @@ export function SettingsSecurityForm() {
                                         </div>
                                         <FormControl>
                                             <Switch
+                                                disabled={true}
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
                                             />
@@ -177,6 +199,7 @@ export function SettingsSecurityForm() {
                                         </div>
                                         <FormControl>
                                             <Switch
+                                                disabled={true}
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
                                             />
@@ -187,7 +210,9 @@ export function SettingsSecurityForm() {
                         </div>
 
                         <div className="flex justify-end">
-                            <Button type="submit">Update security</Button>
+                            <Button type="submit" className="max-sm:px-2">
+                                Update security
+                            </Button>
                         </div>
                     </form>
                 </Form>

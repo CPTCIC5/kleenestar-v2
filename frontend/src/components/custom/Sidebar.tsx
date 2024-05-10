@@ -15,10 +15,12 @@ import {
     UsersRound,
     Wallet,
 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { Icons } from "@/assets/icons";
 import { Separator } from "../ui/separator";
 import { ModeToggle } from "./ModeToggle";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { cn } from "@/lib/utils";
 
 export default function Sidebar() {
     return (
@@ -218,6 +220,26 @@ export default function Sidebar() {
                 <div>
                     <ModeToggle />
                 </div>
+
+                <Link
+                    href={"/settings"}
+                    className={cn(
+                        buttonVariants({ variant: "outline", size: "icon" }),
+                        "rounded-full p-0",
+                    )}
+                >
+                    <Avatar className="w-[35px] h-[35px] rounded-full ">
+                        <AvatarImage
+                            className="rounded-full border-2 border-muted"
+                            src="https://github.com/shadcn.png"
+                            alt="@shadcn"
+                        />
+                        <AvatarFallback className="flex items-center justify-center">
+                            N
+                        </AvatarFallback>
+                    </Avatar>
+                    <span className="sr-only">Settings</span>
+                </Link>
             </header>
         </TooltipProvider>
     );

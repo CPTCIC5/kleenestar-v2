@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/theme-provider/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontInter = Inter({
     subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     {children}
+                    <Toaster expand={true} position="bottom-right" richColors />
                 </ThemeProvider>
             </body>
         </html>

@@ -38,7 +38,10 @@ export function SettingsNotificationForm() {
     }
 
     return (
-        <Card>
+        <Card className="relative">
+            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+                Delete workspace
+            </Button>
             <CardHeader className="pt-3 pb-5">
                 <CardDescription>Configure how you receive notifications.</CardDescription>
                 <Separator />
@@ -54,6 +57,7 @@ export function SettingsNotificationForm() {
                                     <FormLabel className="text-base">Notify me about...</FormLabel>
                                     <FormControl>
                                         <RadioGroup
+                                            disabled={true}
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                             className="flex flex-col space-y-1"
@@ -105,6 +109,7 @@ export function SettingsNotificationForm() {
                                             </div>
                                             <FormControl>
                                                 <Switch
+                                                    disabled={true}
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
                                                 />
@@ -126,6 +131,7 @@ export function SettingsNotificationForm() {
                                             </div>
                                             <FormControl>
                                                 <Switch
+                                                    disabled={true}
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
                                                 />
@@ -146,6 +152,7 @@ export function SettingsNotificationForm() {
                                             </div>
                                             <FormControl>
                                                 <Switch
+                                                    disabled={true}
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
                                                 />
@@ -156,7 +163,9 @@ export function SettingsNotificationForm() {
                             </div>
                         </div>
                         <div className="flex justify-end">
-                            <Button type="submit">Update notifications</Button>
+                            <Button type="submit" disabled={true} className="max-sm:px-2">
+                                Update notifications
+                            </Button>
                         </div>
                     </form>
                 </Form>

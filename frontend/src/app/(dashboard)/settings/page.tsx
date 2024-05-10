@@ -7,8 +7,33 @@ import { WorkspaceNotificationForm } from "@/components/custom/SettingsWorkspace
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import * as React from "react";
+import useUserStore from "@/lib/store/UserStore";
+import { UserStoreState, User } from "@/lib/types/interfaces";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function SettingsPage() {
+    const setUser = useUserStore((state) => state.setUser);
+
+    React.useEffect(() => {
+        async function setUserData() {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/api/auth/users/me/`, {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                });
+                setUser(response.data);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        setUserData();
+    }, []);
+
     return (
         <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] p-3">
             <div className="max-w-[662px] w-full flex flex-col">
