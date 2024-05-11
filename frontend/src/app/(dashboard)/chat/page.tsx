@@ -25,31 +25,31 @@ export default function Chat() {
         },
     });
 
-    React.useEffect(() => {
-        const fetchWorkspaceDetails = async () => {
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                });
-                console.log(response);
-                setIsLoggedIn(true);
-                console.log(isLoggedIn);
-                setUserDetails(response.data[0].root_user);
-            } catch (err) {
-                console.error(err);
-                navigate.push("/");
-            }
-        };
-        fetchWorkspaceDetails();
-    }, []);
+    // React.useEffect(() => {
+    //     const fetchWorkspaceDetails = async () => {
+    //         try {
+    //             const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
+    //                 withCredentials: true,
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "X-CSRFToken": Cookies.get("csrftoken"),
+    //                 },
+    //             });
+    //             console.log(response);
+    //             setIsLoggedIn(true);
+    //             console.log(isLoggedIn);
+    //             setUserDetails(response.data[0].root_user);
+    //         } catch (err) {
+    //             console.error(err);
+    //             navigate.push("/");
+    //         }
+    //     };
+    //     fetchWorkspaceDetails();
+    // }, []);
 
     const fetchConvos = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
+            const response = await axios.get("http://127.0.0.1:8000/api/channels/convos/", {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json",
@@ -66,9 +66,9 @@ export default function Chat() {
     };
 
     React.useEffect(() => {
-        if (!isLoggedIn) return;
+        // if (!isLoggedIn) return;
         fetchConvos();
-    }, [isLoggedIn]);
+    }, []);
 
     return (
         <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[56px]">
