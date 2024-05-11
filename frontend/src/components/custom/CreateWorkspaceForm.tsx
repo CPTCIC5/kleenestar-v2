@@ -33,6 +33,10 @@ import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import FormSuccess from "./FormSuccess";
+import axios, { AxiosError } from "axios"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie'
 
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -41,10 +45,32 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
         resolver: zodResolver(CreateWorkspaceFormSchema),
         mode: "onChange",
     });
-
-    const onSubmit = (values: CreateWorkspaceFormSchemaTypes) => {
-        console.log(values);
-    };
+    const router = useRouter()
+    const onSubmit = async (data: CreateWorkspaceFormSchemaTypes) => {
+        console.log(data);
+        try{
+            const response =  await axios.post("http://127.0.0.1:8000/api/workspaces/",{
+                business_name: data.businessName,
+                website_url:data.Website,
+                industry:data.selectedOption
+            },{
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': Cookies.get('csrftoken')
+                }
+            })
+            if(response.status === 200){
+                toast.success("Workspace Created Successfully!")
+                setTimeout(()=>{
+                    router.push("/chat/create")
+                },1000)
+            }
+            }catch(error){
+                console.log(error)
+                toast.warning("Failed to create Workspace, please try again")
+            }
+        };
 
     return (
         <Card className={cn(className)}>

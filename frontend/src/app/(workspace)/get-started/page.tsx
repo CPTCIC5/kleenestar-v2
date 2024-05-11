@@ -21,7 +21,7 @@ export default function GetStarted() {
             </div>
             <div className="flex justify-center mt-12">
                 <Link
-                    href="/welcome/choose"
+                    href="/workspace"
                     className={cn(
                         buttonVariants({ variant: "default" }),
                         "rounded-full px-6 py-4 sm:px-8 sm:py-6 ",

@@ -30,6 +30,10 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
 import { RegisterFormSchemaTypes } from "../../lib/types/types";
+import axios, { AxiosError } from "axios"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -41,10 +45,39 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             newsletter: false,
         },
     });
+    const router = useRouter()
 
     const onSubmit = async (data: RegisterFormSchemaTypes) => {
         console.log(data);
-
+          try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/auth/signup/",
+                {
+                    email: data.email,
+                    password: data.password,
+                    confirm_password: data.confirmPassword,
+                    newsletter: data.newsletter,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            if (response.status == 201) {
+                toast.success("Registration Successfull!")
+                setTimeout(() => {
+                    router.push("/chat/create")
+                }, 1000)
+            }
+        } catch (error) {
+            console.log(error)
+            const err = error as AxiosError
+            if (err.response?.data) {
+                const { email } = err.response.data as { email: string[] }
+                toast.error(email[0])
+            }
+        }
         form.reset({
             email: "",
             password: "",

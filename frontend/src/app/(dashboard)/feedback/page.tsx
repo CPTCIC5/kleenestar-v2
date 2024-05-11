@@ -9,6 +9,7 @@ import { useRef, ChangeEvent, useState } from "react"
 export default function Feedback(){
 	const addRef = useRef<HTMLInputElement | null>(null)
 	const [file, setFile] = useState("")
+	const [formData, setFormData] = useState<FormData | null>(null)
 	const handleAddImage = () => {
 		if (addRef.current) {
 			addRef.current.click()
@@ -22,9 +23,8 @@ export default function Feedback(){
 			return
 		} else {
 			const formData = new FormData()
-			formData.append("profile[avatar]", file)
-			console.log(formData)
-
+			formData.append("attachment", file)
+			setFormData(formData)
 		}
 	}
 	return (
@@ -68,7 +68,7 @@ export default function Feedback(){
 					</div>
 				</Card>
 			</div>
-			<FeedbackForm />
+			<FeedbackForm formData={formData as FormData} />
 		</div>
 	)
 }

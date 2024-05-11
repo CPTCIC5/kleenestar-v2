@@ -20,8 +20,12 @@ import { FeedbackFormSchemaTypes } from "@/lib/types/types"
 import { FeedbackFormSchema } from "@/lib/zod/schemas/schema"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
+import axios, { AxiosError } from "axios"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie'
 
-export default function FeedbackForm() {
+export default function FeedbackForm({ formData }: { formData : FormData }) {
 	const options = [
 		[1, 2, 3, 4, 5],
 		[6, 7, 8, 9, 10],
@@ -44,34 +48,61 @@ export default function FeedbackForm() {
 		}
 		console.log(selectedEmoji)
 	}
-	const [validations, setValidations] = useState<{options: string, emoji: string}>({
+	const [validations, setValidations] = useState<{
+		options: string
+		emoji: string
+	}>({
 		options: "",
-		emoji: ""
+		emoji: "",
 	})
 	const form = useForm<FeedbackFormSchemaTypes>({
 		resolver: zodResolver(FeedbackFormSchema),
 		mode: "onChange",
 	})
 
-	const onSubmit = (values: FeedbackFormSchemaTypes) => {
-		const data  = {...values, selectedEmoji, selectedOption }
-		if(!selectedOption){
-			setValidations({...validations, options: "This field is required"})
-		}else{
+	const onSubmit = async (values: FeedbackFormSchemaTypes) => {
+		const data = { ...values, selectedEmoji, selectedOption }
+		if (!selectedOption) {
+			setValidations({ ...validations, options: "This field is required" })
+		} else {
 			setValidations({ ...validations, options: "" })
 		}
-		
-		if(selectedEmoji.length === 0){
-			setValidations({...validations, emoji: "Please select a emoji"})
-		}else{
-			setValidations({...validations, emoji: ""})	
+
+		if (selectedEmoji.length === 0) {
+			setValidations({ ...validations, emoji: "Please select a emoji" })
+		} else {
+			setValidations({ ...validations, emoji: "" })
 		}
 		console.log(data)
+		try {
+			formData.append("urgency", String(data.selectedOption))
+			formData.append("category", "General")
+			formData.append("message", data.message)
+			formData.append("emoji", "1")
+			const response = await axios.post(
+				"http://127.0.0.1:8000/api/auth/add-feedback/",
+				formData,
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "multipart/form-data",
+						"X-CSRFToken": Cookies.get("csrftoken"),
+					},
+				}
+			)
+	
+			console.log(response.data)
+			toast.success("Thanks for Submitting your Feedback!")
+		} catch (err) {
+			console.log(err)
+			toast.error("Failed to submit feedback")
+		}
+		// add axios API call
 	}
 
 	return (
 		<div>
-			<div className="pt-[20px]">
+			<div className="py-[20px]">
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<Card>

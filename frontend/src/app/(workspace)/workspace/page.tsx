@@ -52,7 +52,7 @@ export default function ChooseStart() {
                             <p className="text-center w-full mt-2">I have a workspace</p>
                         </Card>
                     </Link>
-                    <Link href="/welcome/workspace">
+                    <Link href="/create-workspace">
                         <Card className={cn("h-[310px] w-[300px]")}>
                             <CardContent className={cn("p-0 h-[260px] pt-4 w-[90%] mx-auto")}>
                                 <Image

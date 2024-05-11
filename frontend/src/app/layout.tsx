@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat, Syne } from "next/font/google";
 import "./globals.css";
-
+import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/theme-provider/ThemeProvider";
 
@@ -49,6 +49,7 @@ export default function RootLayout({
                 >
                     {children}
                 </ThemeProvider>
+                <Toaster position="top-right" />
             </body>
         </html>
     );
