@@ -217,29 +217,29 @@ export default function Sidebar() {
                         </nav>
                     </SheetContent>
                 </Sheet>
-                <div>
+                <div className="flex gap-2 items-center">
                     <ModeToggle />
-                </div>
 
-                <Link
-                    href={"/settings"}
-                    className={cn(
-                        buttonVariants({ variant: "outline", size: "icon" }),
-                        "rounded-full p-0",
-                    )}
-                >
-                    <Avatar className="w-[35px] h-[35px] rounded-full ">
-                        <AvatarImage
-                            className="rounded-full border-2 border-muted"
-                            src="https://github.com/shadcn.png"
-                            alt="@shadcn"
-                        />
-                        <AvatarFallback className="flex items-center justify-center">
-                            N
-                        </AvatarFallback>
-                    </Avatar>
-                    <span className="sr-only">Settings</span>
-                </Link>
+                    <Link
+                        href={"/settings"}
+                        className={cn(
+                            buttonVariants({ variant: "outline", size: "icon" }),
+                            "rounded-full p-0",
+                        )}
+                    >
+                        <Avatar className="w-[35px] h-[35px] rounded-full ">
+                            <AvatarImage
+                                className="rounded-full border-2 border-muted"
+                                src="https://github.com/shadcn.png"
+                                alt="@shadcn"
+                            />
+                            <AvatarFallback className="flex items-center justify-center">
+                                N
+                            </AvatarFallback>
+                        </Avatar>
+                        <span className="sr-only">Settings</span>
+                    </Link>
+                </div>
             </header>
         </TooltipProvider>
     );

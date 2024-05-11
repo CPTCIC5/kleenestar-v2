@@ -20,28 +20,101 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { ChatOptionButton } from "./ChatOptionButton";
 import { Folder } from "lucide-react";
 import { FolderOptionButton } from "./FolderOptionButton";
+import useChatStore from "@/lib/store/ConvoStore";
+import { Convo } from "@/lib/types/interfaces";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-export function ChatSidebar() {
+interface ChatSidebarProps {
+    currentConvoId: number;
+    setCurrentConvoId: (id: number) => void;
+    setDeleteId: (id: number) => void;
+}
+
+export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: ChatSidebarProps) {
+    const convos = useChatStore((state) => state.convos);
+    const addConvos = useChatStore((state) => state.addConvos);
+    const [todayConvos, setTodayConvos] = React.useState<Convo[]>([]);
+    const [previousConvos, setPreviousConvos] = React.useState<Convo[]>([]);
+    const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
     const [rename, setRename] = React.useState<number | null>(null);
     const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);
-    const [folderRename, setFolderRename] = React.useState<number | null>(null);
-    const [toggleFolderOptions, setToggleFolderOptions] = React.useState<number | null>(null);
-    const [openFolder, setOpenFolder] = React.useState<Array<number>>([]);
+    // const [folderRename, setFolderRename] = React.useState<number | null>(null);
+    // const [toggleFolderOptions, setToggleFolderOptions] = React.useState<number | null>(null);
+    // const [openFolder, setOpenFolder] = React.useState<Array<number>>([]);
 
-    const handleFolderOptions = (id: number) => {
-        if (openFolder.includes(id)) {
-            setOpenFolder(openFolder.filter((folder) => folder !== id));
-        } else {
-            setOpenFolder([...openFolder, id]);
+    // const handleFolderOptions = (id: number) => {
+    //     if (openFolder.includes(id)) {
+    //         setOpenFolder(openFolder.filter((folder) => folder !== id));
+    //     } else {
+    //         setOpenFolder([...openFolder, id]);
+    //     }
+    // };
+
+    React.useEffect(() => {
+        console.log("rerendered");
+        console.log(convos);
+
+        const todayConvoList = convos.filter((convo) => {
+            const today = new Date();
+            // console.log(convo.title);
+
+            const convoDate = new Date(convo.created_at);
+            today.setHours(0, 0, 0, 0);
+            convoDate.setHours(0, 0, 0, 0);
+
+            return convoDate.getTime() === today.getTime() && convo.archived === false;
+        });
+
+        setTodayConvos(todayConvoList);
+
+        const previousConvoList = convos.filter((convo) => {
+            const today = new Date();
+            // console.log(convo.title);
+
+            const convoDate = new Date(convo.created_at);
+            today.setHours(0, 0, 0, 0);
+            convoDate.setHours(0, 0, 0, 0);
+
+            return convoDate.getTime() !== today.getTime() && convo.archived === false;
+        });
+
+        setPreviousConvos(previousConvoList);
+        console.log(todayConvos, previousConvos);
+    }, [convos]);
+
+    const handleAddChat = async () => {
+        try {
+            await axios.post(
+                "http://127.0.0.1:8000/api/channels/convos/",
+                {},
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                },
+            );
+
+            const response = await axios.get("http://127.0.0.1:8000/api/channels/convos/", {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
+                },
+            });
+
+            addConvos(response.data.results);
+        } catch (err) {
+            console.error("Error adding chat", err);
         }
     };
 
-    const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
-
     return (
         <div
-            className={`max-sm:absolute max-sm:top-0 max-sm:left-0 max-sm:z-50 max-sm:p-0 relative p-3 h-screen ${
-                openSidebar ? "w-[316px]" : "w-0"
+            className={`max-sm:absolute max-sm:top-0 max-sm:left-0 max-sm:z-50 max-sm:p-0 relative h-screen ${
+                openSidebar ? "w-[316px] p-[10px]" : "w-0 p-5 py-[10px]"
             }`}
         >
             <div
@@ -86,6 +159,7 @@ export function ChatSidebar() {
                     </div>
                     <div className="my-4 space-y-4">
                         <Button
+                            onClick={handleAddChat}
                             variant="outline"
                             className="flex justify-center items-center w-full gap-[8px] focus-visible:ring-0"
                         >
@@ -95,7 +169,7 @@ export function ChatSidebar() {
                         <Separator className="w-full" />
                         <SearchBox type="text" placeholder="Search a chat…" className="w-full " />
                     </div>
-                    <div>
+                    {/* <div>
                         <div className="flex justify-between items-center">
                             <span className="text-muted-foreground text-[10px]">FOLDERS</span>
                             <div
@@ -145,13 +219,13 @@ export function ChatSidebar() {
                                 );
                             })}
                         </div>
-                    </div>
-                    <div className="h-[380px] overflow-auto small-scrollbar ">
+                    </div> */}
+                    <div className="h-[503px] overflow-auto small-scrollbar ">
                         <div>
                             <div>
                                 <span className="text-muted-foreground text-[10px]">TODAY</span>
                             </div>
-                            {chatToday.map((chat) => {
+                            {todayConvos.map((chat) => {
                                 return (
                                     <ChatOptionButton
                                         key={chat.id}
@@ -170,7 +244,7 @@ export function ChatSidebar() {
                                     PREVIOUS 7 DAYS
                                 </span>
                             </div>
-                            {chatPrevious.map((chat) => {
+                            {previousConvos.map((chat) => {
                                 return (
                                     <ChatOptionButton
                                         key={chat.id}

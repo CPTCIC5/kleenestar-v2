@@ -2,19 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
-
 
 /* Fade up animation - animate-fade-in-up */
 
@@ -107,5 +104,22 @@
 }
 
 .small-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: hsl(var(--border));
+    background-color: hsl(var(--muted-foreground));
+}
+
+.large-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.large-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.large-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 10px;
+}
+
+.large-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground));
 }

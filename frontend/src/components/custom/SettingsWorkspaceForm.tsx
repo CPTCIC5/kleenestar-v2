@@ -100,7 +100,6 @@ export function WorkspaceNotificationForm() {
                                                     {...field}
                                                 />
                                             </FormControl>
-
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -119,7 +118,6 @@ export function WorkspaceNotificationForm() {
                                                     {...field}
                                                 />
                                             </FormControl>
-
                                             <FormMessage />
                                         </FormItem>
                                     )}

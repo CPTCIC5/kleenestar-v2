@@ -50,7 +50,6 @@ export default function RootLayout({
                     {children}
                     <Toaster expand={true} position="bottom-right" richColors />
                 </ThemeProvider>
-                <Toaster position="top-right" />
             </body>
         </html>
     );

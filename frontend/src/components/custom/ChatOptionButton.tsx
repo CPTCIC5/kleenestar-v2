@@ -10,11 +10,20 @@ import {
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/custom/CustomDropdown";
+
 interface ChatOptionButtonProps {
     chat: {
         id: number;
         title: string;
-        date: string;
+        created_at: string;
     };
     toggleOptions: number | null;
     setToggleOptions: React.Dispatch<React.SetStateAction<number | null>>;
@@ -66,6 +75,7 @@ export function ChatOptionButton({
                     onKeyPress={(event) => {
                         if (event.key === "Enter") {
                             event.preventDefault();
+
                             setRename(null);
                             // add the rename api thing also to this
                         }
@@ -77,13 +87,8 @@ export function ChatOptionButton({
                 </span>
             )}
             {/* <TryDropDown /> */}
-            <DotsHorizontalIcon
-                onClick={() => handleOptions(chat.id)}
-                className={`absolute top-1/2 -translate-y-1/2 right-3 h-4 w-4 group-hover:block  ${
-                    toggleOptions === chat.id ? "block" : "hidden"
-                }`}
-            />
-            <Card
+
+            {/* <Card
                 className={`absolute bottom-[10px] right-[10px] z-[100] translate-x-full translate-y-full ${
                     toggleOptions === chat.id ? "block" : "hidden"
                 }`}
@@ -113,7 +118,43 @@ export function ChatOptionButton({
                         <span className="text-[14px] font-normal">Delete</span>
                     </Button>
                 </CardContent>
-            </Card>
+            </Card> */}
+
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <DotsHorizontalIcon
+                        onClick={() => handleOptions(chat.id)}
+                        className={`absolute top-1/2 -translate-y-1/2 right-3 h-4 w-4 group-hover:block  ${
+                            toggleOptions === chat.id ? "block" : "hidden"
+                        }`}
+                    />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full max-w-[166px]">
+                    <Button
+                        onClick={() => {
+                            handleRename(chat.id);
+                            setToggleOptions(null);
+                        }}
+                        variant="ghost"
+                        className="flex justify-start gap-2 w-full"
+                    >
+                        <Pencil2Icon className="h-4 w-4" />
+                        <span className="text-[14px] font-normal">Rename</span>
+                    </Button>
+                    <Button variant="ghost" className="flex justify-start gap-2 w-full">
+                        <BackpackIcon className="h-4 w-4" />
+                        <span className="text-[14px] font-normal">Add to folder</span>
+                    </Button>
+                    <Button variant="ghost" className="flex justify-start gap-2 w-full">
+                        <Share2Icon className="h-4 w-4" />
+                        <span className="text-[14px] font-normal">Share chat</span>
+                    </Button>
+                    <Button variant="ghost" className="flex justify-start gap-2 w-full">
+                        <TrashIcon className="h-4 w-4" />
+                        <span className="text-[14px] font-normal">Delete</span>
+                    </Button>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 }

@@ -28,9 +28,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormSchema } from "@/lib/zod/schemas/schema";
 import { LoginFormSchemaTypes } from "../../lib/types/types";
-import axios, { AxiosError } from "axios"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -38,37 +38,37 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const form = useForm<LoginFormSchemaTypes>({
         resolver: zodResolver(LoginFormSchema),
         mode: "onChange",
-    }); 
-    const router = useRouter()
+    });
+    const router = useRouter();
 
     const onSubmit = async (data: LoginFormSchemaTypes) => {
         console.log(data);
-	const { email, password } = data
-	try {
-		const response = await axios.post(
-			"http://127.0.0.1:8000/api/auth/login/",
-			{
-				email: email,
-				password: password,
-			},
-			{
-				withCredentials: true,
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		)
-		if (response.status == 200) {
-			form.clearErrors("password")
-			toast.success("Login Successfull!")
-			setTimeout(() => {
-				router.push("/chat/create")
-			}, 1000)
-		}
-	} catch (error) {
-		const err = error as AxiosError<{ detail: string }> // Update the type of err.response.data
-		if (err.response?.data) toast.error(err.response.data.detail)
-	}
+        const { email, password } = data;
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/auth/login/",
+                {
+                    email: email,
+                    password: password,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                },
+            );
+            if (response.status == 200) {
+                form.clearErrors("password");
+                toast.success("Login Successfull!");
+                setTimeout(() => {
+                    router.push("/chat");
+                }, 1000);
+            }
+        } catch (error) {
+            const err = error as AxiosError<{ detail: string }>; // Update the type of err.response.data
+            if (err.response?.data) toast.error(err.response.data.detail);
+        }
         form.reset({
             email: "",
             password: "",
