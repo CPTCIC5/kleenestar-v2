@@ -8,6 +8,7 @@ import {
     RegisterFormSchema,
     SettingsNotificationFormSchema,
     SettingsProfileFormSchema,
+    SettingsSecurityFormSchema,
     SettingsWorkspaceFormSchema,
 } from "../zod/schemas/schema";
 
@@ -18,5 +19,6 @@ export type CreateWorkspaceFormSchemaTypes = z.infer<typeof CreateWorkspaceFormS
 export type SettingsProfileFormSchemaTypes = z.infer<typeof SettingsProfileFormSchema>;
 export type SettingsNotificationFormSchemaTypes = z.infer<typeof SettingsNotificationFormSchema>;
 export type SettingsWorkspaceFormSchemaTypes = z.infer<typeof SettingsWorkspaceFormSchema>;
+export type SettingsSecurityFormSchemaTypes = z.infer<typeof SettingsSecurityFormSchema>;
 export type FeedbackFormSchemaTypes = z.infer<typeof FeedbackFormSchema>;
 export type MakeNoteFormSchemaTypes = z.infer<typeof MakeNoteFormSchema>;

@@ -93,27 +93,55 @@ export const SettingsNotificationFormSchema = z.object({
 });
 
 export const SettingsWorkspaceFormSchema = z.object({
-    name: z.string().min(1, {
+    firstName: z.string().min(1, {
+        message: "name must be at least 1 characters.",
+    }),
+    lastName: z.string().min(1, {
         message: "name must be at least 1 characters.",
     }),
     timezone: z.enum(validTimezones).optional(),
 });
 
+export const SettingsSecurityFormSchema = z
+    .object({
+        current_password: z.string().min(1, { message: "Password can't be empty" }),
+        new_password: z
+            .string()
+            .min(8, "Min. 8 characters")
+            .refine((value) => /[a-z]/.test(value), {
+                message: "Password need a lowercase",
+            })
+            .refine((value) => /[A-Z]/.test(value), {
+                message: "Password need a  uppercase",
+            })
+            .refine((value) => /\d/.test(value), {
+                message: "Password need a  number",
+            })
+            .refine((value) => /\W|_/.test(value), {
+                message: "Password need a  special character",
+            }),
+        confirm_new_password: z.string().min(1, "Password is required"),
+        google_auth: z.boolean().optional(),
+        two_factor_auth: z.boolean().optional(),
+    })
+    .refine((data) => data.new_password === data.confirm_new_password, {
+        message: "Passwords do not match",
+        path: ["confirm_new_password"],
+    });
 
 export const FeedbackFormSchema = z.object({
-	subject: z
-		.string()
-		.min(1, { message: "Subject is Required" })
-		.max(100, { message: "Subject cannot exceed 100 characters" }),
-	message: z
-		.string()
-		.min(1, { message: "Message is Required" })
-		.max(500, { message: "Message cannot exceed 500 characters" }),
-})
-
+    subject: z
+        .string()
+        .min(1, { message: "Subject is Required" })
+        .max(100, { message: "Subject cannot exceed 100 characters" }),
+    message: z
+        .string()
+        .min(1, { message: "Message is Required" })
+        .max(500, { message: "Message cannot exceed 500 characters" }),
+});
 
 export const MakeNoteFormSchema = z.object({
-    notes: z.string().min(1, {message: "Note is required"}).max(500, {
-        message: "A Note cannot exceed 500 characters"
-    })
-})
+    notes: z.string().min(1, { message: "Note is required" }).max(500, {
+        message: "A Note cannot exceed 500 characters",
+    }),
+});
