@@ -8,41 +8,41 @@ export function NewChatDisplay() {
             </span>
             <div className="flex flex-wrap gap-[30px] justify-center items-end">
                 <div className="flex flex-col gap-[30px]">
-                    <Card className="max-w-[365.45px] h-[138px] w-full">
-                        <CardHeader>
+                    <Card className="max-w-[320px] h-[103px] w-full">
+                        <CardHeader className="px-[22px] py-[20px]">
                             <CardTitle className="font-mainhead">
                                 Actionable Recommendations
                             </CardTitle>
-                            <CardDescription className="text-base">
+                            <CardDescription>
                                 What can I do to improve my ads campaign ROI?
                             </CardDescription>
                         </CardHeader>
                     </Card>
-                    <Card className="max-w-[365.45px] h-[138px] w-full">
+                    <Card className="max-w-[320px] h-[103px] w-full">
                         <CardHeader>
                             <CardTitle className="font-mainhead">
                                 Channel-Specific Insights
                             </CardTitle>
-                            <CardDescription className="text-base">
+                            <CardDescription>
                                 How is my Ads campaign performing this week?
                             </CardDescription>
                         </CardHeader>
                     </Card>
                 </div>
                 <div className="flex flex-col gap-[30px]">
-                    <Card className="max-w-[365.45px] h-[138px] w-full">
+                    <Card className="max-w-[320px] h-[103px] w-full">
                         <CardHeader>
                             <CardTitle className="font-mainhead">Comparative Analysis</CardTitle>
-                            <CardDescription className="text-base">
+                            <CardDescription>
                                 Compare the ROI of my Google Ads and Facebook Ads for the last
                                 quarter.
                             </CardDescription>
                         </CardHeader>
                     </Card>
-                    <Card className="max-w-[365.45px] h-[138px] w-full">
+                    <Card className="max-w-[320px] h-[103px] w-full">
                         <CardHeader>
                             <CardTitle className="font-mainhead">Generate Marketing Copy</CardTitle>
-                            <CardDescription className="text-base">
+                            <CardDescription>
                                 Create LinkedIn ad copies for my new Black Friday discount campaign.
                             </CardDescription>
                         </CardHeader>

@@ -21,8 +21,60 @@ import { Separator } from "../ui/separator";
 import { ModeToggle } from "./ModeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "@/lib/utils";
+import React from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
+    const navigate = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [userDetails, setUserDetails] = React.useState<{
+        id: string;
+        profile: { country: string };
+    }>({
+        id: "",
+        profile: {
+            country: "",
+        },
+    });
+    React.useEffect(() => {
+        const fetchWorkspaceDetails = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                });
+                // console.log(response);
+
+                setIsLoggedIn(true);
+                setUserDetails(response.data[0].root_user);
+            } catch (err) {
+                navigate.push("/");
+            }
+        };
+        fetchWorkspaceDetails();
+    }, [isLoggedIn]);
+
+    const handleLogOut = async () => {
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/auth/logout/", null, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
+                },
+            });
+            console.log(response);
+        } catch (err) {
+            console.error("Logout Failed");
+            throw new Error("Logout Failed");
+        }
+    };
+
     return (
         <TooltipProvider>
             <aside className="fixed inset-y-0 left-0 z-40 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -207,13 +259,13 @@ export default function Sidebar() {
                                 <Speech className="h-5 w-5" />
                                 Feedback
                             </Link>
-                            <Link
-                                href="#"
+                            <div
+                                onClick={handleLogOut}
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
                                 <LogOut className="h-5 w-5" />
                                 Sign out
-                            </Link>
+                            </div>
                         </nav>
                     </SheetContent>
                 </Sheet>

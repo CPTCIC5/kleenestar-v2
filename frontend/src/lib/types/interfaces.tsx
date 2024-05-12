@@ -50,6 +50,8 @@ interface ChatStoreState {
     renameConvo: (id: number, newName: string) => void;
     archiveConvo: (id: number) => void;
     unarchiveConvo: (id: number) => void;
+    updateInputPrompts: (newInputPrompts: InputPrompt[]) => void;
+    setInputPrompts: (newInputPrompts: InputPrompt[]) => void;
 }
 
 export type { User, Profile, UserStoreState, Convo, InputPrompt, ChatStoreState };
