@@ -43,7 +43,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
     const [searchQuery, setSearchQuery] = React.useState("");
     const [initalRender, setInitialRender] = React.useState(true);
     const debounceValue = useDebounce(searchQuery, 1000);
-    const [currentConvos, setCurrentConvos] = React.useState<Convo[]>([convos]);
+    const [currentConvos, setCurrentConvos] = React.useState<Convo[]>(convos);
 
     React.useEffect(() => {
         if (!initalRender) {

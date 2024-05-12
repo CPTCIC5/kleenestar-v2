@@ -224,7 +224,7 @@ export default function Sidebar() {
                         href={"/settings"}
                         className={cn(
                             buttonVariants({ variant: "outline", size: "icon" }),
-                            "rounded-full p-0",
+                            "rounded-full p-0 z-50",
                         )}
                     >
                         <Avatar className="w-[35px] h-[35px] rounded-full ">

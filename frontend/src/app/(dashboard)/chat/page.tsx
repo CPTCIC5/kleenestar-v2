@@ -7,6 +7,7 @@ import axios from "axios";
 import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import NoteSheet from "@/components/custom/NoteSheet";
 
 export default function Chat() {
     const convos = useChatStore((state) => state.convos);
@@ -79,6 +80,7 @@ export default function Chat() {
             />
             <div className=" flex-1 w-full h-full ">
                 <ChatDisplay currentConvoId={currentConvoId} />
+                <NoteSheet />
             </div>
         </div>
     );
