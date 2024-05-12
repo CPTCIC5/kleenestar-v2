@@ -1,4 +1,3 @@
-import useChatStore from "@/lib/store/ConvoStore";
 import {
     ArchiveRestore,
     CircleHelp,
@@ -26,12 +25,20 @@ import { CrossCircledIcon, PaperPlaneIcon, UploadIcon } from "@radix-ui/react-ic
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { Separator } from "../ui/separator";
+import useChatStore from "@/lib/store/ConvoStore";
+import { toast } from "sonner";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 interface ChatDisplayProps {
     currentConvoId: number;
 }
 
 export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
+    const convos = useChatStore((state) => state.convos);
+    const inputPrompts = useChatStore((state) => state.inputPrompts);
+    const updateInputPrompts = useChatStore((state) => state.updateInputPrompts);
+    const setInputPrompts = useChatStore((state) => state.setInputPrompts);
     const [Data, setData] = React.useState(InputPrompt);
     const [uploadedFiles, setUploadedFiles] = React.useState<string | null>(null);
     const [text, setText] = React.useState("");
@@ -51,15 +58,86 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
         }
     };
 
+    const sendMessage = async () => {
+        console.log(text, uploadedFiles);
+        const inputText: string = text;
+        setText("");
+        if (!text) {
+            toast.warning("Please enter your message");
+            return;
+        } else {
+            try {
+                //creates input prompt in the backend
+                inputPrompts.push({
+                    id: 0,
+                    convo_id: 0,
+                    author: "",
+                    text_query: inputText,
+                    file_query: "",
+                    response_text: "thinking...",
+                    response_image: "",
+                    created_at: "",
+                });
+                await axios.post(
+                    `http://127.0.0.1:8000/api/channels/convos/${currentConvoId}/prompts/create/`,
+                    {
+                        text_query: inputText,
+                        file_query: uploadedFiles,
+                    },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
+                    },
+                );
+                const response = await axios.get(
+                    `http://127.0.0.1:8000/api/channels/convos/${currentConvoId}/prompts/`,
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
+                    },
+                );
+                console.log(response);
+                inputPrompts.pop();
+                updateInputPrompts(response.data.results);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
+
+    React.useEffect(() => {
+        const updatePrompts = async () => {
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/channels/convos/${currentConvoId}/prompts/`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                },
+            );
+            console.log(response.data.results);
+            setInputPrompts(response.data.results);
+        };
+        updatePrompts();
+    }, [currentConvoId, updateInputPrompts]);
+
     return (
         <div className=" w-full h-full pt-[10px] sm:pt-[69px] flex flex-col relative justify-between flex-1">
             <section className="w-full h-full flex flex-col items-center px-[8px] overflow-auto large-scrollbar">
                 <div className="max-w-[670.68px] w-full h-full  ">
-                    {Data.length === 0 ? (
+                    {inputPrompts.length === 0 ? (
                         <NewChatDisplay />
                     ) : (
                         <div className="w-full flex flex-col justify-center gap-[25px]">
-                            {Data.map((item, index) => {
+                            {inputPrompts.map((item, index) => {
                                 return (
                                     <div key={index} className="flex flex-col gap-[25px]">
                                         <div className="flex items-start gap-[23.68px] pr-[24px]">
@@ -178,7 +256,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                             />
                         </div>
                         <div
-                            // onClick={sendMessage}
+                            onClick={sendMessage}
                             className="absolute bottom-[6px] right-3 flex items-center  p-2 rounded-full  cursor-pointer"
                         >
                             <PaperPlaneIcon className="h-[20px] w-[20px]" />

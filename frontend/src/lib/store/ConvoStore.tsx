@@ -1,4 +1,5 @@
-import { ChatStoreState, Convo } from "../types/interfaces";
+// import { devtools, persist } from "zustand/middleware";
+import { ChatStoreState, Convo, InputPrompt } from "../types/interfaces";
 import { create } from "zustand";
 
 const useChatStore = create<ChatStoreState>()((set) => ({
@@ -53,6 +54,28 @@ const useChatStore = create<ChatStoreState>()((set) => ({
             );
             return {
                 convos: updatedConvos,
+            };
+        });
+    },
+
+    updateInputPrompts: (newInputPrompts: InputPrompt[]) => {
+        set((state) => {
+            const promptIds = new Set(state.inputPrompts.map((prompt) => prompt.id));
+            const uniqueInputPrompts = newInputPrompts.filter(
+                (newInputPrompts) => !promptIds.has(newInputPrompts.id),
+            );
+            const sortedPrompts = [...state.inputPrompts, ...uniqueInputPrompts].sort(
+                (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+            );
+            return {
+                inputPrompts: sortedPrompts,
+            };
+        });
+    },
+    setInputPrompts: (newInputPrompts: InputPrompt[]) => {
+        set(() => {
+            return {
+                inputPrompts: newInputPrompts,
             };
         });
     },
