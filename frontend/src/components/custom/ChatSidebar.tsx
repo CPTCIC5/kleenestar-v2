@@ -24,6 +24,7 @@ import useChatStore from "@/lib/store/ConvoStore";
 import { Convo } from "@/lib/types/interfaces";
 import axios from "axios";
 import Cookies from "js-cookie";
+import useDebounce from "@/hooks/useDebounce";
 
 interface ChatSidebarProps {
     currentConvoId: number;
@@ -39,6 +40,25 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
     const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
     const [rename, setRename] = React.useState<number | null>(null);
     const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);
+    const [searchQuery, setSearchQuery] = React.useState("");
+    const [initalRender, setInitialRender] = React.useState(true);
+    const debounceValue = useDebounce(searchQuery, 1000);
+    const [currentConvos, setCurrentConvos] = React.useState<Convo[]>(convos);
+
+    React.useEffect(() => {
+        if (!initalRender) {
+            handleSearch();
+        } else {
+            setInitialRender(false);
+        }
+    }, [debounceValue]);
+
+    const handleSearch = () => {
+        const filteredConvos = convos.filter((convo) =>
+            convo.title.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
+        setCurrentConvos(filteredConvos);
+    };
     // const [folderRename, setFolderRename] = React.useState<number | null>(null);
     // const [toggleFolderOptions, setToggleFolderOptions] = React.useState<number | null>(null);
     // const [openFolder, setOpenFolder] = React.useState<Array<number>>([]);
@@ -53,9 +73,8 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
 
     React.useEffect(() => {
         console.log("rerendered");
-        console.log(convos);
 
-        const todayConvoList = convos.filter((convo) => {
+        const todayConvoList = currentConvos.filter((convo) => {
             const today = new Date();
             // console.log(convo.title);
 
@@ -68,7 +87,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
 
         setTodayConvos(todayConvoList);
 
-        const previousConvoList = convos.filter((convo) => {
+        const previousConvoList = currentConvos.filter((convo) => {
             const today = new Date();
             // console.log(convo.title);
 
@@ -81,6 +100,10 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
 
         setPreviousConvos(previousConvoList);
         console.log(todayConvos, previousConvos);
+    }, [currentConvos]);
+
+    React.useEffect(() => {
+        setCurrentConvos(convos);
     }, [convos]);
 
     const handleAddChat = async () => {
@@ -106,6 +129,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
             });
 
             addConvos(response.data.results);
+            setCurrentConvos(response.data.results);
         } catch (err) {
             console.error("Error adding chat", err);
         }
@@ -167,7 +191,13 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                             <span className="text-[13px]">New chat</span>
                         </Button>
                         <Separator className="w-full" />
-                        <SearchBox type="text" placeholder="Search a chat…" className="w-full " />
+                        <SearchBox
+                            type="text"
+                            placeholder="Search a chat…"
+                            className="w-full"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
                     {/* <div>
                         <div className="flex justify-between items-center">
@@ -228,6 +258,8 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                             {todayConvos.map((chat) => {
                                 return (
                                     <ChatOptionButton
+                                        onClick={() => setCurrentConvoId(chat.id)}
+                                        currentConvoId={currentConvoId}
                                         key={chat.id}
                                         chat={chat}
                                         toggleOptions={toggleOptions}
@@ -247,6 +279,8 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                             {previousConvos.map((chat) => {
                                 return (
                                     <ChatOptionButton
+                                        onClick={() => setCurrentConvoId(chat.id)}
+                                        currentConvoId={currentConvoId}
                                         key={chat.id}
                                         chat={chat}
                                         toggleOptions={toggleOptions}
