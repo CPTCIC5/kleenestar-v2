@@ -22,6 +22,8 @@ import { cn } from "@/lib/utils"
 import avatar from "@/assets/images/avatar.jpg"
 import Image from "next/image"
 
+
+
 export default function MakeNotes({note}: {note: string}){
     const [noteColor ,setColor] = useState("")
 	const form = useForm<MakeNoteFormSchemaTypes>({
@@ -31,9 +33,7 @@ export default function MakeNotes({note}: {note: string}){
 	const onSubmit = (values: MakeNoteFormSchemaTypes) => {
         console.log(values)
 	}
-	useEffect(()=> {
 
-	},[noteColor])
     return (
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>

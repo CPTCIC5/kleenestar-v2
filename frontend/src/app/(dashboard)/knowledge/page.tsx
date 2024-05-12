@@ -18,11 +18,13 @@ import doc from "@/assets/images/docx.png"
 import unknown from "@/assets/images/unknown.png"
 import { allowedFileTypes } from "@/constants/constants"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { DateTimeFormatOptions } from "intl"
 
 interface KnowledgeDataTypes {
 	title: string
 	createdAt: string
 	type: string
+	id: number
 }
 
 export default function Knowledge() {
@@ -46,6 +48,19 @@ export default function Knowledge() {
 			addRef.current.click()
 		}
 	} 
+	function convertDateTime(dateTimeStr: string) {
+		const date = new Date(dateTimeStr);
+		const options = {
+			year: "numeric" as const,
+			month: "2-digit",
+			day: "2-digit",
+			hour: "2-digit",
+			minute: "2-digit",
+			second: "2-digit",
+			hour12: true,
+		}
+		return new Intl.DateTimeFormat("en-US", options as DateTimeFormatOptions).format(date);
+	}
 	const handleDelete = async(id: number) => {
 		try {
 			const response = await axios.delete(
@@ -80,14 +95,17 @@ export default function Knowledge() {
 				}
 			)
 			console.log(response.data)
-			const renderedList = response.data.map((files: { title: string }) => {
-				const fileSplit = files.title.split(".")
-				const type = fileSplit[fileSplit.length - 1]
-				return {
-					title: files.title,
-					type: type,
+			const renderedList = response.data.map((files: { title: string; created_at : string, id: number}) => {
+					const fileSplit = files.title.split(".")
+					const type = fileSplit[fileSplit.length - 1]
+					return {
+						title: files.title,
+						type: type,
+						createdAt: convertDateTime(files.created_at),
+						id: files.id
+					}
 				}
-			})
+			)
 			setKnowledgeData(renderedList)
 		} catch (err) {
 			console.log(err)
@@ -190,12 +208,12 @@ export default function Knowledge() {
 	}, [isLoggedIn])
 
 	return (
-		<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20">
+		<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:px-[40px] max-xl:pb-20">
 			<div className="gap-[15px] flex items-center">
 				<p className="text-[18px] font-mainhead">Knowledge </p>
 				<QuestionMarkCircledIcon />
 			</div>
-			<div className="pt-[20px]  ">
+			<div className="pt-[20px]">
 				<Card className="h-[53.74px] flex items-center w-full">
 					<div className="flex justify-between gap-[20px] w-full mx-auto px-[20px] max-xl:px-[10px]">
 						<div className="flex gap-2 items-center">
@@ -244,12 +262,12 @@ export default function Knowledge() {
 							<Card className="max-w-[320.78px] w-full ">
 								<div className=" px-[24.77px] pb-[18.96px] pt-[22.87px]">
 									<div className="w-full h-full ">
-										<AspectRatio >
+										<AspectRatio className="flex" >
 											<Image
-												className="rounded-md mx-auto object-cover p-4 "
+												className="rounded-md flex-1 justify-center object-cover p-4"
 												src={
 													files.type === "pdf"
-														? pdf
+														? doc
 														: files.type === "csv"
 														? csv
 														: files.type === "docx" || files.type === "doc"
@@ -262,17 +280,17 @@ export default function Knowledge() {
 									</div>
 
 									<div className="flex justify-between items-center">
-										<div>
-											<p className="text-[15px] font-medium pt-[16px]">
+										<div className="flex-col w-[90%]">
+											<p className="text-[15px] break-words w-[90%] flex-1 font-medium pt-[16px]">
 												{files.title}
 											</p>
-											<p className="pt-[7px] text-[12px]">
+											<p className="pt-[7px] flex-1 text-[12px]">
 												{files.createdAt || ""}
 											</p>
 										</div>
 										<div
 											onClick={() => {
-												handleDelete(index)
+												handleDelete(files.id)
 											}}
 											className="cursor-pointer">
 											<Icons.bin />

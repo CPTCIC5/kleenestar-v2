@@ -76,9 +76,9 @@ export default function FeedbackForm({ formData }: { formData : FormData }) {
 		console.log(data)
 		try {
 			formData.append("urgency", String(data.selectedOption))
-			formData.append("category", "General")
+			formData.append("subject", data.subject)
 			formData.append("message", data.message)
-			formData.append("emoji", "1")
+			formData.append("emoji", String(data.selectedEmoji))
 			const response = await axios.post(
 				"http://127.0.0.1:8000/api/auth/add-feedback/",
 				formData,

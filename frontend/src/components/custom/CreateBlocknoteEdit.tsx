@@ -12,6 +12,10 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useTheme } from "next-themes";
 import { BlocknotesAccessDialog } from "./BlocknotesAccessDialog";
+import axios, { AxiosError } from "axios"
+import { toast } from "sonner"
+import Cookies from "js-cookie"
+
 
 interface CreateBlocknoteEditProps {
     note: {
