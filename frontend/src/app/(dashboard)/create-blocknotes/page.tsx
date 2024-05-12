@@ -94,7 +94,7 @@ export default function CreateBlocknotesPage() {
                                             previewPosition={"none"}
                                             dynamicWidth={true}
                                             data={data}
-                                            onEmojiSelect={console.log(data)}
+                                            onEmojiSelect={(emoji) => console.log(emoji)}
                                         />
                                     </div>
                                 )}

@@ -309,38 +309,45 @@ export const dummyMarkdownNote =
 
 export const dummySheetNotesData = [
     {
+        id: 1,
         name: "Tristan's notes",
         content:
             "This result is quite close to my expectation, I should refine that query and generate more images.",
         color: "90EE90",
     },
     {
+        id: 2,
         name: "Hidden gems",
         content:
             "I got this insight today concerning our active campaigns, the pattern is ok! We should consider moving forward with A/B testing.",
         color: "E6E6FA",
     },
     {
+        id: 3,
         name: "Hot now",
         content: "Good advice to follow for our campaign update and optimization.",
         color: "ADD8E6",
     },
     {
+        id: 4,
         name: "Tristans notes",
         content: "Remember to make the appropriate adjustments on TikTok.",
         color: "FFCCCC",
     },
     {
+        id: 5,
         name: "Tristans notes",
         content: "Remember to make the appropriate adjustments on TikTok.",
         color: "FFCCCC",
     },
     {
+        id: 6,
         name: "Tristans notes",
         content: "Remember to make the appropriate adjustments on TikTok.",
         color: "FFCCCC",
     },
     {
+        id: 7,
         name: "Tristans notes",
         content: "Remember to make the appropriate adjustments on TikTok.",
         color: "FFCCCC",
@@ -428,8 +435,8 @@ export const dummyBillingDetails = [
 ];
 
 export const allowedFileTypes = [
-				"application/pdf",
-				"text/csv",
-				"application/msword",
-				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-			]
+    "application/pdf",
+    "text/csv",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
