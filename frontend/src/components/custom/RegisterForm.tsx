@@ -67,7 +67,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             if (response.status == 201) {
                 toast.success("Registration Successfull!")
                 setTimeout(() => {
-                    router.push("/chat/create")
+                    router.push("/chat")
                 }, 1000)
             }
         } catch (error) {

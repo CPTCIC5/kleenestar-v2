@@ -63,7 +63,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
             if(response.status === 200){
                 toast.success("Workspace Created Successfully!")
                 setTimeout(()=>{
-                    router.push("/chat/create")
+                    router.push("/chat")
                 },1000)
             }
             }catch(error){

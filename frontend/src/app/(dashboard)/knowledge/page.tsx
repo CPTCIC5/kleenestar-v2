@@ -3,35 +3,192 @@ import { Icons } from "@/assets/icons"
 import { Card } from "@/components/ui/card"
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import Image from "next/image"
-import campaign_image from "@/assets/images/campaign_image.jpg"
+import axios from "axios"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
+import { ChangeEvent, DragEventHandler, useEffect, useRef, useState } from "react"
+import { Progress } from "@/components/ui/progress"
+import add_image from "../../../assets/images/add_image.png"
+import { cn } from "@/lib/utils"
+import { Skeleton } from "@/components/ui/skeleton"
+import pdf from "@/assets/images/pdf.png"
+import csv from "@/assets/images/csv.png"
+import doc from "@/assets/images/docx.png"
+import unknown from "@/assets/images/unknown.png"
+import { allowedFileTypes } from "@/constants/constants"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 
-const getKnowledgeFiles = [
-	{
-		thumbnail: campaign_image,
-		name: "https://sprtswear.shop",
-		createdAt: "15/4/2024, 12:12:45 PM",
-	},
-	{
-		thumbnail: campaign_image,
-		name: "Art of advertizing control",
-		createdAt: "15/4/2024, 12:12:45 PM",
-	},
-	{
-		thumbnail: campaign_image,
-		name: "https://sprtswear.shop",
-		createdAt: "15/4/2024, 12:12:45 PM",
-	},
-	{
-		thumbnail: campaign_image,
-		name: "Art of advertizing control",
-		createdAt: "15/4/2024, 12:12:45 PM",
-	},
-]
+interface KnowledgeDataTypes {
+	title: string
+	createdAt: string
+	type: string
+}
 
 export default function Knowledge() {
-    const handleDelete = () => {
-        return null
-    }
+	const router = useRouter()
+	const addRef = useRef<HTMLInputElement | null>(null)
+	const [progress, setProgress] = useState(0)
+	const [knowledgeData, setKnowledgeData] = useState([])
+	const [isLoggedIn, setIsLoggedIn] = useState(false)
+	const [loading, setLoading] = useState(true)
+	const [userDetails, setUserDetails] = useState<{
+		id: string
+		profile: { country: string }
+	}>({
+		id: "",
+		profile: {
+			country: "",
+		},
+	})
+	const handleAddFile = () => {
+		if (addRef.current) {
+			addRef.current.click()
+		}
+	} 
+	const handleDelete = async(id: number) => {
+		try {
+			const response = await axios.delete(
+				`http://127.0.0.1:8000/api/channels/knowledgebase/${id}/`,
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": Cookies.get("csrftoken"),
+					},
+				}
+			)
+			toast.success("Knowledge file deleted successfully!")
+			setLoading(true)
+			fetchKnowledgeBase();
+		} catch (err) {
+			console.log(err)
+			toast.error("Unable to delete the knowledge base file")
+		}
+	}
+
+	const fetchKnowledgeBase = async () => {
+		try {
+			const response = await axios.get(
+				"http://127.0.0.1:8000/api/channels/knowledgebase/",
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": Cookies.get("csrftoken"),
+					},
+				}
+			)
+			console.log(response.data)
+			const renderedList = response.data.map((files: { title: string }) => {
+				const fileSplit = files.title.split(".")
+				const type = fileSplit[fileSplit.length - 1]
+				return {
+					title: files.title,
+					type: type,
+				}
+			})
+			setKnowledgeData(renderedList)
+		} catch (err) {
+			console.log(err)
+			toast.error("Unable to fetch the knowledge base details")
+		}
+		setLoading(false)
+	}
+
+	const uploadKnowledgeFile = async (
+		e: React.ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLDivElement>
+	) => {
+		e.preventDefault()
+		const file =
+			(e as React.DragEvent<HTMLDivElement>).dataTransfer?.files?.[0] ||
+			(e as React.ChangeEvent<HTMLInputElement>).target?.files?.[0]
+
+
+		//check if file exist
+		if (!file) {
+			return
+		}
+		// check for valid file type
+		if (!allowedFileTypes.includes(file.type)) {
+			toast.warning("Invalid file type. Please select a PDF, CSV, or DOC file.")
+			return
+		}
+
+		// check for valid file size
+		const maxSize = 25 * 1024 * 1024
+		if (file.size > maxSize) {
+			toast.warning(
+				"File is too large, please select a file smaller than 25MB."
+			)
+			return
+		}
+
+		const formData = new FormData()
+		formData.append("file", file)
+		formData.append("title", file.name)
+
+		try {
+			const response = await axios.post(
+				"http://127.0.0.1:8000/api/channels/knowledgebase/",
+				formData,
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "multipart/form-data",
+						"X-CSRFToken": Cookies.get("csrftoken"),
+					},
+					onUploadProgress: (progressEvent) => {
+						const percentCompleted = Math.round(
+							(progressEvent.loaded * 100) / (progressEvent.total || 100)
+						)
+						setProgress(percentCompleted)
+					},
+				}
+			)
+			setProgress(0)
+			fetchKnowledgeBase()
+			toast.success("Knowledge added successfully!")
+		} catch (err) {
+			console.log(err)
+			toast.error("Failed to add upload file")
+		}
+	}
+
+	const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault()
+	}
+
+	useEffect(() => {
+		const fetchWorkspaceDetails = async () => {
+			try {
+				const response = await axios.get(
+					"http://127.0.0.1:8000/api/workspaces/",
+					{
+						withCredentials: true,
+						headers: {
+							"Content-Type": "application/json",
+							"X-CSRFToken": Cookies.get("csrftoken"),
+						},
+					}
+				)
+				console.log(response)
+				setIsLoggedIn(true)
+				console.log(isLoggedIn)
+				setUserDetails(response.data[0].root_user)
+			} catch (err) {
+				console.error(err)
+				router.push("/")
+			}
+		}
+		fetchWorkspaceDetails()
+	}, [])
+
+	useEffect(() => {
+		if (!isLoggedIn) return
+		fetchKnowledgeBase()
+	}, [isLoggedIn])
+
 	return (
 		<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20">
 			<div className="gap-[15px] flex items-center">
@@ -50,40 +207,115 @@ export default function Knowledge() {
 							</p>
 						</div>
 						<div className="flex items-center gap-2">
-							<Card className="text-[16px] cursor-pointer max-xl:text-[14px] max-xl:px-[12px] max-xl:ml-2 h-[33.56px] px-[18px] gap-[12px] flex items-center">
-								<Icons.circle_plus />
-								<span className="pr-4 font-medium text-[13px]">Import</span>
+							<Card
+								onClick={handleAddFile}
+								className="text-[16px] cursor-pointer max-xl:text-[14px] max-xl:px-[12px] max-xl:ml-2 h-[33.56px] px-[18px] gap-[12px] flex items-center">
+								<input
+									ref={addRef}
+									className="hidden"
+									type="file"
+									name="files"
+									accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/csv"
+									onChange={uploadKnowledgeFile}
+								/>
+								<Image
+									className="w-[20px] dark:filter dark:brightness-0 dark:invert h-[20px] max-xl:w-[15px] max-xl:h-[15px]"
+									src={add_image}
+									alt={"add_image"}
+								/>
+								<span className="pr-4">Add</span>
 							</Card>
 						</div>
 					</div>
 				</Card>
 			</div>
-			<div className="pt-[25px] flex flex-wrap gap-[45px]">
-				{getKnowledgeFiles.map((files) => {
-					return (
-						<Card className="max-w-[320.78px] w-full">
-							<div className=" px-[24.77px] pb-[18.96px] pt-[22.87px]">
-								{" "}
-								<Image
-									className="rounded-md "
-									src={files.thumbnail}
-									alt="thumbnail"></Image>
-								<div className="flex justify-between items-center">
-									<div>
-										<p className="text-[15px] font-medium pt-[16px]">
-											{files.name}
-										</p>
-										<p className="pt-[7px] text-[12px]">{files.createdAt}</p>
+			<div>
+				{progress !== 0 && (
+					<Progress
+						value={progress}
+						className={cn("h-4 rounded-md my-4")}
+					/>
+				)}
+			</div>
+			<div className="pt-[20px] flex flex-wrap gap-[45px] h-full max-h-[70vh] overflow-auto scrollbar-hide">
+				{knowledgeData.length !== 0 ? (
+					knowledgeData.map((files: KnowledgeDataTypes, index) => {
+						return (
+							<Card className="max-w-[320.78px] w-full ">
+								<div className=" px-[24.77px] pb-[18.96px] pt-[22.87px]">
+									<div className="w-full h-full ">
+										<AspectRatio >
+											<Image
+												className="rounded-md mx-auto object-cover p-4 "
+												src={
+													files.type === "pdf"
+														? pdf
+														: files.type === "csv"
+														? csv
+														: files.type === "docx" || files.type === "doc"
+														? doc
+														: unknown
+												}
+												alt="thumbnail"
+											/>
+										</AspectRatio>
 									</div>
-									<div
-										onClick={handleDelete}
-										className="cursor-pointer">	<Icons.bin /></div>
-								
+
+									<div className="flex justify-between items-center">
+										<div>
+											<p className="text-[15px] font-medium pt-[16px]">
+												{files.title}
+											</p>
+											<p className="pt-[7px] text-[12px]">
+												{files.createdAt || ""}
+											</p>
+										</div>
+										<div
+											onClick={() => {
+												handleDelete(index)
+											}}
+											className="cursor-pointer">
+											<Icons.bin />
+										</div>
+									</div>
 								</div>
+							</Card>
+						)
+					})
+				) : loading ? (
+					<div className="flex w-full  justify-between flex-wrap ">
+						<div className="flex-col space-y-3">
+							<Skeleton className="h-[300px] w-[300px] rounded-xl" />
+							<div className="space-y-2">
+								<Skeleton className="h-4 w-[250px]" />
+								<Skeleton className="h-4 w-[200px]" />
 							</div>
-						</Card>
-					)
-				})}
+						</div>
+						<div className="flex-col space-y-3">
+							<Skeleton className="h-[300px] w-[300px] rounded-xl" />
+							<div className="space-y-2">
+								<Skeleton className="h-4 w-[250px]" />
+								<Skeleton className="h-4 w-[200px]" />
+							</div>
+						</div>
+					</div>
+				) : (
+					<div
+						onClick={handleAddFile}
+						onDrop={uploadKnowledgeFile}
+						onDragOver={(e: React.DragEvent<HTMLDivElement>) =>
+							handleDragOver(e)
+						}
+						className=" border-dashed cursor-pointer flex-col border-4 border-foreground w-full">
+						<div className="w-fit mx-auto mt-20">
+							<Icons.cloud className="dark:filter dark:brightness-0 dark:invert" />
+						</div>
+
+						<p className="text-[20px] font-medium text-center mt-4 mb-20">
+							Drag & Drop to Upload File
+						</p>
+					</div>
+				)}
 			</div>
 		</div>
 	)

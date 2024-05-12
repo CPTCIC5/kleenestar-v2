@@ -426,3 +426,10 @@ export const dummyBillingDetails = [
         Users: "['A','B']",
     },
 ];
+
+export const allowedFileTypes = [
+				"application/pdf",
+				"text/csv",
+				"application/msword",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			]
