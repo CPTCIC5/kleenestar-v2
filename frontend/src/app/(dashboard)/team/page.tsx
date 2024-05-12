@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,8 +22,54 @@ import {
     DropdownMenuContent,
 } from "@/components/custom/CustomDropdown";
 import { BackpackIcon, Share2Icon, TrashIcon } from "lucide-react";
+import React from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import Cookies from "js-cookie";
+
+type User = {
+    id: string;
+    first_name: string;
+    last_name: string;
+};
 
 export default function TeamMembersPage() {
+    const navigate = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [users, setUsers] = React.useState<User[]>([]); // [ { id: string, name: string }
+    const [userDetails, setUserDetails] = React.useState<{
+        id: string;
+        profile: { country: string };
+    }>({
+        id: "",
+        profile: {
+            country: "",
+        },
+    });
+
+    React.useEffect(() => {
+        const fetchWorkspaceDetails = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                });
+                console.log(response);
+                setIsLoggedIn(true);
+                setUsers(response.data[0].users);
+                console.log(isLoggedIn);
+                setUserDetails(response.data[0].root_user);
+            } catch (err) {
+                console.error(err);
+                navigate.push("/");
+            }
+        };
+        fetchWorkspaceDetails();
+    }, []);
+
     return (
         <div className="w-full h-full flex items-center justify-center p-3">
             <div className="max-w-[672.02px] w-full h-full">
@@ -40,6 +88,7 @@ export default function TeamMembersPage() {
                             />
                             <Button
                                 variant={"outline"}
+                                disabled={true}
                                 className="py-[9px] px-[18px] flex gap-[11px] items-center justify-center !mt-0 group"
                             >
                                 <div
@@ -58,10 +107,10 @@ export default function TeamMembersPage() {
                 <div className="w-full mt-[31.38px] mb-[20.5px]">
                     <span className="text-[14px]">Invited users</span>
                 </div>
-                <div className="w-full">
-                    {dummySheetNotesData.map((note) => {
+                <div className="w-full space-y-2">
+                    {users.map((user) => {
                         return (
-                            <Card key={note.id}>
+                            <Card key={user.id}>
                                 <CardHeader className="flex flex-row items-center justify-center px-[20px] py-[15px] space-x-2">
                                     <Avatar className="w-[30px] h-[30px]  rounded-full ">
                                         <AvatarImage
@@ -74,12 +123,14 @@ export default function TeamMembersPage() {
                                         </AvatarFallback>
                                     </Avatar>
 
-                                    <div className="flex-1">
-                                        <CardTitle className="text-[15px]">{note.name}</CardTitle>
+                                    <div className="flex-1 !mt-0 ">
+                                        <CardTitle className="text-[15px]">
+                                            {user.first_name + " " + user.last_name}
+                                        </CardTitle>
                                     </div>
 
                                     <Select>
-                                        <SelectTrigger className="w-[8rem]">
+                                        <SelectTrigger disabled={true} className="w-[8rem] !mt-0">
                                             <SelectValue placeholder={"member"} />
                                         </SelectTrigger>
 
@@ -90,10 +141,10 @@ export default function TeamMembersPage() {
                                     </Select>
 
                                     <DropdownMenu>
-                                        <DropdownMenuTrigger>
+                                        <DropdownMenuTrigger className="!mt-0 ml-2">
                                             <Button
                                                 variant={"ghost"}
-                                                className="ml-2 h-fit p-2  rounded-full"
+                                                className=" h-fit p-2  rounded-full focus-visible:ring-0 ring-0 outline-none border-none"
                                             >
                                                 <DotsHorizontalIcon className={`h-4 w-4`} />
                                             </Button>
@@ -101,6 +152,7 @@ export default function TeamMembersPage() {
                                         <DropdownMenuContent className="w-full max-w-[166px]">
                                             <Button
                                                 variant="ghost"
+                                                disabled={true}
                                                 className="flex justify-start gap-2 w-full"
                                             >
                                                 <PauseIcon className="h-4 w-4" />
@@ -110,6 +162,7 @@ export default function TeamMembersPage() {
                                             </Button>
                                             <Button
                                                 variant="ghost"
+                                                disabled={true}
                                                 className="flex justify-start gap-2 w-full"
                                             >
                                                 <TrashIcon className="h-4 w-4" />
