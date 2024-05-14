@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@/assets/icons";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { cn } from "@/lib/utils";

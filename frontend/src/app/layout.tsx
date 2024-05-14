@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat, Syne } from "next/font/google";
 import "./globals.css";
-
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/lib/theme-provider/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontInter = Inter({
     subsets: ["latin"],
-    variable: "--font-inter",
+    variable: "--",
 });
 
 const fontMontserrat = Montserrat({
@@ -34,13 +35,21 @@ export default function RootLayout({
         <html lang="en">
             <body
                 className={
-                    (cn("min-h-screen bg-background font-inter antialiased"),
+                    (cn("min-h-screen h-full bg-background  antialiased"),
                     fontInter.variable,
                     fontMontserrat.variable,
                     fontSyne.variable)
                 }
             >
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="light"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                    <Toaster expand={true} position="bottom-right" richColors />
+                </ThemeProvider>
             </body>
         </html>
     );
