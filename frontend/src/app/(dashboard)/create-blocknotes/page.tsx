@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import CreateBlocknoteEdit from "@/components/custom/CreateBlocknoteEdit"
 import { Input } from "@/components/ui/input"
-import { blocknotes } from "@/constants/constants"
+// import { blocknotes } from "@/constants/constants"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import {
@@ -33,6 +33,17 @@ import axios, { AxiosError } from "axios"
 import { toast } from "sonner"
 import Cookies from "js-cookie"
 import {useState, useEffect} from 'react'
+import { DateTimeFormatOptions } from "intl"
+import { Skeleton } from "@/components/ui/skeleton"
+
+
+interface BlockNoteTypes {
+	id: number
+	image: string
+	created_at: string
+	title: string
+}
+
 
 export default function CreateBlocknotesPage() {
 	const router = useRouter()
@@ -85,11 +96,31 @@ export default function CreateBlocknotesPage() {
 			setErrors("")
 		}
 	}
-
+	const fetchBlockNotes = async () => {
+		try {
+			const response = await axios.get(
+				"http://127.0.0.1:8000/api/channels/blocknotes/",
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": Cookies.get("csrftoken"),
+					},
+				}
+			)
+			console.log(response.data)
+			setBlockNotes(response.data)
+		} catch (err) {
+			console.log(err)
+			toast.error("Failed to fetch block note details")
+		}
+		setLoading(false)
+	}
 	const clearFields = () => {
 		setTitle("")
 		setSelectedEmoji(null)
 	}
+
     
 	const createNewBlockNote = async () => {
         validateFields()
@@ -111,6 +142,8 @@ export default function CreateBlocknotesPage() {
 				)
 				console.log(response.data)
 				toast.success("Block Note Created Successfully!")
+				await fetchBlockNotes()
+				
 			} catch (err) {
 				console.log(err)
 				toast.error("Failed to create Block Note")
@@ -147,8 +180,9 @@ export default function CreateBlocknotesPage() {
 			if (!isLoggedIn) return
 			fetchBlockNotes()
 		}, [isLoggedIn])
+
 	return (
-		<div className="w-full min-h-screen h-full flex items-start justify-center flex-1 bg-muted/40 pt-[65px] p-3">
+		<div className="w-full min-h-screen h-full flex items-start justify-center flex-1 bg-muted/40 pt-[65px]  pt-[99.5px]  p-3">
 			<div className="max-w-[950px] w-full flex flex-col ">
 				<div className="mb-[16px]  rounded-full">
 					<div
@@ -161,21 +195,6 @@ export default function CreateBlocknotesPage() {
 						)}>
 						<ArrowLeftIcon className=" p-2 rounded-full cursor-pointer h-[30px] w-[30px]" />
 					</div>
-				</div>
-
-				<div className="space-y-4">
-					{blocknotes.map((note) => {
-						return (
-							<CreateBlocknoteEdit
-								isEditing={isEditing}
-								setEditing={setEditing}
-								openEmojiPicker={openEmojiPicker}
-								setEmojiPicker={setEmojiPicker}
-								key={note.id}
-								note={note}
-							/>
-						)
-					})}
 				</div>
 
 				<Card className="mt-4">
@@ -202,7 +221,7 @@ export default function CreateBlocknotesPage() {
 										/>
 									</Avatar>
 									{openEmojiPicker === -1 && (
-										<div className="absolute left-[32px] bottom-[32px] z-10">
+										<div className="absolute left-[32px] top-[35px] z-10">
 											<Picker
 												theme={theme === "dark" ? "light" : "dark"}
 												navPosition={"none"}
@@ -228,7 +247,7 @@ export default function CreateBlocknotesPage() {
 									)}>
 									<ImageIcon className="h-[20px] w-[20px]" />
 									{openEmojiPicker === -1 && (
-										<div className="absolute left-[32px] bottom-[32px] z-10">
+										<div className="absolute left-[32px] top-[35px] z-10">
 											<Picker
 												theme={theme === "dark" ? "light" : "dark"}
 												navPosition={"none"}
@@ -259,11 +278,11 @@ export default function CreateBlocknotesPage() {
 								variant={"ghost"}>
 								Save
 							</Button>
-							<Link
+							{/* <Link
 								href="/access"
 								className={cn(buttonVariants({ variant: "outline" }))}>
 								Give access
-							</Link>
+							</Link> */}
 						</div>
 					</CardHeader>
 				</Card>
@@ -275,6 +294,41 @@ export default function CreateBlocknotesPage() {
 						</span>
 					)}
 				</div>
+				{/* <div className="space-y-4 pt-10">
+					{loading ? (
+						<div className="flex-col mx-auto gap-12  justify-between">
+							<div className="flex-col space-y-3">
+								<Skeleton className="h-[55px] w-full rounded-xl" />
+								<div className="space-y-2">
+									<Skeleton className="h-4 w-[250px]" />
+									<Skeleton className="h-4 w-[150px]" />
+								</div>
+							</div>
+							
+							<div className="flex-col space-y-3 pt-8">
+								<Skeleton className="h-[55px] w-full rounded-xl" />
+								<div className="space-y-2">
+									<Skeleton className="h-4 w-[250px]" />
+									<Skeleton className="h-4 w-[150px]" />
+								</div>
+							</div>
+						</div>
+					) : (
+						blockNotes.map((note: BlockNoteTypes) => {
+							return (
+								<CreateBlocknoteEdit
+									fetchBlockNotes={fetchBlockNotes}
+									isEditing={isEditing}
+									setEditing={setEditing}
+									openEmojiPicker={openEmojiPicker}
+									setEmojiPicker={setEmojiPicker}
+									key={note.id}
+									note={note}
+								/>
+							)
+						})
+					)}
+				</div> */}
 
 				<div className="flex items-center justify-center h-[360px]">
 					<span className="text-[15px] flex justify-center max-w-[629px] w-full text-center text-muted-foreground">

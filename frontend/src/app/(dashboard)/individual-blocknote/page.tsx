@@ -37,7 +37,7 @@ import { MessageCircleMore } from "lucide-react";
 
 export default function IndividualBlocknotesPage() {
     const router = useRouter();
-    const note = blocknotes[2];
+    const note = blocknotes
 
     const [isEditing, setIsEditing] = React.useState<number>(-1);
     console.log(isEditing);
