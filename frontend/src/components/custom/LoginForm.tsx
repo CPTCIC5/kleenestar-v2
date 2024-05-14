@@ -53,6 +53,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 },
             });
             console.log(response.data);
+            
             setUser(response.data);
         } catch (err) {
             console.log(err);
@@ -80,6 +81,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             console.log(response);
             fetchUserDetails();
             if (response.status == 200) {
+                Cookies.set("logged_in", "yes")
                 form.clearErrors("password");
                 toast.success("Login Successfull!");
                 setTimeout(() => {
