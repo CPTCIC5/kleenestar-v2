@@ -51,6 +51,38 @@ export const RegisterFormSchema = z
         path: ["confirmPassword"],
     });
 
+export const InvitedRegisterFormSchema = z
+    .object({
+        email: z
+            .string()
+            .email()
+            .refine((value) => value.includes("@") && value.includes("."), {
+                message: "Enter a valid email",
+            }),
+        password: z
+            .string()
+            .min(8, "Min. 8 characters")
+            .refine((value) => /[a-z]/.test(value), {
+                message: "Password need a lowercase",
+            })
+            .refine((value) => /[A-Z]/.test(value), {
+                message: "Password need a  uppercase",
+            })
+            .refine((value) => /\d/.test(value), {
+                message: "Password need a  number",
+            })
+            .refine((value) => /\W|_/.test(value), {
+                message: "Password need a  special character",
+            }),
+        confirmPassword: z.string().min(1, "Password is required"),
+        newsletter: z.boolean().default(false).optional(),
+        inviteCode: z.string().min(1, "Invite code is required"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    });
+
 export const CreateWorkspaceFormSchema = z.object({
     businessName: z
         .string()

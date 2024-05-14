@@ -3,6 +3,7 @@ import {
     CreateWorkspaceFormSchema,
     FeedbackFormSchema,
     ForgotPasswordFormSchema,
+    InvitedRegisterFormSchema,
     LoginFormSchema,
     MakeNoteFormSchema,
     RegisterFormSchema,
@@ -15,6 +16,7 @@ import {
 export type ForgotPasswordFormSchemaTypes = z.infer<typeof ForgotPasswordFormSchema>;
 export type LoginFormSchemaTypes = z.infer<typeof LoginFormSchema>;
 export type RegisterFormSchemaTypes = z.infer<typeof RegisterFormSchema>;
+export type InvitedRegisterFormSchemaTypes = z.infer<typeof InvitedRegisterFormSchema>;
 export type CreateWorkspaceFormSchemaTypes = z.infer<typeof CreateWorkspaceFormSchema>;
 export type SettingsProfileFormSchemaTypes = z.infer<typeof SettingsProfileFormSchema>;
 export type SettingsNotificationFormSchemaTypes = z.infer<typeof SettingsNotificationFormSchema>;
