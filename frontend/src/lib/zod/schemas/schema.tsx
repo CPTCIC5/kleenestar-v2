@@ -74,15 +74,13 @@ export const CreateWorkspaceFormSchema = z.object({
 });
 
 export const SettingsProfileFormSchema = z.object({
-    username: z.string().min(1, {
-        message: "Username must be at least 1 characters.",
+    firstName: z.string().min(1, {
+        message: "name must be at least 1 characters.",
     }),
-    email: z
-        .string()
-        .email()
-        .refine((value) => value.includes("@") && value.includes("."), {
-            message: "Enter a valid email",
-        }),
+    lastName: z.string().min(1, {
+        message: "name must be at least 1 characters.",
+    }),
+    email: z.string().email().optional(),
 });
 
 export const SettingsNotificationFormSchema = z.object({
@@ -93,12 +91,7 @@ export const SettingsNotificationFormSchema = z.object({
 });
 
 export const SettingsWorkspaceFormSchema = z.object({
-    firstName: z.string().min(1, {
-        message: "name must be at least 1 characters.",
-    }),
-    lastName: z.string().min(1, {
-        message: "name must be at least 1 characters.",
-    }),
+    workspaceName: z.string().min(1, { message: "Workspace name is required" }),
     timezone: z.enum(validTimezones).optional(),
 });
 

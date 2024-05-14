@@ -13,7 +13,7 @@ export default function ChooseStart() {
 
     return (
         <div className="relative animate-fade-in-up  max-xl:pt-10 pt-[5%]">
-            <div className="absolute  left-[30px]">
+            {/* <div className="absolute  left-[30px]">
                 <div
                     onClick={() => {
                         router.back();
@@ -22,7 +22,7 @@ export default function ChooseStart() {
                 >
                     <Icons.left_arrow className="w-[17px] h-[17px]" />
                 </div>
-            </div>
+            </div> */}
 
             <div className="animate-fade-in-up  max-xl:px-10">
                 <div>
@@ -32,16 +32,18 @@ export default function ChooseStart() {
                     {"Let's get started"}
                 </div>
                 <div className="w-[45%] max-xl:w-[90%] mx-auto pt-4  text-gray-700">
-                    <div className="text-center  text-lg w-fit">
+                    <div className="text-center  w-fit">
                         Join a Workspace to collaborate with your team by entering your workspace
                         code or accepting an invite, or Create a Workspace to set up your own and
                         begin organizing and analyzing your marketing data across multiple
                         platforms.
                     </div>
                 </div>
-                <div className="flex mx-auto gap-[5%] w-fit pt-10 max-xl:flex-col pb-10">
+                <div className="flex mx-auto gap-[5%] w-fit pt-10 max-xl:flex-col max-xl:gap-4 pb-10">
                     <Link href="/login">
-                        <Card className={cn("h-[310px] w-[300px]")}>
+                        <Card
+                            className={cn("h-[310px] w-[300px] hover:shadow-lg hover:scale-[1.02]")}
+                        >
                             <CardContent className={cn("p-0 h-[260px] pt-4 w-[90%] mx-auto")}>
                                 <Image
                                     className="w-full h-full rounded-2xl "
@@ -53,7 +55,9 @@ export default function ChooseStart() {
                         </Card>
                     </Link>
                     <Link href="/create-workspace">
-                        <Card className={cn("h-[310px] w-[300px]")}>
+                        <Card
+                            className={cn("h-[310px] w-[300px] hover:shadow-lg hover:scale-[1.02]")}
+                        >
                             <CardContent className={cn("p-0 h-[260px] pt-4 w-[90%] mx-auto")}>
                                 <Image
                                     className="w-full h-full rounded-2xl "

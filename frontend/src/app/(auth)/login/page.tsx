@@ -3,11 +3,13 @@ import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "@/components/ui/button";
 import { LoginForm } from "@/components/custom/LoginForm";
+import GridBackground from "@/components/ui/background-grid";
 
 export default function LoginPage() {
     return (
         <>
-            <div className="relative w-full h-full flex items-center justify-center flex-1 bg-background">
+            <div className="relative w-full h-full flex items-center justify-center flex-1 bg-background p-2">
+                <GridBackground />
                 <Link
                     href="/register"
                     className={cn(
