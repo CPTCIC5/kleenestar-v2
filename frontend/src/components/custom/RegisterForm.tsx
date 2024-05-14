@@ -64,6 +64,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 },
             );
             if (response.status == 201) {
+                Cookies.set("logged_in", "yes")
                 toast.success("Registration Successfull!");
                 setTimeout(() => {
                     router.push("/get-started");

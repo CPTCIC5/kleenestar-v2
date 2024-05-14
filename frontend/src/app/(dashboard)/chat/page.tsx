@@ -8,45 +8,15 @@ import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import NoteSheet from "@/components/custom/NoteSheet";
+import withAuth from "@/components/custom/withAuth";
 
-export default function Chat() {
+function Chat() {
     const convos = useChatStore((state) => state.convos);
     const addConvos = useChatStore((state) => state.addConvos);
     const [currentConvoId, setCurrentConvoId] = React.useState<number>(convos[0]?.id);
     const [deleteId, setDeleteId] = React.useState<number>(-1);
     const navigate = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-    const [userDetails, setUserDetails] = React.useState<{
-        id: string;
-        profile: { country: string };
-    }>({
-        id: "",
-        profile: {
-            country: "",
-        },
-    });
 
-    React.useEffect(() => {
-        const fetchWorkspaceDetails = async () => {
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                });
-                console.log(response);
-                setIsLoggedIn(true);
-                console.log(isLoggedIn);
-                setUserDetails(response.data[0].root_user);
-            } catch (err) {
-                console.error(err);
-                navigate.push("/");
-            }
-        };
-        fetchWorkspaceDetails();
-    }, []);
 
     const fetchConvos = async () => {
         try {
@@ -67,9 +37,8 @@ export default function Chat() {
     };
 
     React.useEffect(() => {
-        if (!isLoggedIn) return;
         fetchConvos();
-    }, [isLoggedIn]);
+    }, []);
 
     return (
         <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[56px]">
@@ -85,3 +54,6 @@ export default function Chat() {
         </div>
     );
 }
+
+
+export default withAuth(Chat)
