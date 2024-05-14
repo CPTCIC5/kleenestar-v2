@@ -28,25 +28,25 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
-import { RegisterFormSchemaTypes } from "../../lib/types/types";
+import { InvitedRegisterFormSchema } from "@/lib/zod/schemas/schema";
+import { InvitedRegisterFormSchemaTypes } from "../../lib/types/types";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function RegisterForm({ className, ...props }: RegisterFormProps) {
-    const form = useForm<RegisterFormSchemaTypes>({
-        resolver: zodResolver(RegisterFormSchema),
+export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) {
+    const form = useForm<InvitedRegisterFormSchemaTypes>({
+        resolver: zodResolver(InvitedRegisterFormSchema),
         mode: "onChange",
         defaultValues: {
-            newsletter: false,
+            newsletter: true,
         },
     });
     const router = useRouter();
 
-    const onSubmit = async (data: RegisterFormSchemaTypes) => {
+    const onSubmit = async (data: InvitedRegisterFormSchemaTypes) => {
         console.log(data);
         try {
             const response = await axios.post(
@@ -56,6 +56,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                     password: data.password,
                     confirm_password: data.confirmPassword,
                     newsletter: data.newsletter,
+                    invite_code: data.inviteCode,
                 },
                 {
                     headers: {
@@ -63,11 +64,10 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                     },
                 },
             );
-            console.log(response);
             if (response.status == 201) {
                 toast.success("Registration Successfull!");
                 setTimeout(() => {
-                    router.push("/create-workspace");
+                    router.push("/chat");
                 }, 200);
             }
         } catch (error) {
@@ -152,12 +152,32 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                 name="confirmPassword"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Confirm password</FormLabel>
+                                        <FormLabel>Confirm Password</FormLabel>
                                         <FormControl>
                                             <PasswordInput
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
+                                                disabled={form.formState.isSubmitting}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="text-[10px]" />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="inviteCode"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Invite Code</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                id="inviteCode"
+                                                type="text"
+                                                placeholder="workspace invite code"
                                                 disabled={form.formState.isSubmitting}
                                                 {...field}
                                             />
@@ -205,29 +225,6 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                         </div>
                     </form>
                 </Form>
-                {/* <div className="relative mb-4">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                            Or continue with
-                        </span>
-                    </div>
-                </div>
-                <Button
-                    variant="outline"
-                    type="button"
-                    disabled={form.formState.isSubmitting}
-                    className="flex items-center w-full"
-                >
-                    {form.formState.isSubmitting ? (
-                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                        <Icons.google className="mr-2 h-4 w-4" />
-                    )}{" "}
-                    Register with Google
-                </Button> */}
             </CardContent>
             <CardFooter>
                 <p className="text-center text-sm text-muted-foreground">

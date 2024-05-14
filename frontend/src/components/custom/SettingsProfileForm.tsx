@@ -21,21 +21,49 @@ import { Input } from "../ui/input";
 import { SettingsProfileFormSchema } from "@/lib/zod/schemas/schema";
 import { SettingsProfileFormSchemaTypes } from "@/lib/types/types";
 import useUserStore from "@/lib/store/UserStore";
+import axios from "axios";
+import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 export function SettingsProfileForm() {
     const user = useUserStore((state) => state.user);
+    const setUser = useUserStore((state) => state.setUser);
 
     const form = useForm<SettingsProfileFormSchemaTypes>({
         resolver: zodResolver(SettingsProfileFormSchema),
     });
 
-    function onSubmit(data: SettingsProfileFormSchemaTypes) {
-        console.log(data);
+    async function onSubmit(data: SettingsProfileFormSchemaTypes) {
+        try {
+            if (user === null) console.error("No user found");
+            const response = await axios.patch(
+                `http://127.0.0.1:8000/api/auth/users/${user?.id}/`,
+                {
+                    first_name: data.firstName,
+                    last_name: data.lastName,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                },
+            );
+            toast.success("Name updated successfully");
+            setUser(response.data);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
         <Card className="relative">
-            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+            <Button
+                className="absolute bottom-6 left-6 max-sm:px-2"
+                disabled={true}
+                variant={"secondary"}
+            >
                 Delete workspace
             </Button>
             <CardHeader className="pt-3 pb-5">
@@ -47,23 +75,49 @@ export function SettingsProfileForm() {
                 {/* image and image upload section */}
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                        {/* <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Username</FormLabel>
-                                    <FormControl>
-                                        <Input type="text" placeholder="Username" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        This is your public display name. It can be your real name
-                                        or a pseudonym. You can only change this once every 30 days.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> */}
+                        <div className="space-y-2">
+                            <div className="flex gap-3 w-full max-ms:flex-col">
+                                <FormField
+                                    control={form.control}
+                                    name="firstName"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>First Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    defaultValue={user?.first_name}
+                                                    placeholder="First Name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="lastName"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>Last Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    defaultValue={user?.last_name}
+                                                    placeholder="Last Name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <CardDescription>
+                                This is the name that will be displayed on your workspace.
+                            </CardDescription>
+                        </div>
 
                         <FormField
                             control={form.control}
@@ -88,7 +142,7 @@ export function SettingsProfileForm() {
                             )}
                         />
                         <div className="flex justify-end">
-                            <Button type="submit" disabled={true} className="max-sm:px-2">
+                            <Button type="submit" className="max-sm:px-2">
                                 Update profile
                             </Button>
                         </div>

@@ -19,7 +19,7 @@ import unknown from "@/assets/images/unknown.png"
 import { allowedFileTypes } from "@/constants/constants"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { DateTimeFormatOptions } from "intl"
-
+import withAuth from "@/components/custom/withAuth"
 interface KnowledgeDataTypes {
 	title: string
 	createdAt: string
@@ -27,22 +27,13 @@ interface KnowledgeDataTypes {
 	id: number
 }
 
-export default function Knowledge() {
+function Knowledge() {
 	const router = useRouter()
 	const addRef = useRef<HTMLInputElement | null>(null)
 	const [progress, setProgress] = useState(0)
 	const [knowledgeData, setKnowledgeData] = useState([])
-	const [isLoggedIn, setIsLoggedIn] = useState(false)
 	const [loading, setLoading] = useState(true)
-	const [userDetails, setUserDetails] = useState<{
-		id: string
-		profile: { country: string }
-	}>({
-		id: "",
-		profile: {
-			country: "",
-		},
-	})
+
 	const handleAddFile = () => {
 		if (addRef.current) {
 			addRef.current.click()
@@ -177,35 +168,10 @@ export default function Knowledge() {
 		e.preventDefault()
 	}
 
-	useEffect(() => {
-		const fetchWorkspaceDetails = async () => {
-			try {
-				const response = await axios.get(
-					"http://127.0.0.1:8000/api/workspaces/",
-					{
-						withCredentials: true,
-						headers: {
-							"Content-Type": "application/json",
-							"X-CSRFToken": Cookies.get("csrftoken"),
-						},
-					}
-				)
-				console.log(response)
-				setIsLoggedIn(true)
-				console.log(isLoggedIn)
-				setUserDetails(response.data[0].root_user)
-			} catch (err) {
-				console.error(err)
-				router.push("/")
-			}
-		}
-		fetchWorkspaceDetails()
-	}, [])
 
 	useEffect(() => {
-		if (!isLoggedIn) return
 		fetchKnowledgeBase()
-	}, [isLoggedIn])
+	}, [])
 
 	return (
 		<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:px-[40px] max-xl:pb-20">
@@ -338,3 +304,7 @@ export default function Knowledge() {
 		</div>
 	)
 }
+
+
+
+export default withAuth(Knowledge)

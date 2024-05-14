@@ -39,7 +39,7 @@ export function SettingsNotificationForm() {
 
     return (
         <Card className="relative">
-            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+            <Button className="absolute bottom-6 left-6 max-sm:px-2" disabled={true} variant={"secondary"}>
                 Delete workspace
             </Button>
             <CardHeader className="pt-3 pb-5">

@@ -26,6 +26,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
+import useAuth from "@/hooks/useAuth";
 
 type User = {
     id: string;
@@ -35,40 +36,40 @@ type User = {
 
 export default function TeamMembersPage() {
     const navigate = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
     const [users, setUsers] = React.useState<User[]>([]); // [ { id: string, name: string }
-    const [userDetails, setUserDetails] = React.useState<{
-        id: string;
-        profile: { country: string };
-    }>({
-        id: "",
-        profile: {
-            country: "",
-        },
-    });
+    const [emailInput, setEmailInput] = React.useState("");
+
+    const { isLoggedIn, userDetails } = useAuth();
+    const [workspaceId, setWorkspaceId] = React.useState<number | null>(null);
 
     React.useEffect(() => {
-        const fetchWorkspaceDetails = async () => {
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
+        if (!isLoggedIn) return;
+        setUsers(userDetails ? userDetails[0].users : undefined);
+        setWorkspaceId(userDetails ? userDetails[0].id : undefined);
+    }, [isLoggedIn]);
+
+    async function sendInviteCode() {
+        try {
+            const response = await axios.post(
+                `http://127.0.0.1:8000/api/workspaces/${workspaceId}/create-invite/`,
+                {
+                    email: emailInput,
+                },
+                {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRFToken": Cookies.get("csrftoken"),
                     },
-                });
-                console.log(response);
-                setIsLoggedIn(true);
-                setUsers(response.data[0].users);
-                console.log(isLoggedIn);
-                setUserDetails(response.data[0].root_user);
-            } catch (err) {
-                console.error(err);
-                navigate.push("/");
-            }
-        };
-        fetchWorkspaceDetails();
-    }, []);
+                },
+            );
+            toast.success("Invite link sent");
+        } catch (err) {
+            console.error(err);
+            toast.error("Oops! something went wrong")
+        }
+    }
 
     return (
         <div className="w-full h-full flex items-center justify-center p-3">
@@ -82,13 +83,15 @@ export default function TeamMembersPage() {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-center px-[18px] py-[9px] space-x-2">
                             <Input
-                                type="text"
+                                type="email"
+                                value={emailInput}
+                                onChange={(e) => setEmailInput(e.target.value)}
                                 placeholder="Add email separate by comma…"
                                 className="w-full border-none bg-muted focus-visible:ring-0"
                             />
                             <Button
                                 variant={"outline"}
-                                disabled={true}
+                                onClick={sendInviteCode}
                                 className="py-[9px] px-[18px] flex gap-[11px] items-center justify-center !mt-0 group"
                             >
                                 <div

@@ -2,10 +2,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "@/components/ui/button";
-import { RegisterForm } from "@/components/custom/RegisterForm";
 import GridBackground from "@/components/ui/background-grid";
+import { InvitedRegisterForm } from "@/components/custom/InvitedRegisterForm";
 
-export default function RegisterPage() {
+export default function InvitedRegisterPage() {
     return (
         <>
             <div className="relative w-full h-full flex items-center justify-center flex-1 bg-background p-2">
@@ -19,7 +19,7 @@ export default function RegisterPage() {
                 >
                     Login
                 </Link>
-                <RegisterForm />
+                <InvitedRegisterForm />
             </div>
         </>
     );
