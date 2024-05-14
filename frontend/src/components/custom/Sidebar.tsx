@@ -64,11 +64,11 @@ export default function Sidebar() {
             const response = await axios.post("http://127.0.0.1:8000/api/auth/logout/", null, {
                 withCredentials: true,
                 headers: {
-                    "Content-Type": "application/json",
                     "X-CSRFToken": Cookies.get("csrftoken"),
                 },
             });
             console.log(response);
+            Cookies.remove('csrftoken');
         } catch (err) {
             console.error("Logout Failed");
             throw new Error("Logout Failed");

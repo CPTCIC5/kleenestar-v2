@@ -166,7 +166,7 @@ export default function BlockNotesPage() {
 					</span>
 					<InfoCircledIcon className="h-[15px] w-[15px]" />
 				</div>
-				<div className="flex items-center justify-between pr-3">
+				<div className="flex items-center  max-xl:gap-8 justify-between pr-3">
 					<SearchBox
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
@@ -183,7 +183,7 @@ export default function BlockNotesPage() {
 						</Button>
 					</Link>
 				</div>
-				<div className="w-full flex justify-start">
+				<div className="w-full flex max-xl:justify-center justify-start">
 					{blockNotes?.length === 0 && !loading ? (
 						<div className="flex items-center justify-center h-[150px]">
 							<span className="text-[15px] flex justify-center max-w-[629px] w-full text-center text-muted-foreground">
@@ -194,7 +194,7 @@ export default function BlockNotesPage() {
 					) : (
 						<div className="flex flex-wrap justify-center gap-[27px] mt-[27px]">
 							{loading ? (
-								<div className="flex mx-auto gap-12  justify-between">
+								<div className="flex mx-auto gap-12 flex-wrap max-xl:pl-10  justify-between">
 									<div className="flex-col space-y-3">
 										<Skeleton className="h-[150px] w-[150px] rounded-xl" />
 										<div className="space-y-2">
