@@ -37,42 +37,43 @@ import useUserStore from "@/lib/store/UserStore";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+import React from "react";
 
 export function WorkspaceNotificationForm() {
-    const user = useUserStore((state) => state.user);
-    const setUser = useUserStore((state) => state.setUser);
+    const [workspace, setWorkspace] = React.useState<{ business_name: string } | null>(null);
 
     const form = useForm<SettingsWorkspaceFormSchemaTypes>({
         resolver: zodResolver(SettingsWorkspaceFormSchema),
     });
 
-    async function onSubmit(data: SettingsWorkspaceFormSchemaTypes) {
-        try {
-            if (user === null) console.error("No user found");
-            const response = await axios.patch(
-                `http://127.0.0.1:8000/api/auth/users/${user?.id}/`,
-                {
-                    first_name: data.firstName,
-                    last_name: data.lastName,
-                },
-                {
+    React.useEffect(() => {
+        const fetchWorkspaceDetails = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRFToken": Cookies.get("csrftoken"),
                     },
-                },
-            );
-            toast.success("Name updated successfully");
-            setUser(response.data);
-        } catch (err) {
-            console.error(err);
-        }
-    }
+                });
+                console.log(response);
+                setWorkspace(response.data[0]);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchWorkspaceDetails();
+    }, []);
+
+    async function onSubmit(data: SettingsWorkspaceFormSchemaTypes) {}
 
     return (
         <Card className="relative">
-            <Button className="absolute bottom-6 left-6 max-sm:px-2" variant={"secondary"}>
+            <Button
+                className="absolute bottom-6 left-6 max-sm:px-2"
+                disabled={true}
+                variant={"secondary"}
+            >
                 Delete workspace
             </Button>
             <CardHeader className="pt-3 pb-5">
@@ -84,48 +85,30 @@ export function WorkspaceNotificationForm() {
             <CardContent>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                        <div className="space-y-2">
-                            <div className="flex gap-3 w-full max-ms:flex-col">
-                                <FormField
-                                    control={form.control}
-                                    name="firstName"
-                                    defaultValue={user?.first_name}
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>First Name</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="First Name"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="lastName"
-                                    defaultValue={user?.last_name}
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>Last Name</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Last Name"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <CardDescription>
-                                This is the name that will be displayed on your workspace.
-                            </CardDescription>
+                        <div className="flex gap-3 w-full max-ms:flex-col">
+                            <FormField
+                                control={form.control}
+                                name="workspaceName"
+                                render={({ field }) => (
+                                    <FormItem className="w-full">
+                                        <FormLabel>Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                disabled={true}
+                                                defaultValue={workspace?.business_name}
+                                                placeholder="name"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                        <CardDescription>
+                                            This is the name that will be displayed on your
+                                            workspace.
+                                        </CardDescription>
+                                    </FormItem>
+                                )}
+                            />
                         </div>
 
                         <FormField
@@ -250,7 +233,7 @@ export function WorkspaceNotificationForm() {
                             )}
                         />
                         <div className="flex justify-end">
-                            <Button type="submit" className="max-sm:px-2">
+                            <Button type="submit" disabled={true} className="max-sm:px-2">
                                 Update workspace
                             </Button>
                         </div>

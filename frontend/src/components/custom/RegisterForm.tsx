@@ -30,10 +30,9 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
 import { RegisterFormSchemaTypes } from "../../lib/types/types";
-import axios, { AxiosError } from "axios"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
-
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -45,11 +44,11 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             newsletter: false,
         },
     });
-    const router = useRouter()
+    const router = useRouter();
 
     const onSubmit = async (data: RegisterFormSchemaTypes) => {
         console.log(data);
-          try {
+        try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/api/auth/signup/",
                 {
@@ -62,20 +61,20 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                }
-            )
+                },
+            );
             if (response.status == 201) {
-                toast.success("Registration Successfull!")
+                toast.success("Registration Successfull!");
                 setTimeout(() => {
-                    router.push("/chat")
-                }, 1000)
+                    router.push("/get-started");
+                }, 1000);
             }
         } catch (error) {
-            console.log(error)
-            const err = error as AxiosError
+            console.log(error);
+            const err = error as AxiosError;
             if (err.response?.data) {
-                const { email } = err.response.data as { email: string[] }
-                toast.error(email[0])
+                const { email } = err.response.data as { email: string[] };
+                toast.error(email[0]);
             }
         }
         form.reset({
@@ -87,7 +86,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
     };
 
     return (
-        <Card className="mx-auto max-w-sm outline-none shadow-none border-none mt-[60px]">
+        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]">
             <CardHeader>
                 <CardTitle className="text-2xl font-mainhead ">Register</CardTitle>
                 <CardDescription>
@@ -205,7 +204,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                         </div>
                     </form>
                 </Form>
-                <div className="relative mb-4">
+                {/* <div className="relative mb-4">
                     <div className="absolute inset-0 flex items-center">
                         <span className="w-full border-t" />
                     </div>
@@ -227,17 +226,22 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                         <Icons.google className="mr-2 h-4 w-4" />
                     )}{" "}
                     Register with Google
-                </Button>
+                </Button> */}
             </CardContent>
             <CardFooter>
                 <p className="text-center text-sm text-muted-foreground">
                     By clicking continue, you agree to our{" "}
-                    <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
+                    <Link
+                        target="_blank"
+                        href="https://star-clam-c0d.notion.site/Terms-of-Service-for-Kleenestar-9d9af56399da48b797a1e2d262c78e94"
+                        className="underline underline-offset-4 hover:text-primary"
+                    >
                         Terms of Service
                     </Link>{" "}
                     and{" "}
                     <Link
-                        href="/privacy"
+                        target="_blank"
+                        href="https://star-clam-c0d.notion.site/Kleenestar-Privacy-Policy-fe317d080ca34f7985b0911b4ade8529"
                         className="underline underline-offset-4 hover:text-primary"
                     >
                         Privacy Policy
