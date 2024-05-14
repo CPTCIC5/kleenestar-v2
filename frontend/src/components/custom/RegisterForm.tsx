@@ -63,8 +63,8 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                     },
                 },
             );
+            console.log(response);
             if (response.status == 201) {
-                Cookies.set("logged_in", "yes")
                 toast.success("Registration Successfull!");
                 setTimeout(() => {
                     router.push("/create-workspace");

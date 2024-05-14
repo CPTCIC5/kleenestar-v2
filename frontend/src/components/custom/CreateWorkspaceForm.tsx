@@ -64,6 +64,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                     },
                 },
             );
+            console.log(response);
             if (response.status === 200) {
                 toast.success("Workspace Created Successfully!");
                 setTimeout(() => {

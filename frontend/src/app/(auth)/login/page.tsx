@@ -15,8 +15,7 @@ export default function LoginPage() {
                     className={cn(
                         buttonVariants({ variant: "secondary" }),
                         "absolute right-4 top-[34px] md:right-8 max-xs:top-[30px] ",
-                    )}
-                >
+                    )}>
                     Register
                 </Link>
                 <LoginForm />
