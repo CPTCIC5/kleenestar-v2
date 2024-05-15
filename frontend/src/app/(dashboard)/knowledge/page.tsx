@@ -74,6 +74,7 @@ function Knowledge() {
             const response = await axios.get(`/api/channels/knowledgebase/`, {
                 withCredentials: true,
                 headers: {
+                    "ngrok-skip-browser-warning": "69420",
                     "Content-Type": "application/json",
                     "X-CSRFToken": Cookies.get("csrftoken"),
                 },

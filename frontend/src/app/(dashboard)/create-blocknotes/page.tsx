@@ -93,6 +93,7 @@ export default function CreateBlocknotesPage() {
             const response = await axios.get(`/api/channels/blocknotes/`, {
                 withCredentials: true,
                 headers: {
+                    "ngrok-skip-browser-warning": "69420",
                     "Content-Type": "application/json",
                     "X-CSRFToken": Cookies.get("csrftoken"),
                 },
@@ -144,6 +145,7 @@ export default function CreateBlocknotesPage() {
                 const response = await axios.get(`/api/workspaces/`, {
                     withCredentials: true,
                     headers: {
+                        "ngrok-skip-browser-warning": "69420",
                         "Content-Type": "application/json",
                         "X-CSRFToken": Cookies.get("csrftoken"),
                     },

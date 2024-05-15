@@ -54,6 +54,7 @@ export function WorkspaceNotificationForm() {
                     {
                         withCredentials: true,
                         headers: {
+                            "ngrok-skip-browser-warning": "69420",
                             "Content-Type": "application/json",
                             "X-CSRFToken": Cookies.get("csrftoken"),
                         },

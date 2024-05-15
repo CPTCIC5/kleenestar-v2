@@ -11,6 +11,7 @@ const useChatStore = create<ChatStoreState>()((set) => ({
             const convoIds = new Set(state.convos.map((convo) => convo.id));
             // newConvos is undefined for some reason...
             //                             ↓↓↓↓↓↓↓
+            console.log(newConvos)
             const uniqueConvos = newConvos.filter((newConvo) => !convoIds.has(newConvo.id));
             const sortedConvos = [...state.convos, ...uniqueConvos].sort(
                 (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),

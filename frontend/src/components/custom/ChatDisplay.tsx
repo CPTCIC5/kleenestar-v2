@@ -60,6 +60,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
     };
 
     const sendMessage = async () => {
+        // if (currentConvoId === undefined) return;
         console.log(text, uploadedFiles);
         const inputText: string = text;
         setText("");
@@ -88,6 +89,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                     {
                         withCredentials: true,
                         headers: {
+                            "ngrok-skip-browser-warning": "69420",
                             "Content-Type": "application/json",
                             "X-CSRFToken": Cookies.get("csrftoken"),
                         },
@@ -98,6 +100,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                     {
                         withCredentials: true,
                         headers: {
+                            "ngrok-skip-browser-warning": "69420",
                             "Content-Type": "application/json",
                             "X-CSRFToken": Cookies.get("csrftoken"),
                         },
@@ -113,17 +116,16 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
     };
 
     React.useEffect(() => {
+        if (currentConvoId === undefined) return;
         const updatePrompts = async () => {
-            const response = await axios.get(
-                `/api/channels/convos/${currentConvoId}/prompts/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.get(`/api/channels/convos/${currentConvoId}/prompts/`, {
+                withCredentials: true,
+                headers: {
+                    "ngrok-skip-browser-warning": "69420",
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             console.log(response.data.results);
             setInputPrompts(response.data.results);
         };

@@ -33,6 +33,7 @@ interface ChatSidebarProps {
 }
 
 export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: ChatSidebarProps) {
+    const setInputPrompts = useChatStore((state) => state.setInputPrompts);
     const convos = useChatStore((state) => state.convos);
     const addConvos = useChatStore((state) => state.addConvos);
     const [todayConvos, setTodayConvos] = React.useState<Convo[]>([]);
@@ -106,7 +107,31 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
         setCurrentConvos(convos);
     }, [convos]);
 
+    const checkIsEmpty = async () => {
+        if (todayConvos.length === 0) {
+            return false;
+        }
+        const { id } = todayConvos[0];
+        try {
+            const response = await axios.get(`/api/channels/convos/${id}/prompts/`, {
+                withCredentials: true,
+                headers: {
+                    "ngrok-skip-browser-warning": "69420",
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
+                },
+            });
+            return response.data.count === 0;
+        } catch (err) {
+            console.error(err);
+            return true;
+        }
+    };
+
     const handleAddChat = async () => {
+        if (await checkIsEmpty()) {
+            return;
+        }
         try {
             await axios.post(
                 `/api/channels/convos/`,
@@ -114,6 +139,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                 {
                     withCredentials: true,
                     headers: {
+                        "ngrok-skip-browser-warning": "69420",
                         "Content-Type": "application/json",
                         "X-CSRFToken": Cookies.get("csrftoken"),
                     },
@@ -123,14 +149,16 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
             const response = await axios.get(`/api/channels/convos/`, {
                 withCredentials: true,
                 headers: {
+                    "ngrok-skip-browser-warning": "69420",
                     "Content-Type": "application/json",
                     "X-CSRFToken": Cookies.get("csrftoken"),
                 },
             });
-            console.log(response.data.results);
 
-            // addConvos(response.data.results);
-            // setCurrentConvos(response.data.results);
+            addConvos(response.data.results);
+            setCurrentConvoId(response.data.results[0].id);
+            setInputPrompts([]);
+            setCurrentConvos(response.data.results);
         } catch (err) {
             console.error("Error adding chat", err);
         }

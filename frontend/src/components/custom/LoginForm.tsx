@@ -50,6 +50,8 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 {
                     withCredentials: true,
                     headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning": "69420",
                         "X-CSRFToken": Cookies.get("csrftoken"),
                     },
                 },
