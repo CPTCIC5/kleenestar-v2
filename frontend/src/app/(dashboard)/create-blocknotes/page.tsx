@@ -220,7 +220,7 @@ export default function CreateBlocknotesPage() {
                                                 previewPosition={"none"}
                                                 dynamicWidth={true}
                                                 data={data}
-                                                onEmojiSelect={(emoji) => {
+                                                onEmojiSelect={(emoji:any) => {
                                                     setErrors("");
                                                     setSelectedEmoji(emoji.unified);
                                                 }}
@@ -247,7 +247,7 @@ export default function CreateBlocknotesPage() {
                                                 previewPosition={"none"}
                                                 dynamicWidth={true}
                                                 data={data}
-                                                onEmojiSelect={(emoji) => {
+                                                onEmojiSelect={(emoji:any) => {
                                                     setErrors("");
                                                     setSelectedEmoji(emoji.unified);
                                                 }}
