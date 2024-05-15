@@ -77,6 +77,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
                 },
             );
