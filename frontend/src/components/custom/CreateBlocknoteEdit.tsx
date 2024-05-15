@@ -156,7 +156,7 @@ export default function CreateBlocknoteEdit({
                                             previewPosition={"none"}
                                             dynamicWidth={true}
                                             data={data}
-                                            onEmojiSelect={(emoji) => {
+                                            onEmojiSelect={(emoji:any) => {
                                                 setErrors("");
                                                 setSelectedEmoji(emoji.unified);
                                             }}
