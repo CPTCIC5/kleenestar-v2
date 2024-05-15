@@ -46,7 +46,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const fetchUserDetails = async () => {
         try {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/users/me/`,
+                `/api/auth/users/me/`,
                 {
                     withCredentials: true,
                     headers: {
@@ -69,7 +69,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         const { email, password } = data;
         try {
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login/`,
+                `/api/auth/login/`,
                 {
                     email: email,
                     password: password,
@@ -78,6 +78,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
                 },
             );
