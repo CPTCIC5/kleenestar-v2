@@ -2,7 +2,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
 export function NewChatDisplay() {
     return (
-        <div className="w-full h-full flex flex-col justify-end items-center gap-[30px]">
+        <div className="w-full h-full flex flex-col justify-end items-center gap-[30px] mb-3">
             <span className="font-mainhead font-medium text-[15px]">
                 How may I assist you today?
             </span>
