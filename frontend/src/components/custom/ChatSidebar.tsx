@@ -109,7 +109,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
     const handleAddChat = async () => {
         try {
             await axios.post(
-                "http://127.0.0.1:8000/api/channels/convos/",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/`,
                 {},
                 {
                     withCredentials: true,
@@ -120,13 +120,16 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                 },
             );
 
-            const response = await axios.get("http://127.0.0.1:8000/api/channels/convos/", {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
                 },
-            });
+            );
 
             addConvos(response.data.results);
             setCurrentConvos(response.data.results);

@@ -17,16 +17,18 @@ function Chat() {
     const [deleteId, setDeleteId] = React.useState<number>(-1);
     const navigate = useRouter();
 
-
     const fetchConvos = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/channels/convos/", {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
                 },
-            });
+            );
             console.log(response);
 
             addConvos(response.data.results);
@@ -55,5 +57,4 @@ function Chat() {
     );
 }
 
-
-export default withAuth(Chat)
+export default withAuth(Chat);

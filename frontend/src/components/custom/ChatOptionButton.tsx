@@ -63,7 +63,7 @@ export function ChatOptionButton({
 
     const handleDeleteChat = async (id: number) => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/channels/convos/${id}/`, {
+            await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/${id}/`, {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export function ChatOptionButton({
     const handleRenameChat = async (id: number, newName: string) => {
         try {
             await axios.patch(
-                `http://127.0.0.1:8000/api/channels/convos/${id}/`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/${id}/`,
                 {
                     title: newName,
                 },

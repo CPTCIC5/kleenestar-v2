@@ -45,15 +45,18 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const setUser = useUserStore((state) => state.setUser);
     const fetchUserDetails = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/auth/users/me/", {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/users/me/`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
                 },
-            });
+            );
             console.log(response.data);
-            
+
             setUser(response.data);
         } catch (err) {
             console.log(err);
@@ -66,7 +69,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         const { email, password } = data;
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/login/",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login/`,
                 {
                     email: email,
                     password: password,
@@ -81,7 +84,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             console.log(response);
             fetchUserDetails();
             if (response.status == 200) {
-                Cookies.set("logged_in", "yes")
+                Cookies.set("logged_in", "yes");
                 form.clearErrors("password");
                 toast.success("Login Successfull!");
                 setTimeout(() => {

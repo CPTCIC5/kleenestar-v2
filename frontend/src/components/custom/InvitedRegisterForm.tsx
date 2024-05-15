@@ -50,7 +50,7 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
         console.log(data);
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/signup/",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/signup/`,
                 {
                     email: data.email,
                     password: data.password,

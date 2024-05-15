@@ -19,13 +19,16 @@ export default function SettingsPage() {
     React.useEffect(() => {
         async function setUserData() {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/auth/users/me/`, {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/users/me/`,
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
                     },
-                });
+                );
                 setUser(response.data);
             } catch (err) {
                 console.error(err);

@@ -49,13 +49,16 @@ export function WorkspaceNotificationForm() {
     React.useEffect(() => {
         const fetchWorkspaceDetails = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
                     },
-                });
+                );
                 console.log(response);
                 setWorkspace(response.data[0]);
             } catch (err) {
