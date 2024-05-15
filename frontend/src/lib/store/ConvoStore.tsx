@@ -9,6 +9,8 @@ const useChatStore = create<ChatStoreState>()((set) => ({
     addConvos: (newConvos: Convo[]) => {
         set((state) => {
             const convoIds = new Set(state.convos.map((convo) => convo.id));
+            // newConvos is undefined for some reason...
+            //                             ↓↓↓↓↓↓↓
             const uniqueConvos = newConvos.filter((newConvo) => !convoIds.has(newConvo.id));
             const sortedConvos = [...state.convos, ...uniqueConvos].sort(
                 (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),

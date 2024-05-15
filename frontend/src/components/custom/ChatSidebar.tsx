@@ -120,19 +120,17 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                 },
             );
 
-            const response = await axios.get(
-                `/api/channels/convos/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.get(`/api/channels/convos/`, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
+            console.log(response.data.results);
 
-            addConvos(response.data.results);
-            setCurrentConvos(response.data.results);
+            // addConvos(response.data.results);
+            // setCurrentConvos(response.data.results);
         } catch (err) {
             console.error("Error adding chat", err);
         }
