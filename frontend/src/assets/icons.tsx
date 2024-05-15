@@ -920,7 +920,7 @@ export const Icons = {
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="lucide lucide-palette">
+			className="lucide lucide-palette">
 			<circle
 				cx="13.5"
 				cy="6.5"
@@ -959,7 +959,7 @@ export const Icons = {
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="lucide lucide-thumbs-down">
+			className="lucide lucide-thumbs-down">
 			<path d="M17 14V2" />
 			<path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z" />
 		</svg>
@@ -1003,7 +1003,7 @@ export const Icons = {
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="lucide lucide-corner-down-right">
+			className="lucide lucide-corner-down-right">
 			<polyline points="15 10 20 15 15 20" />
 			<path d="M4 4v7a4 4 0 0 0 4 4h12" />
 		</svg>
@@ -1019,7 +1019,7 @@ export const Icons = {
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="lucide lucide-step-back">
+			className="lucide lucide-step-back">
 			<line
 				x1="18"
 				x2="18"
@@ -1040,7 +1040,7 @@ export const Icons = {
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="lucide lucide-square-gantt-chart">
+			className="lucide lucide-square-gantt-chart">
 			<rect
 				width="18"
 				height="18"
@@ -1079,7 +1079,7 @@ export const Icons = {
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="lucide lucide-trash-2">
+			className="lucide lucide-trash-2">
 			<path d="M3 6h18" />
 			<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
 			<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />

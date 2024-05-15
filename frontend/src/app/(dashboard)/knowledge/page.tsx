@@ -220,7 +220,7 @@ function Knowledge() {
                 {knowledgeData.length !== 0 ? (
                     knowledgeData.map((files: KnowledgeDataTypes, index) => {
                         return (
-                            <Card className="max-w-[320.78px] w-full ">
+                            <Card key={index} className="max-w-[320.78px] w-full ">
                                 <div className=" px-[24.77px] pb-[18.96px] pt-[22.87px]">
                                     <div className="w-full h-full ">
                                         <AspectRatio className="flex">

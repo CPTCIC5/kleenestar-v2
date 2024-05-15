@@ -37,7 +37,7 @@ import { MessageCircleMore } from "lucide-react";
 
 export default function IndividualBlocknotesPage() {
     const router = useRouter();
-    const note = blocknotes
+    const note = blocknotes;
 
     const [isEditing, setIsEditing] = React.useState<number>(-1);
     console.log(isEditing);
@@ -57,7 +57,7 @@ export default function IndividualBlocknotesPage() {
     };
     return (
         <div className="w-full min-h-screen h-full flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] p-3">
-            <div className="max-w-[950px] w-full flex flex-col ">
+            {/* <div className="max-w-[950px] w-full flex flex-col ">
                 <div className="mb-[16px] rounded-full">
                     <div
                         onClick={() => {
@@ -162,7 +162,7 @@ export default function IndividualBlocknotesPage() {
                         );
                     })}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

@@ -2,10 +2,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { User } from "@/lib/types/interfaces";
+
+type UserDetialsType = {
+    id: number;
+    name: string;
+    users: User[];
+};
 
 const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userDetails, setUserDetails] = useState(null);
+    const [userDetails, setUserDetails] = useState<UserDetialsType | null>(null);
     const [fetching, setFetching] = useState(true);
     const cookie = Cookies.get("logged_in");
     console.log(cookie);

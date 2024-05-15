@@ -29,6 +29,7 @@ import useChatStore from "@/lib/store/ConvoStore";
 import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Image from "next/image";
 
 interface ChatDisplayProps {
     currentConvoId: number;
@@ -219,7 +220,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                         {uploadedFiles && (
                             <div className="px-[15.02px] py-[12.26px] w-[200px] h-[150px] overflow-hidden">
                                 <div className="relative w-full h-full">
-                                    <img
+                                    <Image
                                         src={uploadedFiles}
                                         alt="uploaded file"
                                         className="object-cover w-full h-full rounded-2xl"

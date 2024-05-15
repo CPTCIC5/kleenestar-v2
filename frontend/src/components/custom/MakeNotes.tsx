@@ -135,7 +135,7 @@ export default function MakeNotes({note}: {note: string}){
 												src={avatar}
 												alt="avatar"></Image>
 										</div>
-										Tristan's notes
+										Tristan&apos;s notes
 									</div>
 									<div className="text-background w-[20px] h-[20px] ">
 										<Icons.down_chevron />
