@@ -73,7 +73,7 @@ export default function Sidebar() {
             Cookies.remove("csrftoken");
             toast.success("Logout successfully !!");
             setTimeout(() => {
-                navigate.push("/chat");
+                navigate.push("/");
             }, 200);
         } catch (err) {
             console.error("Logout Failed");
