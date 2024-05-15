@@ -91,7 +91,7 @@ export default function CreateBlocknotesPage() {
     const fetchBlockNotes = async () => {
         try {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/blocknotes/`,
+                `/api/channels/blocknotes/`,
                 {
                     withCredentials: true,
                     headers: {
@@ -118,7 +118,7 @@ export default function CreateBlocknotesPage() {
         if (!errors) {
             try {
                 const response = await axios.post(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/blocknotes/`,
+                    `/api/channels/blocknotes/`,
                     {
                         title: title,
                         image: selectedEmoji,
@@ -145,7 +145,7 @@ export default function CreateBlocknotesPage() {
         const fetchWorkspaceDetails = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
+                    `/api/workspaces/`,
                     {
                         withCredentials: true,
                         headers: {

@@ -55,7 +55,7 @@ function Knowledge() {
     const handleDelete = async (id: number) => {
         try {
             const response = await axios.delete(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/knowledgebase/${id}/`,
+                `/api/channels/knowledgebase/${id}/`,
                 {
                     withCredentials: true,
                     headers: {
@@ -76,7 +76,7 @@ function Knowledge() {
     const fetchKnowledgeBase = async () => {
         try {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/knowledgebase/`,
+                `/api/channels/knowledgebase/`,
                 {
                     withCredentials: true,
                     headers: {
@@ -137,7 +137,7 @@ function Knowledge() {
 
         try {
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/knowledgebase/`,
+                `/api/channels/knowledgebase/`,
                 formData,
                 {
                     withCredentials: true,

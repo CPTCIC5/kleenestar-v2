@@ -20,7 +20,7 @@ export default function SettingsPage() {
         async function setUserData() {
             try {
                 const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/users/me/`,
+                    `/api/auth/users/me/`,
                     {
                         withCredentials: true,
                         headers: {

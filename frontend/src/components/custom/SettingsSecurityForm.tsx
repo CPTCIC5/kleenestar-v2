@@ -58,7 +58,7 @@ export function SettingsSecurityForm() {
 
         try {
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/change-password/`,
+                `/api/auth/change-password/`,
                 {
                     current_password: data.current_password,
                     new_password: data.new_password,
