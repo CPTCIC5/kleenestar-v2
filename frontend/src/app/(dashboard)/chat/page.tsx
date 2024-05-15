@@ -8,7 +8,6 @@ import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import NoteSheet from "@/components/custom/NoteSheet";
-import withAuth from "@/components/custom/withAuth";
 
 function Chat() {
     const convos = useChatStore((state) => state.convos);
@@ -57,4 +56,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default Chat

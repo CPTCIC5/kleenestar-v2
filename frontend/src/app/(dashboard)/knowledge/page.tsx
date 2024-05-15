@@ -19,7 +19,6 @@ import unknown from "@/assets/images/unknown.png";
 import { allowedFileTypes } from "@/constants/constants";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { DateTimeFormatOptions } from "intl";
-import withAuth from "@/components/custom/withAuth";
 interface KnowledgeDataTypes {
     title: string;
     createdAt: string;
@@ -301,4 +300,4 @@ function Knowledge() {
     );
 }
 
-export default withAuth(Knowledge);
+export default Knowledge;

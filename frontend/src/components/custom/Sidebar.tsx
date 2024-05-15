@@ -42,7 +42,7 @@ export default function Sidebar() {
         const fetchWorkspaceDetails = async () => {
             try {
                 const response = await axios.get(
-                    `/api/workspaces/`,
+                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
                     {
                         withCredentials: true,
                         headers: {
@@ -65,7 +65,7 @@ export default function Sidebar() {
     const handleLogOut = async () => {
         try {
             const response = await axios.post(
-                `/api/auth/logout/`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout/`,
                 null,
                 {
                     withCredentials: true,

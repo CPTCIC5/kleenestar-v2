@@ -24,7 +24,7 @@ interface BlockNoteTypes {
     title: string;
 }
 
-export default function BlockNotesPage() {
+function BlockNotesPage() {
     const router = useRouter();
     const [blockNotes, setBlockNotes] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -248,3 +248,8 @@ export default function BlockNotesPage() {
         </div>
     );
 }
+
+
+
+
+export default BlockNotesPage
