@@ -37,7 +37,7 @@ export function SettingsProfileForm() {
         try {
             if (user === null) console.error("No user found");
             const response = await axios.patch(
-                `http://127.0.0.1:8000/api/auth/users/${user?.id}/`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/users/${user?.id}/`,
                 {
                     first_name: data.firstName,
                     last_name: data.lastName,

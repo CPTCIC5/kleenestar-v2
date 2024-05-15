@@ -50,7 +50,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
         console.log(data);
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/workspaces/",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
                 {
                     business_name: data.businessName,
                     website_url: data.Website,

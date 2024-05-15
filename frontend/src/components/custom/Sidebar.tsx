@@ -41,13 +41,16 @@ export default function Sidebar() {
     React.useEffect(() => {
         const fetchWorkspaceDetails = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/workspaces/", {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
                     },
-                });
+                );
                 // console.log(response);
 
                 setIsLoggedIn(true);
@@ -61,14 +64,18 @@ export default function Sidebar() {
 
     const handleLogOut = async () => {
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/auth/logout/", null, {
-                withCredentials: true,
-                headers: {
-                    "X-CSRFToken": Cookies.get("csrftoken"),
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout/`,
+                null,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
                 },
-            });
+            );
             console.log(response);
-            Cookies.remove('csrftoken');
+            Cookies.remove("csrftoken");
         } catch (err) {
             console.error("Logout Failed");
             throw new Error("Logout Failed");

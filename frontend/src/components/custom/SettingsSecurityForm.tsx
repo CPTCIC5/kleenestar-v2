@@ -58,7 +58,7 @@ export function SettingsSecurityForm() {
 
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/change-password/",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/change-password/`,
                 {
                     current_password: data.current_password,
                     new_password: data.new_password,

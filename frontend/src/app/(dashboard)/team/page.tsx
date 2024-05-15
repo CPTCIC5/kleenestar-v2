@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import useAuth from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 type User = {
     id: string;
@@ -52,7 +53,7 @@ export default function TeamMembersPage() {
     async function sendInviteCode() {
         try {
             const response = await axios.post(
-                `http://127.0.0.1:8000/api/workspaces/${workspaceId}/create-invite/`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/${workspaceId}/create-invite/`,
                 {
                     email: emailInput,
                 },
@@ -67,7 +68,7 @@ export default function TeamMembersPage() {
             toast.success("Invite link sent");
         } catch (err) {
             console.error(err);
-            toast.error("Oops! something went wrong")
+            toast.error("Oops! something went wrong");
         }
     }
 
