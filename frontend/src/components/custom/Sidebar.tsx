@@ -25,6 +25,7 @@ import React from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Sidebar() {
     const navigate = useRouter();
@@ -41,16 +42,13 @@ export default function Sidebar() {
     React.useEffect(() => {
         const fetchWorkspaceDetails = async () => {
             try {
-                const response = await axios.get(
-                    `/api/workspaces/`,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
+                const response = await axios.get(`/api/workspaces/`, {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
-                );
+                });
                 // console.log(response);
 
                 setIsLoggedIn(true);
@@ -64,18 +62,18 @@ export default function Sidebar() {
 
     const handleLogOut = async () => {
         try {
-            const response = await axios.post(
-                `/api/auth/logout/`,
-                null,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.post(`/api/auth/logout/`, null, {
+                withCredentials: true,
+                headers: {
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             console.log(response);
             Cookies.remove("csrftoken");
+            toast.success("Logout successfully !!");
+            setTimeout(() => {
+                navigate.push("/chat");
+            }, 200);
         } catch (err) {
             console.error("Logout Failed");
             throw new Error("Logout Failed");

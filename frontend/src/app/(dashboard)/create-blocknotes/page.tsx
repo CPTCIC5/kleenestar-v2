@@ -90,16 +90,13 @@ export default function CreateBlocknotesPage() {
     };
     const fetchBlockNotes = async () => {
         try {
-            const response = await axios.get(
-                `/api/channels/blocknotes/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.get(`/api/channels/blocknotes/`, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             console.log(response.data);
             setBlockNotes(response.data);
         } catch (err) {
@@ -144,16 +141,13 @@ export default function CreateBlocknotesPage() {
     useEffect(() => {
         const fetchWorkspaceDetails = async () => {
             try {
-                const response = await axios.get(
-                    `/api/workspaces/`,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
+                const response = await axios.get(`/api/workspaces/`, {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
-                );
+                });
                 console.log(response);
                 setIsLoggedIn(true);
                 console.log(isLoggedIn);
@@ -188,7 +182,7 @@ export default function CreateBlocknotesPage() {
                     </div>
                 </div>
 
-                <Card className="mt-4">
+                <Card>
                     <CardHeader className="p-3">
                         <div className="flex items-center space-x-2">
                             {selectedEmoji ? (
@@ -220,7 +214,7 @@ export default function CreateBlocknotesPage() {
                                                 previewPosition={"none"}
                                                 dynamicWidth={true}
                                                 data={data}
-                                                onEmojiSelect={(emoji:any) => {
+                                                onEmojiSelect={(emoji: any) => {
                                                     setErrors("");
                                                     setSelectedEmoji(emoji.unified);
                                                 }}
@@ -247,7 +241,7 @@ export default function CreateBlocknotesPage() {
                                                 previewPosition={"none"}
                                                 dynamicWidth={true}
                                                 data={data}
-                                                onEmojiSelect={(emoji:any) => {
+                                                onEmojiSelect={(emoji: any) => {
                                                     setErrors("");
                                                     setSelectedEmoji(emoji.unified);
                                                 }}

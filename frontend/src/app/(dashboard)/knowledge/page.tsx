@@ -53,16 +53,13 @@ function Knowledge() {
     }
     const handleDelete = async (id: number) => {
         try {
-            const response = await axios.delete(
-                `/api/channels/knowledgebase/${id}/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.delete(`/api/channels/knowledgebase/${id}/`, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             toast.success("Knowledge file deleted successfully!");
             setLoading(true);
             fetchKnowledgeBase();
@@ -74,16 +71,13 @@ function Knowledge() {
 
     const fetchKnowledgeBase = async () => {
         try {
-            const response = await axios.get(
-                `/api/channels/knowledgebase/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.get(`/api/channels/knowledgebase/`, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             console.log(response.data);
             const renderedList = response.data.map(
                 (files: { title: string; created_at: string; id: number }) => {
@@ -135,23 +129,19 @@ function Knowledge() {
         formData.append("title", file.name);
 
         try {
-            const response = await axios.post(
-                `/api/channels/knowledgebase/`,
-                formData,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                    onUploadProgress: (progressEvent) => {
-                        const percentCompleted = Math.round(
-                            (progressEvent.loaded * 100) / (progressEvent.total || 100),
-                        );
-                        setProgress(percentCompleted);
-                    },
+            const response = await axios.post(`/api/channels/knowledgebase/`, formData, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round(
+                        (progressEvent.loaded * 100) / (progressEvent.total || 100),
+                    );
+                    setProgress(percentCompleted);
+                },
+            });
             setProgress(0);
             fetchKnowledgeBase();
             toast.success("Knowledge added successfully!");
@@ -280,19 +270,11 @@ function Knowledge() {
                         </div>
                     </div>
                 ) : (
-                    <div
-                        onClick={handleAddFile}
-                        onDrop={uploadKnowledgeFile}
-                        onDragOver={(e: React.DragEvent<HTMLDivElement>) => handleDragOver(e)}
-                        className=" border-dashed cursor-pointer flex-col border-4 border-foreground w-full"
-                    >
-                        <div className="w-fit mx-auto mt-20">
-                            <Icons.cloud className="dark:filter dark:brightness-0 dark:invert" />
-                        </div>
-
-                        <p className="text-[20px] font-medium text-center mt-4 mb-20">
-                            Drag & Drop to Upload File
-                        </p>
+                    <div className="flex items-center justify-center h-[150px] w-full">
+                        <span className="text-[15px] flex justify-center max-w-[629px] w-full text-center text-muted-foreground">
+                            Knowledge is key, make your assistant smarter and more powerful with
+                            knowledge about your business, competitors, articles, images, and more.
+                        </span>
                     </div>
                 )}
             </div>

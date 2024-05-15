@@ -26,7 +26,6 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
-import useAuth from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 type User = {
@@ -40,37 +39,49 @@ export default function TeamMembersPage() {
 
     const [users, setUsers] = React.useState<User[]>([]); // [ { id: string, name: string }
     const [emailInput, setEmailInput] = React.useState("");
-
-    const { isLoggedIn, userDetails } = useAuth();
     const [workspaceId, setWorkspaceId] = React.useState<number | null>(null);
 
-    // React.useEffect(() => {
-    //     if (!isLoggedIn) return;
-    //     setUsers(userDetails ? userDetails[0].users : undefined);
-    //     setWorkspaceId(userDetails ? userDetails[0].id : undefined);
-    // }, [isLoggedIn]);
+    React.useEffect(() => {
+        const fetchWorkspaceDetails = async () => {
+            try {
+                const response = await axios.get(`/api/workspaces/`, {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                });
+                console.log(response);
+                setWorkspaceId(response.data[0].id);
+                setUsers(response.data[0].users);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchWorkspaceDetails();
+    }, []);
 
-    // async function sendInviteCode() {
-    //     try {
-    //         const response = await axios.post(
-    //             `/api/workspaces/${workspaceId}/create-invite/`,
-    //             {
-    //                 email: emailInput,
-    //             },
-    //             {
-    //                 withCredentials: true,
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     "X-CSRFToken": Cookies.get("csrftoken"),
-    //                 },
-    //             },
-    //         );
-    //         toast.success("Invite link sent");
-    //     } catch (err) {
-    //         console.error(err);
-    //         toast.error("Oops! something went wrong");
-    //     }
-    // }
+    async function sendInviteCode() {
+        try {
+            const response = await axios.post(
+                `/api/workspaces/${workspaceId}/create-invite/`,
+                {
+                    email: emailInput,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                },
+            );
+            toast.success("Invite link sent");
+        } catch (err) {
+            console.error(err);
+            toast.error("Oops! something went wrong");
+        }
+    }
 
     return (
         <div className="w-full h-full flex items-center justify-center p-3">
@@ -92,7 +103,7 @@ export default function TeamMembersPage() {
                             />
                             <Button
                                 variant={"outline"}
-                                // onClick={sendInviteCode}
+                                onClick={sendInviteCode}
                                 className="py-[9px] px-[18px] flex gap-[11px] items-center justify-center !mt-0 group"
                             >
                                 <div

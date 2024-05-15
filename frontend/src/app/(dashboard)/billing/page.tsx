@@ -186,21 +186,29 @@ export default function Billings() {
                                         <TableCell className="w-[25%]">
                                             <div className="flex justify-evenly">
                                                 <Image
+                                                    width={40}
+                                                    height={40}
                                                     src="https://github.com/shadcn.png"
                                                     className="w-10 relative  h-10 rounded-full"
                                                     alt=""
                                                 />
                                                 <Image
+                                                    width={40}
+                                                    height={40}
                                                     src="https://github.com/shadcn.png"
                                                     className="w-10 relative right-[20px] h-10 rounded-full"
                                                     alt=""
                                                 />
                                                 <Image
+                                                    width={40}
+                                                    height={40}
                                                     src="https://github.com/shadcn.png"
                                                     className="w-10 relative right-[40px] h-10 rounded-full"
                                                     alt=""
                                                 />
                                                 <Image
+                                                    width={40}
+                                                    height={40}
                                                     src="https://github.com/shadcn.png"
                                                     className="w-10 relative right-[60px] h-10 rounded-full"
                                                     alt=""

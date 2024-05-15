@@ -56,16 +56,13 @@ function BlockNotesPage() {
     }
     const fetchBlockNotes = async () => {
         try {
-            const response = await axios.get(
-                `/api/channels/blocknotes/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.get(`/api/channels/blocknotes/`, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             console.log(response.data);
             setBlockNotes(response.data);
         } catch (err) {
@@ -76,15 +73,12 @@ function BlockNotesPage() {
     };
     const deleteBlockNote = async (id: number) => {
         try {
-            const response = await axios.delete(
-                `/api/channels/blocknotes/${id}/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.delete(`/api/channels/blocknotes/${id}/`, {
+                withCredentials: true,
+                headers: {
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
             console.log(response.data);
             toast.success("BlockNote Deleted Successfully!");
             await fetchBlockNotes();
@@ -96,16 +90,13 @@ function BlockNotesPage() {
     useEffect(() => {
         const fetchWorkspaceDetails = async () => {
             try {
-                const response = await axios.get(
-                    `/api/workspaces/`,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
+                const response = await axios.get(`/api/workspaces/`, {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
-                );
+                });
                 console.log(response);
                 setIsLoggedIn(true);
                 console.log(isLoggedIn);
@@ -166,7 +157,7 @@ function BlockNotesPage() {
                         </Button>
                     </Link>
                 </div>
-                <div className="w-full flex max-xl:justify-center justify-start">
+                <div className="w-full flex max-xl:justify-center justify-center pt-10">
                     {blockNotes?.length === 0 && !loading ? (
                         <div className="flex items-center justify-center h-[150px]">
                             <span className="text-[15px] flex justify-center max-w-[629px] w-full text-center text-muted-foreground">
@@ -249,7 +240,4 @@ function BlockNotesPage() {
     );
 }
 
-
-
-
-export default BlockNotesPage
+export default BlockNotesPage;

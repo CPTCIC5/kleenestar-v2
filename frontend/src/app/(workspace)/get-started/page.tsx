@@ -9,6 +9,15 @@ import Link from "next/link";
 export default function GetStarted() {
     return (
         <div className="relative h-full flex flex-col animate-fade-in-up  w-fit  mx-auto pt-[10%] max-xl:pt-[30%] z-20">
+            <Link
+                href="/login"
+                className={cn(
+                    buttonVariants({ variant: "secondary" }),
+                    "fixed right-4 top-4 md:right-8 max-xs:top-[30px] ",
+                )}
+            >
+                Login
+            </Link>
             <Icons.logoDark className=" w-[150px] h-[150px] mx-auto max-xl:w-[50px] max-xl:h-[50px]" />
             <p className="text-5xl  max-xl:text-2xl  text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-background dark:from-foreground to-neutral-500 dark:to-background-500 py-8">
                 Welcome to Kleenestar
