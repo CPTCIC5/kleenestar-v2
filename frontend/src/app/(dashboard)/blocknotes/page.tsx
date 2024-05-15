@@ -57,7 +57,7 @@ export default function BlockNotesPage() {
     const fetchBlockNotes = async () => {
         try {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/blocknotes/`,
+                `/api/channels/blocknotes/`,
                 {
                     withCredentials: true,
                     headers: {
@@ -77,7 +77,7 @@ export default function BlockNotesPage() {
     const deleteBlockNote = async (id: number) => {
         try {
             const response = await axios.delete(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/blocknotes/${id}/`,
+                `/api/channels/blocknotes/${id}/`,
                 {
                     withCredentials: true,
                     headers: {
@@ -97,7 +97,7 @@ export default function BlockNotesPage() {
         const fetchWorkspaceDetails = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
+                    `/api/workspaces/`,
                     {
                         withCredentials: true,
                         headers: {

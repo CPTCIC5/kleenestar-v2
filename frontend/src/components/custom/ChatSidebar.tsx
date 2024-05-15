@@ -109,7 +109,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
     const handleAddChat = async () => {
         try {
             await axios.post(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/`,
+                `/api/channels/convos/`,
                 {},
                 {
                     withCredentials: true,
@@ -121,7 +121,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
             );
 
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/`,
+                `/api/channels/convos/`,
                 {
                     withCredentials: true,
                     headers: {

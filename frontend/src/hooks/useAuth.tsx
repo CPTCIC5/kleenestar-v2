@@ -26,7 +26,7 @@ const useAuth = () => {
         const fetchWorkspaceDetails = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/`,
+                    `/api/workspaces/`,
                     {
                         withCredentials: true,
                         headers: {

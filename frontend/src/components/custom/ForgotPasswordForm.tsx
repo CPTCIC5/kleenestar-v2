@@ -42,7 +42,7 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
         console.log(data);
         try {
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/password_reset/`,
+                `/api/auth/password_reset/`,
                 {
                     email: data.email,
                 },

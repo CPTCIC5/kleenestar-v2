@@ -53,7 +53,7 @@ export default function TeamMembersPage() {
     // async function sendInviteCode() {
     //     try {
     //         const response = await axios.post(
-    //             `${process.env.NEXT_PUBLIC_BASE_URL}/api/workspaces/${workspaceId}/create-invite/`,
+    //             `/api/workspaces/${workspaceId}/create-invite/`,
     //             {
     //                 email: emailInput,
     //             },

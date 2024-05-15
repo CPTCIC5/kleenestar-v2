@@ -74,7 +74,7 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
             formData.append("message", data.message);
             formData.append("emoji", String(data.selectedEmoji));
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/add-feedback/`,
+                `/api/auth/add-feedback/`,
                 formData,
                 {
                     withCredentials: true,

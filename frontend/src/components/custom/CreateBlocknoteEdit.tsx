@@ -98,7 +98,7 @@ export default function CreateBlocknoteEdit({
         if (!errors) {
             try {
                 const response = await axios.patch(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/blocknotes/${id}/`,
+                    `/api/channels/blocknotes/${id}/`,
                     configParams,
                     {
                         withCredentials: true,

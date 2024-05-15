@@ -80,7 +80,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                     created_at: "",
                 });
                 await axios.post(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/${currentConvoId}/prompts/create/`,
+                    `/api/channels/convos/${currentConvoId}/prompts/create/`,
                     {
                         text_query: inputText,
                         file_query: uploadedFiles,
@@ -94,7 +94,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                     },
                 );
                 const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/${currentConvoId}/prompts/`,
+                    `/api/channels/convos/${currentConvoId}/prompts/`,
                     {
                         withCredentials: true,
                         headers: {
@@ -115,7 +115,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
     React.useEffect(() => {
         const updatePrompts = async () => {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/${currentConvoId}/prompts/`,
+                `/api/channels/convos/${currentConvoId}/prompts/`,
                 {
                     withCredentials: true,
                     headers: {

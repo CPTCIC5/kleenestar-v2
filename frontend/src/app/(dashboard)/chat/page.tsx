@@ -20,7 +20,7 @@ function Chat() {
     const fetchConvos = async () => {
         try {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/api/channels/convos/`,
+                `/api/channels/convos/`,
                 {
                     withCredentials: true,
                     headers: {
