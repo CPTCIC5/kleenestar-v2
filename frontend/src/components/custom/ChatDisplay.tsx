@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Image from "next/image";
+import PulsatingDots from "../ui/pulsating-dots";
 
 interface ChatDisplayProps {
     currentConvoId: number;
@@ -157,52 +158,69 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                                             <span className=" text-[16px]">{item?.text_query}</span>
                                         </div>
 
-                                        <div className="bg-background p-[24px] w-full flex items-start gap-[23.68px] rounded-3xl ">
-                                            <div>
-                                                <Icons.logoDark className="w-[30px] h-[30px]" />
-                                            </div>
+                                        <div
+                                            className={`bg-background p-[24px] w-full flex  gap-[23.68px] rounded-3xl ${
+                                                item?.response_text === "thinking..."
+                                                    ? "items-center"
+                                                    : "items-start"
+                                            }`}
+                                        >
+                                            {item?.response_text === "thinking..." ? (
+                                                <div>
+                                                    <Icons.logoDark className="w-[30px] h-[30px]" />
+                                                </div>
+                                            ) : null}
+
                                             <div className="space-y-4">
                                                 <span className=" text-[16px] leading-[19.5px]">
-                                                    <Markdown remarkPlugins={[remarkGfm]}>
-                                                        {item?.response_text}
-                                                    </Markdown>
+                                                    {item?.response_text === "thinking..." ? (
+                                                        <PulsatingDots />
+                                                    ) : (
+                                                        <Markdown remarkPlugins={[remarkGfm]}>
+                                                            {item?.response_text}
+                                                        </Markdown>
+                                                    )}
                                                 </span>
-                                                <div className="flex gap-[15px] justify-start items-center">
-                                                    <div>
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <div
-                                                                    className={cn(
-                                                                        buttonVariants({
-                                                                            variant: "ghost",
-                                                                        }),
-                                                                        "h-fit p-1",
-                                                                    )}
-                                                                >
-                                                                    <ClipboardList className="w-[18px] h-[18px]" />
-                                                                </div>
-                                                            </DialogTrigger>
-                                                            <MakeNotes note={item?.response_text} />
-                                                        </Dialog>
+                                                {item?.response_image === "thinking..." ? (
+                                                    <div className="flex gap-[15px] justify-start items-center">
+                                                        <div>
+                                                            <Dialog>
+                                                                <DialogTrigger asChild>
+                                                                    <div
+                                                                        className={cn(
+                                                                            buttonVariants({
+                                                                                variant: "ghost",
+                                                                            }),
+                                                                            "h-fit p-1",
+                                                                        )}
+                                                                    >
+                                                                        <ClipboardList className="w-[18px] h-[18px]" />
+                                                                    </div>
+                                                                </DialogTrigger>
+                                                                <MakeNotes
+                                                                    note={item?.response_text}
+                                                                />
+                                                            </Dialog>
+                                                        </div>
+                                                        <div>
+                                                            <Dialog>
+                                                                <DialogTrigger asChild>
+                                                                    <div
+                                                                        className={cn(
+                                                                            buttonVariants({
+                                                                                variant: "ghost",
+                                                                            }),
+                                                                            "h-fit p-1",
+                                                                        )}
+                                                                    >
+                                                                        <ThumbsDown className="w-[18px] h-[18px]" />
+                                                                    </div>
+                                                                </DialogTrigger>
+                                                                <ChatFeedbackForm />
+                                                            </Dialog>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <div
-                                                                    className={cn(
-                                                                        buttonVariants({
-                                                                            variant: "ghost",
-                                                                        }),
-                                                                        "h-fit p-1",
-                                                                    )}
-                                                                >
-                                                                    <ThumbsDown className="w-[18px] h-[18px]" />
-                                                                </div>
-                                                            </DialogTrigger>
-                                                            <ChatFeedbackForm />
-                                                        </Dialog>
-                                                    </div>
-                                                </div>
+                                                ) : null}
                                             </div>
                                         </div>
                                     </div>

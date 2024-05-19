@@ -57,33 +57,46 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
     const onSubmit = async (values: FeedbackFormSchemaTypes) => {
         const data = { ...values, selectedEmoji, selectedOption };
         if (!selectedOption) {
-            setValidations({ ...validations, options: "This field is required" });
+            setValidations((prevValidations) => ({
+                ...prevValidations,
+                options: "This field is required",
+            }));
         } else {
-            setValidations({ ...validations, options: "" });
+            setValidations((prevValidations) => ({ ...prevValidations, options: "" }));
         }
 
         if (selectedEmoji.length === 0) {
-            setValidations({ ...validations, emoji: "Please select a emoji" });
+            setValidations((prevValidations) => ({
+                ...prevValidations,
+                emoji: "Please select a emoji",
+            }));
         } else {
-            setValidations({ ...validations, emoji: "" });
+            setValidations((prevValidations) => ({ ...prevValidations, emoji: "" }));
         }
         console.log(data);
+
+        if (!selectedOption || selectedEmoji.length === 0) {
+            console.log(validations);
+            return;
+        }
+
+        if (!formData) {
+            formData = new FormData();
+        }
+
         try {
+            console.log(formData);
             formData.append("urgency", String(data.selectedOption));
             formData.append("subject", data.subject);
             formData.append("message", data.message);
             formData.append("emoji", String(data.selectedEmoji));
-            const response = await axios.post(
-                `/api/auth/add-feedback/`,
-                formData,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
+            const response = await axios.post(`/api/auth/add-feedback/`, formData, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
                 },
-            );
+            });
 
             console.log(response.data);
             toast.success("Thanks for Submitting your Feedback!");
@@ -103,7 +116,7 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
                             <CardContent className="px-[23.48px] py-[25.50px]">
                                 <div>
                                     <p className="text-[14px] ">How urgent is it?</p>
-                                    <div className="pt-[10px] pb-[14px]">
+                                    <div className="py-2">
                                         <div className="w-full flex  gap-[10.33px] max-xl:flex-wrap max-xl:flex-col max-xl:items-center">
                                             {options.map((optionslist, index) => {
                                                 return (
@@ -135,14 +148,14 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
                                         </div>
                                     </div>
                                     {validations.options && (
-                                        <p className="text-[0.8rem] font-medium text-destructive">
+                                        <p className="text-[0.8rem] font-medium text-destructive mb-2">
                                             {validations.options}
                                         </p>
                                     )}
                                 </div>
                                 <div>
                                     <p className="text-[14px] ">Subject</p>
-                                    <div className="pt-[10px] pb-[14px]">
+                                    <div className="py-2">
                                         <FormField
                                             control={form.control}
                                             name="subject"
@@ -168,7 +181,7 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
                                 </div>
                                 <div>
                                     <p className="text-[14px] ">Message</p>
-                                    <div className="pt-[10px] pb-[14px]">
+                                    <div className="py-2">
                                         <FormField
                                             control={form.control}
                                             name="message"

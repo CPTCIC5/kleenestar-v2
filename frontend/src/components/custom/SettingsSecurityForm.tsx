@@ -67,7 +67,8 @@ export function SettingsSecurityForm() {
                 {
                     withCredentials: true,
                     headers: {
-                        "X-CSRFToken": Cookies.get("csrfToken"),
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
                 },
             );

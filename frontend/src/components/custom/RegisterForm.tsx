@@ -33,6 +33,7 @@ import { RegisterFormSchemaTypes } from "../../lib/types/types";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -60,6 +61,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 {
                     headers: {
                         "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
                 },
             );
