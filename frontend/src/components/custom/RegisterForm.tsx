@@ -26,13 +26,15 @@ import { Icons } from "@/assets/icons";
 import { PasswordInput } from "@/components/custom/PasswordInput";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
 import { RegisterFormSchemaTypes } from "../../lib/types/types";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -41,50 +43,64 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
         resolver: zodResolver(RegisterFormSchema),
         mode: "onChange",
         defaultValues: {
+            email: "",
+            password: "",
+            confirmPassword: "",
             newsletter: false,
         },
     });
-    const router = useRouter();
 
-    const onSubmit = async (data: RegisterFormSchemaTypes) => {
-        console.log(data);
-        try {
-            const response = await axios.post(
-                `/api/auth/signup/`,
-                {
-                    email: data.email,
-                    password: data.password,
-                    confirm_password: data.confirmPassword,
-                    newsletter: data.newsletter,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
+    const { watch } = form;
+    const email = watch("email");
+    const password = watch("password");
+    const confirmPassword = watch("confirmPassword");
+
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: async (data: RegisterFormSchemaTypes) => {
+            try {
+                await axios.post(
+                    `/api/auth/signup/`,
+                    {
+                        email: data.email,
+                        password: data.password,
+                        confirm_password: data.confirmPassword,
+                        newsletter: data.newsletter,
                     },
-                },
-            );
-            console.log(response);
-            if (response.status == 201) {
-                toast.success("Registration Successfull!");
-                setTimeout(() => {
-                    router.push("/create-workspace");
-                }, 200);
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
+                    },
+                );
+            } catch (error) {
+                throw error;
             }
-        } catch (error) {
-            console.log(error);
+        },
+        onSuccess: () => {
+            toast.success("Registration Successfull!");
+            queryClient.setQueryData(["loggedIn"], true);
+            setTimeout(() => {
+                router.push("/create-workspace");
+            }, 200);
+        },
+        onError: (error) => {
+            form.reset({
+                email: "",
+                password: "",
+                confirmPassword: "",
+                newsletter: false,
+            });
             const err = error as AxiosError;
             if (err.response?.data) {
                 const { email } = err.response.data as { email: string[] };
                 toast.error(email[0]);
             }
-        }
-        form.reset({
-            email: "",
-            password: "",
-            confirmPassword: "",
-            newsletter: false,
-        });
-    };
+        },
+    });
 
     return (
         <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]">
@@ -96,7 +112,10 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             </CardHeader>
             <CardContent className="pb-3">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
+                    <form
+                        onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+                        className="mb-4"
+                    >
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
@@ -109,7 +128,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="email"
                                                 type="email"
                                                 placeholder="mail@example.com"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -134,11 +153,11 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
-                                                    field.onChange(e); // Update the password field
-                                                    form.trigger("confirmPassword"); // Manually trigger validation of the confirmPassword field
+                                                    field.onChange(e);
+                                                    form.trigger("confirmPassword");
                                                 }}
                                             />
                                         </FormControl>
@@ -158,7 +177,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -176,7 +195,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                             <Checkbox
                                                 id="newsletter"
                                                 className="h-[15px] w-[15px] flex items-center justify-center"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
                                             />
@@ -192,12 +211,15 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             <Button
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
-                                    form.formState.isSubmitting
+                                    mutation.isPending ||
+                                    !email ||
+                                    !password ||
+                                    !confirmPassword
                                 }
                                 type="submit"
                                 className="w-full"
                             >
-                                {form.formState.isSubmitting && (
+                                {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                 )}
                                 Register
@@ -218,10 +240,10 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 <Button
                     variant="outline"
                     type="button"
-                    disabled={form.formState.isSubmitting}
+                    disabled={mutation.isPending}
                     className="flex items-center w-full"
                 >
-                    {form.formState.isSubmitting ? (
+                    {mutation.isPending ? (
                         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                         <Icons.google className="mr-2 h-4 w-4" />

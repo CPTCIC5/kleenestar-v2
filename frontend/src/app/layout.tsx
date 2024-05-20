@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Montserrat, Syne } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/lib/theme-provider/ThemeProvider";
+import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import TanstackProvider from "@/lib/providers/TanstackProvider";
 
 const fontInter = Inter({
     subsets: ["latin"],
@@ -41,15 +42,17 @@ export default function RootLayout({
                     fontSyne.variable)
                 }
             >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="light"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                    <Toaster expand={true} position="bottom-right" richColors />
-                </ThemeProvider>
+                <TanstackProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="light"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        {children}
+                        <Toaster expand={true} position="bottom-right" richColors />
+                    </ThemeProvider>
+                </TanstackProvider>
             </body>
         </html>
     );

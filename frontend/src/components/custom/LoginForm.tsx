@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import useUserStore from "@/lib/store/UserStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -40,68 +41,80 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     const form = useForm<LoginFormSchemaTypes>({
         resolver: zodResolver(LoginFormSchema),
         mode: "onChange",
-    });
-    const router = useRouter();
-    const setUser = useUserStore((state) => state.setUser);
-    const fetchUserDetails = async () => {
-        try {
-            const response = await axios.get(
-                `/api/auth/users/me/`,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "ngrok-skip-browser-warning": "69420",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            console.log(response.data);
-
-            setUser(response.data);
-        } catch (err) {
-            console.log(err);
-            toast.error("Unable to fetch the user details");
-        }
-    };
-
-    const onSubmit = async (data: LoginFormSchemaTypes) => {
-        console.log(data);
-        const { email, password } = data;
-        try {
-            const response = await axios.post(
-                `/api/auth/login/`,
-                {
-                    email: email,
-                    password: password,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            console.log(response);
-            // fetchUserDetails();
-            if (response.status == 200) {
-                Cookies.set("logged_in", "yes");
-                form.clearErrors("password");
-                toast.success("Login Successfull!");
-                setTimeout(() => {
-                    router.push("/chat");
-                }, 1000);
-            }
-        } catch (error) {
-            const err = error as AxiosError<{ detail: string }>;
-            if (err.response?.data) toast.error(err.response.data.detail);
-        }
-        form.reset({
+        defaultValues: {
             email: "",
             password: "",
-        });
-    };
+        },
+    });
+
+    const { watch } = form;
+    const email = watch("email");
+    const password = watch("password");
+
+    const router = useRouter();
+    const queryClient = useQueryClient();
+    // const setUser = useUserStore((state) => state.setUser);
+    // const fetchUserDetails = async () => {
+    //     try {
+    //         const response = await axios.get(
+    //             `/api/auth/users/me/`,
+    //             {
+    //                 withCredentials: true,
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "ngrok-skip-browser-warning": "69420",
+    //                     "X-CSRFToken": Cookies.get("csrftoken"),
+    //                 },
+    //             },
+    //         );
+    //         console.log(response.data);
+
+    //         setUser(response.data);
+    //     } catch (err) {
+    //         console.log(err);
+    //         toast.error("Unable to fetch the user details");
+    //     }
+    // };
+
+    const mutation = useMutation({
+        mutationFn: async (data: LoginFormSchemaTypes) => {
+            try {
+                const response = await axios.post(
+                    `/api/auth/login/`,
+                    {
+                        email: data.email,
+                        password: data.password,
+                    },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
+                    },
+                );
+            } catch (error) {
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.setQueryData(["loggedIn"], true);
+            Cookies.set("logged_in", "yes");
+            toast.success("Login Successfull!");
+            setTimeout(() => {
+                router.push("/chat");
+            }, 200);
+            // fetchUserDetails();
+        },
+        onError: (error) => {
+            form.reset({
+                email: "",
+                password: "",
+            });
+            const err = error as AxiosError<{ detail: string }>;
+            if (err.response?.data) toast.error(err.response.data.detail);
+        },
+    });
 
     return (
         <Card className="mx-auto max-w-sm z-10 rounded-3xl drop-shadow-xl outline-none border-none">
@@ -111,7 +124,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
+                    <form
+                        onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+                        className="mb-4"
+                    >
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
@@ -124,7 +140,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                                 id="email"
                                                 type="email"
                                                 placeholder="mail@example.com"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -158,7 +174,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -170,12 +186,14 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                             <Button
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
-                                    form.formState.isSubmitting
+                                    mutation.isPending ||
+                                    !email ||
+                                    !password
                                 }
                                 type="submit"
                                 className="w-full"
                             >
-                                {form.formState.isSubmitting && (
+                                {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                 )}
                                 Login
@@ -196,9 +214,9 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 				<Button
 					variant="outline"
 					type="button"
-					disabled={form.formState.isSubmitting}
+					disabled={mutation.isPending}
 					className="flex items-center w-full">
-					{form.formState.isSubmitting ? (
+					{mutation.isPending ? (
 						<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 					) : (
 						<Icons.google className="mr-2 h-4 w-4" />

@@ -24,6 +24,7 @@ import useUserStore from "@/lib/store/UserStore";
 import axios from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
+import React from "react";
 
 export function SettingsProfileForm() {
     const user = useUserStore((state) => state.user);
@@ -31,7 +32,22 @@ export function SettingsProfileForm() {
 
     const form = useForm<SettingsProfileFormSchemaTypes>({
         resolver: zodResolver(SettingsProfileFormSchema),
+        defaultValues: {
+            firstName: user?.first_name,
+            lastName: user?.last_name,
+            email: user?.email,
+        },
     });
+
+    React.useEffect(() => {
+        if (user) {
+            form.reset({
+                firstName: user.first_name,
+                lastName: user.last_name,
+                email: user.email,
+            });
+        }
+    }, [user, form]);
 
     async function onSubmit(data: SettingsProfileFormSchemaTypes) {
         try {
@@ -86,7 +102,6 @@ export function SettingsProfileForm() {
                                             <FormControl>
                                                 <Input
                                                     type="text"
-                                                    defaultValue={user?.first_name}
                                                     placeholder="First Name"
                                                     {...field}
                                                 />
@@ -104,7 +119,6 @@ export function SettingsProfileForm() {
                                             <FormControl>
                                                 <Input
                                                     type="text"
-                                                    defaultValue={user?.last_name}
                                                     placeholder="Last Name"
                                                     {...field}
                                                 />
