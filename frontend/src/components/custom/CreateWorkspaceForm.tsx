@@ -43,10 +43,10 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
     const router = useRouter();
     const queryClient = useQueryClient();
 
-    const loggedIn = queryClient.getQueryData<boolean>(["loggedIn"]);
-    if (!loggedIn) {
-        router.push("/get-started");
-    }
+    // const loggedIn = queryClient.getQueryData<boolean>(["loggedIn"]);
+    // if (!loggedIn) {
+    //     router.push("/get-started");
+    // }
 
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
@@ -87,7 +87,6 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
         },
         onSuccess: () => {
             toast.success("Workspace Created Successfully!");
-            queryClient.setQueryData(["hasWorkspace"], true);
             setTimeout(() => {
                 router.push("/chat");
             }, 200);
@@ -101,37 +100,6 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
             toast.error("Failed to create Workspace, please try again");
         },
     });
-
-    const onSubmit = async (data: CreateWorkspaceFormSchemaTypes) => {
-        console.log(data);
-        try {
-            const response = await axios.post(
-                `/api/workspaces/`,
-                {
-                    business_name: data.businessName,
-                    website_url: data.Website,
-                    industry: data.selectedOption,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            console.log(response);
-            if (response.status === 200) {
-                toast.success("Workspace Created Successfully!");
-                setTimeout(() => {
-                    router.push("/chat");
-                }, 200);
-            }
-        } catch (error) {
-            console.log(error);
-            toast.warning("Failed to create Workspace, please try again");
-        }
-    };
 
     return (
         <Card className={cn(className)}>

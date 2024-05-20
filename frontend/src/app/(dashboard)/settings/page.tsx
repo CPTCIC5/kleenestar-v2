@@ -12,31 +12,33 @@ import useUserStore from "@/lib/store/UserStore";
 import { UserStoreState, User } from "@/lib/types/interfaces";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 
 export default function SettingsPage() {
     const setUser = useUserStore((state) => state.setUser);
+    const queryClient = useQueryClient();
 
-    React.useEffect(() => {
-        async function setUserData() {
+    const { data: userData } = useQuery({
+        queryKey: ["userData"],
+        queryFn: async () => {
             try {
-                const response = await axios.get(
-                    `/api/auth/users/me/`,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "ngrok-skip-browser-warning": "69420",
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
+                const response = await axios.get(`/api/auth/users/me/`, {
+                    withCredentials: true,
+                    headers: {
+                        "ngrok-skip-browser-warning": "69420",
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
                     },
-                );
+                });
                 setUser(response.data);
-            } catch (err) {
-                console.error(err);
+                return response.data;
+            } catch (error) {
+                throw error;
             }
-        }
-        setUserData();
-    }, []);
+        },
+        refetchOnWindowFocus: true,
+        staleTime: 0,
+    });
 
     return (
         <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] p-3 pt-[69px]">

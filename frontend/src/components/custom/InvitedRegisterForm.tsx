@@ -84,9 +84,8 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
             }
         },
         onSuccess: () => {
+            Cookies.set("logged_in", "yes");
             toast.success("Registration Successfull!");
-            queryClient.setQueryData(["loggedIn"], true);
-            queryClient.setQueryData(["hasWorkspace"], true);
             setTimeout(() => {
                 router.push("/chat");
             }, 200);

@@ -30,6 +30,7 @@ import { ForgotPasswordFormSchema } from "@/lib/zod/schemas/schema";
 import { ForgotPasswordFormSchemaTypes } from "@/lib/types/types";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 interface ForgotPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -37,32 +38,45 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
     const form = useForm<ForgotPasswordFormSchemaTypes>({
         resolver: zodResolver(ForgotPasswordFormSchema),
         mode: "onChange",
-    });
-    const onSubmit = async (data: ForgotPasswordFormSchemaTypes) => {
-        console.log(data);
-        try {
-            const response = await axios.post(
-                `/api/auth/password_reset/`,
-                {
-                    email: data.email,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                },
-            );
-            if (response.status == 200) {
-                toast.success("Email sent with reset link!");
-            }
-        } catch (error) {
-            console.log(error);
-            toast.warning("Failed to send reset mail!");
-        }
-        form.reset({
+        defaultValues: {
             email: "",
-        });
-    };
+        },
+    });
+
+    const watch = form.watch;
+    const email = watch("email");
+
+    const mutation = useMutation({
+        mutationFn: async (data: ForgotPasswordFormSchemaTypes) => {
+            try {
+                const response = await axios.post(
+                    `/api/auth/password_reset/`,
+                    {
+                        email: data.email,
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    },
+                );
+            } catch (error) {
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            toast.success("Email sent with reset link!");
+            form.reset({
+                email: "",
+            });
+        },
+        onError: () => {
+            toast.warning("Failed to send reset mail!");
+            form.reset({
+                email: "",
+            });
+        },
+    });
 
     return (
         <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[15px]">
@@ -72,7 +86,10 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
+                    <form
+                        onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+                        className="mb-4"
+                    >
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
@@ -85,7 +102,7 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                                                 id="email"
                                                 type="email"
                                                 placeholder="mail@example.com"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -102,12 +119,14 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                             <Button
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
-                                    form.formState.isSubmitting
+                                    mutation.isPending ||
+                                    !email
+                                    
                                 }
                                 type="submit"
                                 className="w-full mt-[12px]"
                             >
-                                {form.formState.isSubmitting && (
+                                {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin disabled:bg-green-200" />
                                 )}
                                 Send Reset Link

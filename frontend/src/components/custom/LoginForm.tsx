@@ -53,28 +53,6 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
     const router = useRouter();
     const queryClient = useQueryClient();
-    // const setUser = useUserStore((state) => state.setUser);
-    // const fetchUserDetails = async () => {
-    //     try {
-    //         const response = await axios.get(
-    //             `/api/auth/users/me/`,
-    //             {
-    //                 withCredentials: true,
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     "ngrok-skip-browser-warning": "69420",
-    //                     "X-CSRFToken": Cookies.get("csrftoken"),
-    //                 },
-    //             },
-    //         );
-    //         console.log(response.data);
-
-    //         setUser(response.data);
-    //     } catch (err) {
-    //         console.log(err);
-    //         toast.error("Unable to fetch the user details");
-    //     }
-    // };
 
     const mutation = useMutation({
         mutationFn: async (data: LoginFormSchemaTypes) => {
@@ -98,13 +76,11 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             }
         },
         onSuccess: () => {
-            queryClient.setQueryData(["loggedIn"], true);
             Cookies.set("logged_in", "yes");
             toast.success("Login Successfull!");
             setTimeout(() => {
                 router.push("/chat");
             }, 200);
-            // fetchUserDetails();
         },
         onError: (error) => {
             form.reset({

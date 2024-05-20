@@ -81,8 +81,8 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             }
         },
         onSuccess: () => {
+            Cookies.set("logged_in", "yes");
             toast.success("Registration Successfull!");
-            queryClient.setQueryData(["loggedIn"], true);
             setTimeout(() => {
                 router.push("/create-workspace");
             }, 200);
