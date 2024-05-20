@@ -133,7 +133,7 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
                                                 id="email"
                                                 type="email"
                                                 placeholder="mail@example.com"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -158,11 +158,11 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
-                                                    field.onChange(e); // Update the password field
-                                                    form.trigger("confirmPassword"); // Manually trigger validation of the confirmPassword field
+                                                    field.onChange(e);
+                                                    form.trigger("confirmPassword");
                                                 }}
                                             />
                                         </FormControl>
@@ -182,7 +182,7 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -202,7 +202,7 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
                                                 id="inviteCode"
                                                 type="text"
                                                 placeholder="workspace invite code"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -220,7 +220,7 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
                                             <Checkbox
                                                 id="newsletter"
                                                 className="h-[15px] w-[15px] flex items-center justify-center"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
                                             />
@@ -236,12 +236,16 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
                             <Button
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
-                                    form.formState.isSubmitting
+                                    mutation.isPending ||
+                                    !email ||
+                                    !password ||
+                                    !confirmPassword ||
+                                    !inviteCode
                                 }
                                 type="submit"
                                 className="w-full"
                             >
-                                {form.formState.isSubmitting && (
+                                {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                 )}
                                 Register

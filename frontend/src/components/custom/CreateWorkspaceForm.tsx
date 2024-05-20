@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import * as z from "zod";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -32,11 +31,11 @@ import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
 import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import FormSuccess from "./FormSuccess";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -44,8 +43,60 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
         mode: "onChange",
+        defaultValues: {
+            businessName: "",
+            Website: "",
+            selectedOption: "",
+        },
     });
+
+    const { watch } = form;
+    const businessName = watch("businessName");
+    const Website = watch("Website");
+    const selectedOption = watch("selectedOption");
+
     const router = useRouter();
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: async (data: CreateWorkspaceFormSchemaTypes) => {
+            try {
+                const response = await axios.post(
+                    `/api/workspaces/`,
+                    {
+                        business_name: data.businessName,
+                        website_url: data.Website,
+                        industry: data.selectedOption,
+                    },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": Cookies.get("csrftoken"),
+                        },
+                    },
+                );
+            } catch (error) {
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            toast.success("Workspace Created Successfully!");
+            queryClient.setQueryData(["hasWorkspace"], true);
+            setTimeout(() => {
+                router.push("/chat");
+            }, 200);
+        },
+        onError: (error) => {
+            form.reset({
+                businessName: "",
+                Website: "",
+                selectedOption: "",
+            });
+            toast.error("Failed to create Workspace, please try again");
+        },
+    });
+
     const onSubmit = async (data: CreateWorkspaceFormSchemaTypes) => {
         console.log(data);
         try {
@@ -86,7 +137,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
 
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <form onSubmit={form.handleSubmit((data) => mutation.mutate(data))}>
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
@@ -99,7 +150,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                                 id="business_name"
                                                 type="text"
                                                 placeholder="Your business name"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -118,7 +169,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                                 id="Website"
                                                 type="text"
                                                 placeholder="Your website url"
-                                                disabled={form.formState.isSubmitting}
+                                                disabled={mutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -133,7 +184,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                     <FormItem className="">
                                         <FormLabel>Industry</FormLabel>
                                         <Select
-                                            disabled={form.formState.isSubmitting}
+                                            disabled={mutation.isPending}
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                         >
@@ -160,12 +211,12 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                             <Button
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
-                                    form.formState.isSubmitting
+                                    mutation.isPending || !businessName || !Website || !selectedOption
                                 }
                                 type="submit"
                                 className="w-full"
                             >
-                                {form.formState.isSubmitting && (
+                                {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                                 )}
                                 Create Workspace
