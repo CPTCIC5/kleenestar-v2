@@ -1,7 +1,4 @@
-"use client";
-
 import { Icons } from "@/assets/icons";
-import GridBackground from "@/components/ui/background-grid";
 
 export default function AuthLayout({
     children,

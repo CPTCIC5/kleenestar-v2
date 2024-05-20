@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Icons } from "@/assets/icons";
 import CreateWorkspace from "@/components/custom/CreateWorkspaceForm";
 import GridBackground from "@/components/ui/background-grid";
 
