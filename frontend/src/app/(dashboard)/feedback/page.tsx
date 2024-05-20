@@ -44,7 +44,7 @@ export default function Feedback() {
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="text-[10px]">{file}</div>
+                            <div className="text-[10px] text-ellipsis">{file}</div>
                             <Card
                                 onClick={handleAddImage}
                                 className="text-[16px] cursor-pointer max-xl:text-[14px] max-xl:px-[12px] max-xl:ml-2 h-[33.56px] px-[18px] gap-[12px] flex items-center"
