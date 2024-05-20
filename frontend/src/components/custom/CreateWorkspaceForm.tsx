@@ -40,6 +40,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function CreateWorkspace({ className, ...props }: WorkspaceFormProps) {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    const loggedIn = queryClient.getQueryData<boolean>(["loggedIn"]);
+    if (!loggedIn) {
+        router.push("/get-started");
+    }
+
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
         mode: "onChange",
@@ -54,9 +62,6 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
     const businessName = watch("businessName");
     const Website = watch("Website");
     const selectedOption = watch("selectedOption");
-
-    const router = useRouter();
-    const queryClient = useQueryClient();
 
     const mutation = useMutation({
         mutationFn: async (data: CreateWorkspaceFormSchemaTypes) => {
@@ -211,7 +216,10 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                             <Button
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
-                                    mutation.isPending || !businessName || !Website || !selectedOption
+                                    mutation.isPending ||
+                                    !businessName ||
+                                    !Website ||
+                                    !selectedOption
                                 }
                                 type="submit"
                                 className="w-full"
