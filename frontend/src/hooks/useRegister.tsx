@@ -4,27 +4,19 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
 import { RegisterFormSchemaTypes } from "@/lib/types/types";
+import axiosInstance from "@/lib/axios/AxiosInstance";
 
 export function useRegister() {
     const router = useRouter();
 
     const mutation = useMutation({
         mutationFn: async (data: RegisterFormSchemaTypes) => {
-            return axios.post(
-                `/api/auth/signup/`,
-                {
-                    email: data.email,
-                    password: data.password,
-                    confirm_password: data.confirmPassword,
-                    newsletter: data.newsletter,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
+            return await axiosInstance.post(`/api/auth/signup/`, {
+                email: data.email,
+                password: data.password,
+                confirm_password: data.confirmPassword,
+                newsletter: data.newsletter,
+            });
         },
         onSuccess: () => {
             toast.success("Registration Successful!");

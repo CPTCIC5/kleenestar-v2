@@ -10,7 +10,7 @@ export function useLogin() {
 
     const mutation = useMutation({
         mutationFn: async (data: LoginFormSchemaTypes) => {
-            return axiosInstance.post(`/api/auth/login/`, {
+            return await axiosInstance.post(`/api/auth/login/`, {
                 email: data.email,
                 password: data.password,
             });
