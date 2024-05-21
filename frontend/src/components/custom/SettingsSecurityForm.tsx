@@ -1,6 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SettingsSecurityFormSchemaTypes } from "@/lib/types/types";
+import { SettingsSecurityFormSchema } from "@/lib/zod/schemas/schema";
+import { useChangePassword } from "@/hooks/useChangePassword";
 
 import {
     Form,
@@ -11,21 +15,11 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-
-import { Separator } from "../ui/separator";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
-import { z } from "zod";
-import { SettingsSecurityFormSchemaTypes } from "@/lib/types/types";
-import { SettingsSecurityFormSchema } from "@/lib/zod/schemas/schema";
-import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Separator } from "../ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 export function SettingsSecurityForm() {
     const form = useForm<SettingsSecurityFormSchemaTypes>({
@@ -38,7 +32,9 @@ export function SettingsSecurityForm() {
         },
     });
 
-    async function onSubmit(data: SettingsSecurityFormSchemaTypes) {
+    const mutation = useChangePassword();
+
+    const onSubmit = async (data: SettingsSecurityFormSchemaTypes) => {
         if (data.new_password !== data.confirm_new_password) {
             form.setError("confirm_new_password", {
                 message: "Password confirmation does not match!",
@@ -56,34 +52,9 @@ export function SettingsSecurityForm() {
             return;
         }
 
-        try {
-            const response = await axios.post(
-                `/api/auth/change-password/`,
-                {
-                    current_password: data.current_password,
-                    new_password: data.new_password,
-                    confirm_new_password: data.confirm_new_password,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            console.log(response.data.message);
-            toast.success(response.data.message);
-        } catch (error) {
-            const err = error as AxiosError<{ error: string }>;
-            const message = err?.response?.data?.error;
-            if (message) {
-                form.setError("current_password", {
-                    message: message,
-                });
-            }
-        }
-    }
+        mutation.mutate(data);
+        form.reset();
+    };
 
     return (
         <Card className="relative">
