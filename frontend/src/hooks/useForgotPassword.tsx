@@ -1,31 +1,27 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { AxiosError } from "axios";
-import { InvitedRegisterFormSchemaTypes } from "@/lib/types/types";
+import { ForgotPasswordFormSchemaTypes } from "@/lib/types/types";
 import axiosInstance from "@/lib/axios/AxiosInstance";
+import { AxiosError } from "axios";
 
-export function useRegisterWithInvite() {
+export function useForgotPassword() {
     const router = useRouter();
 
     const mutation = useMutation({
-        mutationFn: async (data: InvitedRegisterFormSchemaTypes) => {
-            return await axiosInstance.post(`/api/auth/signup/`, {
+        mutationFn: async (data: ForgotPasswordFormSchemaTypes) => {
+            return await axiosInstance.post(`/api/auth/password_reset/`, {
                 email: data.email,
-                password: data.password,
-                confirm_password: data.confirmPassword,
-                newsletter: data.newsletter,
-                invite_code: data.inviteCode,
             });
         },
         onSuccess: () => {
-            toast.success("Registration Successful!");
-            router.push("/chat");
+            toast.success("Email sent with reset link!");
+            router.push("/login");
         },
         onError: (error) => {
             const err = error as AxiosError<{ email?: string[] }>;
             if (err.response?.data?.email) {
-                toast.error(err.response.data.email[0]);
+                toast.warning("This email is not registered with us. Please try again.");
             } else {
                 toast.error("An unexpected error occurred. Please try again.");
             }

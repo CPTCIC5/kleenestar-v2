@@ -20,7 +20,6 @@ export function useCreateWorkspace() {
             router.push("/chat");
         },
         onError: (error) => {
-            console.log("workspace Error", error);
             toast.error("Failed to create Workspace, please try again");
         },
     });

@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { RegisterFormSchemaTypes } from "@/lib/types/types";
 import axiosInstance from "@/lib/axios/AxiosInstance";
 
