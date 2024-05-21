@@ -9,7 +9,7 @@ export function useLogout() {
 
     const mutation = useMutation({
         mutationFn: async () => {
-            return await await axiosInstance.post(`/api/auth/logout/`, null);
+            return await axiosInstance.post(`/api/auth/logout/`, null);
         },
         onSuccess: () => {
             Cookies.remove("csrftoken");

@@ -1,19 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { Icons } from "@/assets/icons";
 import { useLogout } from "@/hooks/useLogout";
+import { useUserData } from "@/hooks/useUserData";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ModeToggle } from "./ModeToggle";
+import { Separator } from "../ui/separator";
+import { Button, buttonVariants } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 export default function Sidebar() {
-    // data of user is needed to display the user's name and profile picture
+    // add user image as setting icon
+    const { userData, isUserSuccess } = useUserData();
+
+    const { workspaceData, isWorkspaceSuccess } = useWorkspaceData();
+
     const mutation = useLogout();
+
+    if (isUserSuccess) {
+        console.log("userData", userData);
+    }
+
+    if (isWorkspaceSuccess) {
+        console.log("workspaceData", workspaceData);
+    }
 
     return (
         <TooltipProvider>
@@ -210,22 +225,26 @@ export default function Sidebar() {
                         </nav>
                     </SheetContent>
                 </Sheet>
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-row gap-2 items-center">
                     <ModeToggle />
-                    <Link href="/settings">
-                        <Button variant="outline" size="icon" className="rounded-full p-0 z-50">
-                            <Avatar className="w-[35px] h-[35px] rounded-full ">
-                                <AvatarImage
-                                    className="rounded-full border-2 border-muted"
-                                    src="https://github.com/shadcn.png"
-                                    alt="@shadcn"
-                                />
-                                <AvatarFallback className="flex items-center justify-center">
-                                    N
-                                </AvatarFallback>
-                            </Avatar>
-                            <span className="sr-only">Settings</span>
-                        </Button>
+                    <Link
+                        href={"/settings"}
+                        className={cn(
+                            buttonVariants({ variant: "outline", size: "icon" }),
+                            "rounded-full p-0 z-50",
+                        )}
+                    >
+                        <Avatar className="w-[35px] h-[35px] rounded-full ">
+                            <AvatarImage
+                                className="rounded-full border-2 border-muted"
+                                src="https://github.com/shadcn.png"
+                                alt="@shadcn"
+                            />
+                            <AvatarFallback className="flex items-center justify-center">
+                                N
+                            </AvatarFallback>
+                        </Avatar>
+                        <span className="sr-only">Settings</span>
                     </Link>
                 </div>
             </header>

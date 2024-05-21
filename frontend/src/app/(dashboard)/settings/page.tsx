@@ -5,41 +5,10 @@ import { SettingsProfileForm } from "@/components/custom/SettingsProfileForm";
 import { SettingsSecurityForm } from "@/components/custom/SettingsSecurityForm";
 import { WorkspaceNotificationForm } from "@/components/custom/SettingsWorkspaceForm";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import * as React from "react";
-import useUserStore from "@/lib/store/UserStore";
-import { UserStoreState, User } from "@/lib/types/interfaces";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SettingsPage() {
-    const setUser = useUserStore((state) => state.setUser);
-    const queryClient = useQueryClient();
-
-    const { data: userData } = useQuery({
-        queryKey: ["userData"],
-        queryFn: async () => {
-            try {
-                const response = await axios.get(`/api/auth/users/me/`, {
-                    withCredentials: true,
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                });
-                setUser(response.data);
-                return response.data;
-            } catch (error) {
-                throw error;
-            }
-        },
-        refetchOnWindowFocus: true,
-        staleTime: 0,
-    });
-
     return (
         <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] p-3 pt-[69px]">
             <div className="max-w-[662px] w-full flex flex-col">

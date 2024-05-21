@@ -27,6 +27,9 @@ export const validTimezones = [
     "brt",
     "clt",
 ] as const;
+
+export const defaultStaleTime = 30 * (60 * 1000);
+
 export const blocknotes = [
     {
         id: 1,

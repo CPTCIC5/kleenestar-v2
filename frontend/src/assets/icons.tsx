@@ -9,9 +9,9 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z" />
-                <path stroke-linecap="round" d="M15 21V3" opacity=".5" />
+                <path strokeLinecap="round" d="M15 21V3" opacity=".5" />
             </g>
         </svg>
     ),
@@ -23,13 +23,13 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path
                     d="M9 4.5H8c-2.357 0-3.536 0-4.268.732C3 5.964 3 7.143 3 9.5v5c0 2.357 0 3.535.732 4.268c.732.732 1.911.732 4.268.732h1"
                     opacity=".5"
                 />
                 <path d="M9 6.476c0-2.293 0-3.44.707-4.067c.707-.627 1.788-.439 3.95-.062l2.33.407c2.394.417 3.591.626 4.302 1.504c.711.879.711 2.149.711 4.69v6.105c0 2.54 0 3.81-.71 4.689c-.712.878-1.91 1.087-4.304 1.505l-2.328.406c-2.162.377-3.243.565-3.95-.062C9 20.964 9 19.817 9 17.524z" />
-                <path stroke-linecap="round" d="M12 11v2" opacity=".5" />
+                <path strokeLinecap="round" d="M12 11v2" opacity=".5" />
             </g>
         </svg>
     ),
@@ -41,10 +41,10 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="10" cy="6" r="4" />
                 <ellipse cx="10" cy="17" opacity=".5" rx="7" ry="4" />
-                <path stroke-linecap="round" d="M19 2s2 1.2 2 4s-2 4-2 4m-2-6s1 .6 1 2s-1 2-1 2" />
+                <path strokeLinecap="round" d="M19 2s2 1.2 2 4s-2 4-2 4m-2-6s1 .6 1 2s-1 2-1 2" />
             </g>
         </svg>
     ),
@@ -56,12 +56,12 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="9" cy="6" r="4" />
                 <path d="M12.5 4.341a3 3 0 1 1 0 3.318" opacity=".5" />
                 <ellipse cx="9" cy="17" rx="7" ry="4" />
                 <path
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     d="M18 14c1.754.385 3 1.359 3 2.5c0 1.03-1.014 1.923-2.5 2.37"
                     opacity=".5"
                 />
@@ -76,13 +76,13 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path
                     d="M3 11c0-3.75 0-5.625.955-6.939A5 5 0 0 1 5.06 2.955C6.375 2 8.251 2 12 2c3.75 0 5.625 0 6.939.955a5 5 0 0 1 1.106 1.106C21 5.375 21 7.251 21 11v2c0 3.75 0 5.625-.955 6.939a5 5 0 0 1-1.106 1.106C17.625 22 15.749 22 12 22c-3.75 0-5.625 0-6.939-.955a5 5 0 0 1-1.106-1.106C3 18.625 3 16.749 3 13z"
                     opacity=".5"
                 />
-                <path stroke-linecap="round" stroke-linejoin="round" d="m12 18l2-2.5h-4l2-2.5" />
-                <path stroke-linecap="round" d="M7 9h10" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="m12 18l2-2.5h-4l2-2.5" />
+                <path strokeLinecap="round" d="M7 9h10" />
             </g>
         </svg>
     ),
@@ -94,7 +94,7 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="m9.213 10.174l2.015-1.605c1.302-1.037 1.953-1.556 2.363-1.3c.41.256.197 1.05-.228 2.636l-.04.15c-.154.572-.23.858-.096 1.086l.007.012c.14.226.438.306 1.033.465c1.072.287 1.608.43 1.702.804a.626.626 0 0 1 .004.019c.083.376-.34.712-1.185 1.386l-2.015 1.604c-1.303 1.038-1.954 1.556-2.364 1.3c-.409-.256-.196-1.05.229-2.636l.04-.15c.153-.571.23-.857.095-1.086l-.007-.012c-.14-.225-.438-.305-1.033-.465c-1.072-.287-1.608-.43-1.702-.804a.658.658 0 0 1-.004-.019c-.083-.375.34-.712 1.186-1.385Z" />
                 <path
                     d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12Z"
@@ -111,10 +111,10 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M4 8c0-2.828 0-4.243.879-5.121C5.757 2 7.172 2 10 2h4c2.828 0 4.243 0 5.121.879C20 3.757 20 5.172 20 8v8c0 2.828 0 4.243-.879 5.121C18.243 22 16.828 22 14 22h-4c-2.828 0-4.243 0-5.121-.879C4 20.243 4 18.828 4 16z" />
                 <path d="M19.898 16h-12c-.93 0-1.395 0-1.777.102A3 3 0 0 0 4 18.224" />
-                <path stroke-linecap="round" d="M8 7h8m-8 3.5h5m6.5 8.5H8" opacity=".5" />
+                <path strokeLinecap="round" d="M8 7h8m-8 3.5h5m6.5 8.5H8" opacity=".5" />
             </g>
         </svg>
     ),
@@ -126,12 +126,12 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path
                     d="M16 4.002c2.175.012 3.353.109 4.121.877C21 5.758 21 7.172 21 10v6c0 2.829 0 4.243-.879 5.122C19.243 22 17.828 22 15 22H9c-2.828 0-4.243 0-5.121-.878C3 20.242 3 18.829 3 16v-6c0-2.828 0-4.242.879-5.121c.768-.768 1.946-.865 4.121-.877"
                     opacity=".5"
                 />
-                <path stroke-linecap="round" d="M8 14h8m-9-3.5h10m-8 7h6" />
+                <path strokeLinecap="round" d="M8 14h8m-9-3.5h10m-8 7h6" />
                 <path d="M8 3.5A1.5 1.5 0 0 1 9.5 2h5A1.5 1.5 0 0 1 16 3.5v1A1.5 1.5 0 0 1 14.5 6h-5A1.5 1.5 0 0 1 8 4.5z" />
             </g>
         </svg>
@@ -144,9 +144,9 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.634 1.634 0 0 1 1.149.133A9.958 9.958 0 0 0 12 22Z" />
-                <path stroke-linecap="round" d="M8 10.5h8M8 14h5.5" opacity=".5" />
+                <path strokeLinecap="round" d="M8 10.5h8M8 14h5.5" opacity=".5" />
             </g>
         </svg>
     ),
@@ -946,9 +946,9 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-palette"
         >
             <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
@@ -966,9 +966,9 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-thumbs-down"
         >
             <path d="M17 14V2" />
@@ -1015,9 +1015,9 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-corner-down-right"
         >
             <polyline points="15 10 20 15 15 20" />
@@ -1032,9 +1032,9 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-step-back"
         >
             <line x1="18" x2="18" y1="20" y2="4" />
@@ -1049,9 +1049,9 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-square-gantt-chart"
         >
             <rect width="18" height="18" x="3" y="3" rx="2" />
@@ -1085,9 +1085,9 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-trash-2"
         >
             <path d="M3 6h18" />

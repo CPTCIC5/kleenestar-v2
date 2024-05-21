@@ -20,58 +20,42 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { SettingsProfileFormSchema } from "@/lib/zod/schemas/schema";
 import { SettingsProfileFormSchemaTypes } from "@/lib/types/types";
-import useUserStore from "@/lib/store/UserStore";
-import axios from "axios";
-import { toast } from "sonner";
-import Cookies from "js-cookie";
 import React from "react";
+import { useUserData } from "@/hooks/useUserData";
+import { useEditUserProfile } from "@/hooks/useEditUserProfile";
 
 export function SettingsProfileForm() {
-    const user = useUserStore((state) => state.user);
-    const setUser = useUserStore((state) => state.setUser);
+    const { userData } = useUserData();
 
     const form = useForm<SettingsProfileFormSchemaTypes>({
         resolver: zodResolver(SettingsProfileFormSchema),
         defaultValues: {
-            firstName: user?.first_name,
-            lastName: user?.last_name,
-            email: user?.email,
+            firstName: userData?.first_name,
+            lastName: userData?.last_name,
+            email: userData?.email,
         },
     });
 
     React.useEffect(() => {
-        if (user) {
+        if (userData) {
             form.reset({
-                firstName: user.first_name,
-                lastName: user.last_name,
-                email: user.email,
+                firstName: userData.first_name,
+                lastName: userData.last_name,
+                email: userData.email,
             });
         }
-    }, [user, form]);
+    }, [userData, form]);
 
-    async function onSubmit(data: SettingsProfileFormSchemaTypes) {
-        try {
-            if (user === null) console.error("No user found");
-            const response = await axios.patch(
-                `/api/auth/users/${user?.id}/`,
-                {
-                    first_name: data.firstName,
-                    last_name: data.lastName,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            toast.success("Name updated successfully");
-            setUser(response.data);
-        } catch (err) {
-            console.error(err);
+    const mutation = useEditUserProfile();
+
+    const onSubmit = async (data: SettingsProfileFormSchemaTypes) => {
+        if (userData) {
+            mutation.mutate({
+                data,
+                userId: userData.id,
+            });
         }
-    }
+    };
 
     return (
         <Card className="relative">
@@ -144,7 +128,7 @@ export function SettingsProfileForm() {
                                         <Input
                                             type="email"
                                             placeholder="mail@gmail.com"
-                                            defaultValue={user?.email}
+                                            defaultValue={userData?.email}
                                             {...field}
                                         />
                                     </FormControl>
