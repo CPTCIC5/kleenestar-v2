@@ -46,7 +46,14 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
     });
 
     const { watch } = form;
+    const { email, password, confirmPassword } = watch();
+
     const mutation = useRegister();
+
+    const onSubmit = (data: RegisterFormSchemaTypes) => {
+        mutation.mutate(data);
+        form.reset();
+    };
 
     return (
         <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]">
@@ -58,10 +65,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             </CardHeader>
             <CardContent className="pb-3">
                 <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-                        className="mb-4"
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
@@ -158,9 +162,9 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
                                     mutation.isPending ||
-                                    !watch("email") ||
-                                    !watch("password") ||
-                                    !watch("confirmPassword")
+                                    !email ||
+                                    !password ||
+                                    !confirmPassword
                                 }
                                 type="submit"
                                 className="w-full"

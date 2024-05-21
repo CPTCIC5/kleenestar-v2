@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import * as React from "react";
+import { Icons } from "@/assets/icons";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InvitedRegisterFormSchema } from "@/lib/zod/schemas/schema";
+import { InvitedRegisterFormSchemaTypes } from "../../lib/types/types";
+import { useRegisterWithInvite } from "@/hooks/useRegisterWithInvite";
 
-import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -15,30 +20,20 @@ import {
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Icons } from "@/assets/icons";
 import { PasswordInput } from "@/components/custom/PasswordInput";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { InvitedRegisterFormSchema } from "@/lib/zod/schemas/schema";
-import { InvitedRegisterFormSchemaTypes } from "../../lib/types/types";
-import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface InvitedRegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) {
+export function InvitedRegisterForm({ className, ...props }: InvitedRegisterFormProps) {
     const form = useForm<InvitedRegisterFormSchemaTypes>({
         resolver: zodResolver(InvitedRegisterFormSchema),
         mode: "onChange",
@@ -52,59 +47,14 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
     });
 
     const { watch } = form;
-    const email = watch("email");
-    const password = watch("password");
-    const confirmPassword = watch("confirmPassword");
-    const inviteCode = watch("inviteCode");
+    const { email, password, confirmPassword, inviteCode } = watch();
 
-    const router = useRouter();
-    const queryClient = useQueryClient();
+    const mutation = useRegisterWithInvite();
 
-    const mutation = useMutation({
-        mutationFn: async (data: InvitedRegisterFormSchemaTypes) => {
-            try {
-                await axios.post(
-                    `/api/auth/signup/`,
-                    {
-                        email: data.email,
-                        password: data.password,
-                        confirm_password: data.confirmPassword,
-                        newsletter: data.newsletter,
-                        invite_code: data.inviteCode,
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
-                    },
-                );
-            } catch (error) {
-                throw error;
-            }
-        },
-        onSuccess: () => {
-            Cookies.set("logged_in", "yes");
-            toast.success("Registration Successfull!");
-            setTimeout(() => {
-                router.push("/chat");
-            }, 200);
-        },
-        onError: (error) => {
-            form.reset({
-                email: "",
-                password: "",
-                confirmPassword: "",
-                newsletter: false,
-                inviteCode: "",
-            });
-            const err = error as AxiosError;
-            if (err.response?.data) {
-                const { email } = err.response.data as { email: string[] };
-                toast.error(email[0]);
-            }
-        },
-    });
+    const onSubmit = (data: InvitedRegisterFormSchemaTypes) => {
+        mutation.mutate(data);
+        form.reset();
+    };
 
     return (
         <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]  ">
@@ -116,10 +66,7 @@ export function InvitedRegisterForm({ className, ...props }: RegisterFormProps) 
             </CardHeader>
             <CardContent className="pb-3 max-h-[454px] overflow-auto small-scrollbar">
                 <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-                        className="mb-4"
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
