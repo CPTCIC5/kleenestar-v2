@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRef, useState, ChangeEvent } from "react";
 
 import {
     Form,
@@ -16,15 +17,21 @@ import { Separator } from "../ui/separator";
 import { Button } from "@/components/ui/button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { SettingsProfileFormSchema } from "@/lib/zod/schemas/schema";
 import { SettingsProfileFormSchemaTypes } from "@/lib/types/types";
 import React from "react";
 import { useUserData } from "@/hooks/useUserData";
 import { useEditUserProfile } from "@/hooks/useEditUserProfile";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { toast } from "sonner";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function SettingsProfileForm() {
+    const queryClient = useQueryClient();
     const { userData } = useUserData();
 
     const form = useForm<SettingsProfileFormSchemaTypes>({
@@ -38,6 +45,7 @@ export function SettingsProfileForm() {
 
     React.useEffect(() => {
         if (userData) {
+            console.log(userData?.profile?.avatar);
             form.reset({
                 firstName: userData.first_name,
                 lastName: userData.last_name,
@@ -46,14 +54,44 @@ export function SettingsProfileForm() {
         }
     }, [userData, form]);
 
-    const mutation = useEditUserProfile();
+    const addRef = useRef<HTMLInputElement | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+    const handleAddImage = () => {
+        if (addRef.current) {
+            addRef.current.click();
+        }
+    };
+    const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            return;
+        } else {
+            setFile(file);
+        }
+    };
 
     const onSubmit = async (data: SettingsProfileFormSchemaTypes) => {
-        if (userData) {
-            mutation.mutate({
-                data,
-                userId: userData.id,
-            });
+        try {
+            const response = await axios.patch(
+                `/api/auth/users/${userData?.id}/`,
+                {
+                    avatar: file,
+                    first_name: data.firstName,
+                    last_name: data.lastName,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "X-CSRFToken": Cookies.get("csrftoken"),
+                    },
+                },
+            );
+
+            queryClient.invalidateQueries({ queryKey: ["userData"] });
+            toast.success("Name updated successfully");
+        } catch (error) {
+            toast.error("An unexpected error occurred. Please try again.");
         }
     };
 
@@ -73,6 +111,31 @@ export function SettingsProfileForm() {
 
             <CardContent>
                 {/* image and image upload section */}
+                <div className="space-y-3 mb-5">
+                    <CardTitle>Image</CardTitle>
+                    <div>
+                        <Avatar
+                            onClick={handleAddImage}
+                            className="w-[50px] h-[50px] rounded-full  "
+                        >
+                            <AvatarImage
+                                className="rounded-full border-2 border-muted cursor-pointer"
+                                src={userData?.profile?.avatar}
+                                alt="@shadcn"
+                            />
+                            <AvatarFallback className="flex items-center justify-center">
+                                {userData?.first_name?.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                        </Avatar>
+                        <input
+                            ref={addRef}
+                            type="file"
+                            className="hidden"
+                            name="avatar"
+                            onChange={handleImageUpload}
+                        />
+                    </div>
+                </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
                         <div className="space-y-2">

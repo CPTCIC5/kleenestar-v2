@@ -237,11 +237,11 @@ export default function Sidebar() {
                         <Avatar className="w-[35px] h-[35px] rounded-full ">
                             <AvatarImage
                                 className="rounded-full border-2 border-muted"
-                                src="https://github.com/shadcn.png"
+                                src={userData?.profile?.avatar}
                                 alt="@shadcn"
                             />
                             <AvatarFallback className="flex items-center justify-center">
-                                N
+                                {userData?.first_name?.charAt(0).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
                         <span className="sr-only">Settings</span>
