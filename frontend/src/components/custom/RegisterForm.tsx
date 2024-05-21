@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import * as React from "react";
+import { Icons } from "@/assets/icons";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
+import { RegisterFormSchemaTypes } from "../../lib/types/types";
+import { useRegister } from "@/hooks/useRegister";
 
-import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -15,26 +20,16 @@ import {
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Icons } from "@/assets/icons";
 import { PasswordInput } from "@/components/custom/PasswordInput";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
-import { RegisterFormSchemaTypes } from "../../lib/types/types";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -51,56 +46,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
     });
 
     const { watch } = form;
-    const email = watch("email");
-    const password = watch("password");
-    const confirmPassword = watch("confirmPassword");
-
-    const router = useRouter();
-    const queryClient = useQueryClient();
-
-    const mutation = useMutation({
-        mutationFn: async (data: RegisterFormSchemaTypes) => {
-            try {
-                await axios.post(
-                    `/api/auth/signup/`,
-                    {
-                        email: data.email,
-                        password: data.password,
-                        confirm_password: data.confirmPassword,
-                        newsletter: data.newsletter,
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
-                    },
-                );
-            } catch (error) {
-                throw error;
-            }
-        },
-        onSuccess: () => {
-            Cookies.set("logged_in", "yes");
-            toast.success("Registration Successfull!");
-            setTimeout(() => {
-                router.push("/create-workspace");
-            }, 200);
-        },
-        onError: (error) => {
-            form.reset({
-                email: "",
-                password: "",
-                confirmPassword: "",
-                newsletter: false,
-            });
-            const err = error as AxiosError;
-            if (err.response?.data) {
-                const { email } = err.response.data as { email: string[] };
-                toast.error(email[0]);
-            }
-        },
-    });
+    const mutation = useRegister();
 
     return (
         <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]">
@@ -212,9 +158,9 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                 disabled={
                                     Object.keys(form.formState.errors).length > 0 ||
                                     mutation.isPending ||
-                                    !email ||
-                                    !password ||
-                                    !confirmPassword
+                                    !watch("email") ||
+                                    !watch("password") ||
+                                    !watch("confirmPassword")
                                 }
                                 type="submit"
                                 className="w-full"
@@ -227,29 +173,6 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                         </div>
                     </form>
                 </Form>
-                {/* <div className="relative mb-4">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                            Or continue with
-                        </span>
-                    </div>
-                </div>
-                <Button
-                    variant="outline"
-                    type="button"
-                    disabled={mutation.isPending}
-                    className="flex items-center w-full"
-                >
-                    {mutation.isPending ? (
-                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                        <Icons.google className="mr-2 h-4 w-4" />
-                    )}{" "}
-                    Register with Google
-                </Button> */}
             </CardContent>
             <CardFooter>
                 <p className="text-center text-sm text-muted-foreground">
