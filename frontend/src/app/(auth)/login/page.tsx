@@ -1,26 +1,23 @@
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { LoginForm } from "@/components/custom/LoginForm";
 import GridBackground from "@/components/ui/background-grid";
 
-export default function LoginPage() {
+const LoginPage: React.FC = () => {
     return (
-        <>
-            <div className="relative w-full h-full flex items-center justify-center flex-1 bg-background p-2">
-                <GridBackground />
-                <Link
-                    href="/workspace"
-                    className={cn(
-                        buttonVariants({ variant: "secondary" }),
-                        "absolute right-4 top-[34px] md:right-8 max-xs:top-[30px] ",
-                    )}
+        <div className="relative w-full h-full flex items-center justify-center flex-1 bg-background p-2">
+            <GridBackground />
+            <Link href="/workspace">
+                <Button
+                    variant="secondary"
+                    className="absolute right-4 top-[34px] md:right-8 max-xs:top-[30px]"
                 >
                     Register
-                </Link>
-                <LoginForm />
-            </div>
-        </>
+                </Button>
+            </Link>
+            <LoginForm />
+        </div>
     );
-}
+};
+
+export default LoginPage;
