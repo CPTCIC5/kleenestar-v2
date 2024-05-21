@@ -1,6 +1,11 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
+import { SettingsWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
+import { SettingsWorkspaceFormSchemaTypes } from "../../lib/types/types";
 
 import {
     Form,
@@ -11,7 +16,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-
 import {
     Select,
     SelectContent,
@@ -21,53 +25,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-
+import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
-import { Input } from "../ui/input";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { SettingsWorkspaceFormSchemaTypes } from "../../lib/types/types";
-import { SettingsWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
-import useUserStore from "@/lib/store/UserStore";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { toast } from "sonner";
-import React from "react";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 export function WorkspaceNotificationForm() {
-    const [workspace, setWorkspace] = React.useState<{ business_name: string } | null>(null);
+    const { workspaceData } = useWorkspaceData();
 
     const form = useForm<SettingsWorkspaceFormSchemaTypes>({
         resolver: zodResolver(SettingsWorkspaceFormSchema),
     });
-
-    React.useEffect(() => {
-        const fetchWorkspaceDetails = async () => {
-            try {
-                const response = await axios.get(
-                    `/api/workspaces/`,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "ngrok-skip-browser-warning": "69420",
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
-                    },
-                );
-                console.log(response);
-                setWorkspace(response.data[0]);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchWorkspaceDetails();
-    }, []);
 
     async function onSubmit(data: SettingsWorkspaceFormSchemaTypes) {}
 
@@ -100,7 +68,7 @@ export function WorkspaceNotificationForm() {
                                             <Input
                                                 type="text"
                                                 disabled={true}
-                                                defaultValue={workspace?.business_name}
+                                                defaultValue={workspaceData?.business_name}
                                                 placeholder="name"
                                                 {...field}
                                             />
