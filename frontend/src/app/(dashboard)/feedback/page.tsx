@@ -1,10 +1,11 @@
 "use client";
+
+import { useRef, ChangeEvent, useState } from "react";
+import { Icons } from "@/assets/icons";
+
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { Card } from "@/components/ui/card";
-import Image from "next/image";
-import add_image from "../../../assets/images/add_image.png";
 import FeedbackForm from "@/components/custom/FeedbackForm";
-import { useRef, ChangeEvent, useState } from "react";
 
 export default function Feedback() {
     const addRef = useRef<HTMLInputElement | null>(null);
@@ -57,11 +58,7 @@ export default function Feedback() {
                                     accept="image/jpeg, image/png, image/jpg"
                                     onChange={handleImageUpload}
                                 />
-                                <Image
-                                    className="w-[20px] dark:filter dark:brightness-0 dark:invert h-[20px] max-xl:w-[15px] max-xl:h-[15px]"
-                                    src={add_image}
-                                    alt={"add_image"}
-                                />
+                                <Icons.solarGallerySendLine className="w-[20px]  h-[20px] max-xl:w-[15px] max-xl:h-[15px]" />
                                 <span className="pr-4">Add</span>
                             </Card>
                         </div>

@@ -1,110 +1,69 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import React, { useState } from "react";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { Icons } from "@/assets/icons";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { FeedbackFormSchemaTypes } from "@/lib/types/types";
 import { FeedbackFormSchema } from "@/lib/zod/schemas/schema";
+import { useSendFeedback } from "@/hooks/useSendFeedback";
+
 import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
-import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
 export default function FeedbackForm({ formData }: { formData: FormData }) {
-    const options = [
-        [1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10],
-    ];
-    const [selectedOption, setSelectedOption] = React.useState<number>();
-
-    const handleOptionChange = (option: number) => {
-        setSelectedOption(option);
-    };
-
-    const [selectedEmoji, setSelectedEmoji] = React.useState<Array<string>>([]);
-
-    const handleEmojiChange = (emoji: string) => {
-        if (selectedEmoji.includes(emoji)) {
-            const updatedEmojiList = selectedEmoji.filter((item) => item !== emoji);
-            setSelectedEmoji(updatedEmojiList);
-        } else {
-            const updatedEmojiList = [...selectedEmoji, emoji];
-            setSelectedEmoji(updatedEmojiList);
-        }
-        console.log(selectedEmoji);
-    };
-    const [validations, setValidations] = useState<{
-        options: string;
-        emoji: string;
-    }>({
-        options: "",
-        emoji: "",
-    });
     const form = useForm<FeedbackFormSchemaTypes>({
         resolver: zodResolver(FeedbackFormSchema),
         mode: "onChange",
     });
 
+    const [selectedOption, setSelectedOption] = useState<number | null>(null);
+    const [selectedEmoji, setSelectedEmoji] = useState<string[]>([]);
+    const options = [
+        [1, 2, 3, 4, 5],
+        [6, 7, 8, 9, 10],
+    ];
+
+    const handleOptionChange = (option: number) => {
+        setSelectedOption(option);
+    };
+
+    const handleEmojiChange = (emoji: string) => {
+        setSelectedEmoji((prevSelected) =>
+            prevSelected.includes(emoji)
+                ? prevSelected.filter((item) => item !== emoji)
+                : [...prevSelected, emoji],
+        );
+    };
+
+    const [validations, setValidations] = useState<{ options: string; emoji: string }>({
+        options: "",
+        emoji: "",
+    });
+
+    const mutation = useSendFeedback();
+
     const onSubmit = async (values: FeedbackFormSchemaTypes) => {
         const data = { ...values, selectedEmoji, selectedOption };
-        if (!selectedOption) {
-            setValidations((prevValidations) => ({
-                ...prevValidations,
-                options: "This field is required",
-            }));
-        } else {
-            setValidations((prevValidations) => ({ ...prevValidations, options: "" }));
-        }
 
-        if (selectedEmoji.length === 0) {
-            setValidations((prevValidations) => ({
-                ...prevValidations,
-                emoji: "Please select a emoji",
-            }));
-        } else {
-            setValidations((prevValidations) => ({ ...prevValidations, emoji: "" }));
-        }
-        console.log(data);
+        const optionError = !selectedOption ? "This field is required" : "";
+        const emojiError = selectedEmoji.length === 0 ? "Please select an emoji" : "";
 
-        if (!selectedOption || selectedEmoji.length === 0) {
-            console.log(validations);
-            return;
-        }
+        setValidations({ options: optionError, emoji: emojiError });
 
-        if (!formData) {
-            formData = new FormData();
-        }
+        if (optionError || emojiError) return;
 
-        try {
-            console.log(formData);
-            formData.append("urgency", String(data.selectedOption));
-            formData.append("subject", data.subject);
-            formData.append("message", data.message);
-            formData.append("emoji", String(data.selectedEmoji));
-            const response = await axios.post(`/api/auth/add-feedback/`, formData, {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
+        if (!formData) formData = new FormData();
+        formData.append("urgency", String(data.selectedOption));
+        formData.append("subject", data.subject);
+        formData.append("message", data.message);
+        formData.append("emoji", JSON.stringify(data.selectedEmoji));
 
-            console.log(response.data);
-            toast.success("Thanks for Submitting your Feedback!");
-        } catch (err) {
-            console.log(err);
-            toast.error("Failed to submit feedback");
-        }
-        // add axios API call
+        mutation.mutate(formData);
     };
 
     return (
