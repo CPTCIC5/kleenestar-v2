@@ -20,7 +20,7 @@ import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
-} from "@/components/custom/CustomDropdown";
+} from "@/components/ui/dropdown-menu";
 import { BackpackIcon, Share2Icon, TrashIcon } from "lucide-react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -86,13 +86,13 @@ export default function TeamMembersPage() {
                     </Card>
                 </div>
                 <div className="w-full mt-[31.38px] mb-[20.5px]">
-                    <span className="text-[14px]">Invited users</span>
+                    <CardTitle className="text-[14px]">Invited users</CardTitle>
                 </div>
                 <div className="w-full space-y-2">
                     {workspaceData?.users.map((user: User) => {
                         return (
                             <Card key={user.id}>
-                                <CardHeader className="flex flex-row items-center justify-center px-[20px] py-[15px] space-x-2">
+                                <CardHeader className="flex flex-row items-center justify-center p-[15px] space-x-2">
                                     <Avatar className="w-[30px] h-[30px]  rounded-full ">
                                         <AvatarImage
                                             className="rounded-full border-2 border-muted"
@@ -115,7 +115,7 @@ export default function TeamMembersPage() {
                                     </div>
 
                                     <Select>
-                                        <SelectTrigger disabled={true} className="w-[8rem] !mt-0">
+                                        <SelectTrigger disabled={true} className="w-[7rem] !mt-0">
                                             <SelectValue placeholder={"member"} />
                                         </SelectTrigger>
 
@@ -134,7 +134,12 @@ export default function TeamMembersPage() {
                                                 <DotsHorizontalIcon className={`h-4 w-4`} />
                                             </Button>
                                         </DropdownMenuTrigger>
-                                        <DropdownMenuContent className="w-full max-w-[166px]">
+                                        <DropdownMenuContent
+                                            sideOffset={-10}
+                                            align={"start"}
+                                            alignOffset={25}
+                                            className="w-full min-w-[50px]"
+                                        >
                                             <Button
                                                 variant="ghost"
                                                 disabled={true}

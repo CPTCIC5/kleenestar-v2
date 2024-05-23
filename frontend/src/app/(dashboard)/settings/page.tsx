@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SettingsPage() {
     return (
-        <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] p-3 pt-[69px]">
+        <div className="w-full flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] p-3 pt-[69px]">
             <div className="max-w-[662px] w-full flex flex-col">
                 <div className="flex gap-2 items-center mb-[16px]">
                     <span className="font-mainhead font-bold text-[18px]">Settings</span>
