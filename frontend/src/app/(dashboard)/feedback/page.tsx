@@ -6,6 +6,7 @@ import { Icons } from "@/assets/icons";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { Card } from "@/components/ui/card";
 import FeedbackForm from "@/components/custom/FeedbackForm";
+import { Button } from "@/components/ui/button";
 
 export default function Feedback() {
     const addRef = useRef<HTMLInputElement | null>(null);
@@ -28,27 +29,27 @@ export default function Feedback() {
         }
     };
     return (
-        <div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20">
-            <div className="gap-[15px] flex items-center">
-                <p className="text-[18px] font-mainhead">Support and feedback </p>
-                <QuestionMarkCircledIcon />
-            </div>
-            <div className="pt-[20px]  ">
-                <Card className="h-[53.74px] flex items-center w-full">
-                    <div className="flex justify-between gap-[20px] w-full mx-auto px-[20px] max-xl:px-[10px]">
-                        <div className="flex gap-2 items-center">
-                            <p className="text-[15px]  max-xl:text-[12px] font-mainhead">
-                                Attachment:
-                            </p>
-                            <p className="text-[11px] max-xl:text-[10px] font-normal ">
-                                A screenshot will help a lot.
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="text-[10px] text-ellipsis">{file}</div>
-                            <Card
+        <div className="flex justify-center p-3 pt-[69px]">
+            <div className="max-w-[672px] w-full space-y-5">
+                <div className="gap-2 flex items-center">
+                    <p className="text-[18px] font-mainhead">Support and feedback </p>
+                    <QuestionMarkCircledIcon className="h-4 w-4" />
+                </div>
+                <div>
+                    <Card className="h-[53.74px] flex items-center w-full">
+                        <div className="flex justify-between gap-[20px] w-full px-[20px] max-xl:px-[10px]">
+                            <div className="flex gap-2 items-center">
+                                <p className="text-[15px]  max-xl:text-[12px] font-mainhead">
+                                    Attachment:
+                                </p>
+                                <p className="text-[11px] max-xl:text-[10px] text-muted-foreground ">
+                                    {file ? file : "A screenshot will help a lot."}
+                                </p>
+                            </div>
+                            <Button
                                 onClick={handleAddImage}
-                                className="text-[16px] cursor-pointer max-xl:text-[14px] max-xl:px-[12px] max-xl:ml-2 h-[33.56px] px-[18px] gap-[12px] flex items-center"
+                                variant="outline"
+                                className=" cursor-pointer flex items-center rounded-xl py-[9px] px-[16px] gap-[8px]"
                             >
                                 <input
                                     ref={addRef}
@@ -58,14 +59,14 @@ export default function Feedback() {
                                     accept="image/jpeg, image/png, image/jpg"
                                     onChange={handleImageUpload}
                                 />
-                                <Icons.solarGallerySendLine className="w-[20px]  h-[20px] max-xl:w-[15px] max-xl:h-[15px]" />
-                                <span className="pr-4">Add</span>
-                            </Card>
+                                <Icons.solarGallerySendLine className="w-[20px] h-[20px]" />
+                                <span className="text-[16px]">Add</span>
+                            </Button>
                         </div>
-                    </div>
-                </Card>
+                    </Card>
+                </div>
+                <FeedbackForm formData={formData as FormData} />
             </div>
-            <FeedbackForm formData={formData as FormData} />
         </div>
     );
 }

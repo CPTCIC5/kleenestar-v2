@@ -27,62 +27,27 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
+import { useSendInviteCode } from "@/hooks/useSendInviteCode";
 
 type User = {
     id: string;
     first_name: string;
     last_name: string;
+    profile: {
+        avatar: string;
+    };
 };
 
 export default function TeamMembersPage() {
-    const navigate = useRouter();
+    const { workspaceData } = useWorkspaceData();
+    const [emailInput, setEmailInput] = React.useState<string>("");
 
-    const [users, setUsers] = React.useState<User[]>([]); // [ { id: string, name: string }
-    const [emailInput, setEmailInput] = React.useState("");
-    const [workspaceId, setWorkspaceId] = React.useState<number | null>(null);
+    const mutation = useSendInviteCode();
 
-    React.useEffect(() => {
-        const fetchWorkspaceDetails = async () => {
-            try {
-                const response = await axios.get(`/api/workspaces/`, {
-                    withCredentials: true,
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                });
-                console.log(response);
-                setWorkspaceId(response.data[0].id);
-                setUsers(response.data[0].users);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchWorkspaceDetails();
-    }, []);
-
-    async function sendInviteCode() {
-        try {
-            const response = await axios.post(
-                `/api/workspaces/${workspaceId}/create-invite/`,
-                {
-                    email: emailInput,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            toast.success("Invite link sent");
-        } catch (err) {
-            console.error(err);
-            toast.error("Oops! something went wrong");
-        }
-    }
+    const onSubmit = async () => {
+        mutation.mutate({ id: workspaceData?.id, emailInput: emailInput });
+    };
 
     return (
         <div className="w-full h-full flex items-center justify-center p-3">
@@ -104,7 +69,7 @@ export default function TeamMembersPage() {
                             />
                             <Button
                                 variant={"outline"}
-                                onClick={sendInviteCode}
+                                onClick={onSubmit}
                                 className="py-[9px] px-[18px] flex gap-[11px] items-center justify-center !mt-0 group"
                             >
                                 <div
@@ -124,14 +89,18 @@ export default function TeamMembersPage() {
                     <span className="text-[14px]">Invited users</span>
                 </div>
                 <div className="w-full space-y-2">
-                    {users.map((user) => {
+                    {workspaceData?.users.map((user: User) => {
                         return (
                             <Card key={user.id}>
                                 <CardHeader className="flex flex-row items-center justify-center px-[20px] py-[15px] space-x-2">
                                     <Avatar className="w-[30px] h-[30px]  rounded-full ">
                                         <AvatarImage
                                             className="rounded-full border-2 border-muted"
-                                            src="https://github.com/shadcn.png"
+                                            src={
+                                                user?.profile?.avatar
+                                                    ? user.profile.avatar
+                                                    : "https://github.com/shadcn.png"
+                                            }
                                             alt="@shadcn"
                                         />
                                         <AvatarFallback className="flex items-center justify-center">

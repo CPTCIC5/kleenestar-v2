@@ -67,248 +67,238 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
     };
 
     return (
-        <div>
-            <div className="py-[20px]">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <Card>
-                            <CardContent className="px-[23.48px] py-[25.50px]">
-                                <div>
-                                    <p className="text-[14px] ">How urgent is it?</p>
-                                    <div className="py-2">
-                                        <div className="w-full flex  gap-[10.33px] max-xl:flex-wrap max-xl:flex-col max-xl:items-center">
-                                            {options.map((optionslist, index) => {
-                                                return (
-                                                    <div
-                                                        key={index}
-                                                        className="w-full flex gap-[10.33px] justify-between"
-                                                    >
-                                                        {optionslist.map((option) => {
-                                                            return (
-                                                                <button
-                                                                    key={option}
-                                                                    className={`h-[45px] w-[45px] max-xl:h-[40px] max-xl:w-[40px]  px-2 mx-[3px] rounded-[10px] border-2 ${
-                                                                        selectedOption === option
-                                                                            ? "bg-foreground text-background"
-                                                                            : "bg-background text-foreground"
-                                                                    }`}
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        handleOptionChange(option);
-                                                                    }}
-                                                                >
-                                                                    {option}
-                                                                </button>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                    {validations.options && (
-                                        <p className="text-[0.8rem] font-medium text-destructive mb-2">
-                                            {validations.options}
-                                        </p>
-                                    )}
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Card>
+                    <CardContent className="p-6 space-y-4">
+                        <div className="space-y-3">
+                            <CardTitle>How urgent is it?</CardTitle>
+                            <div>
+                                <div className="w-full flex  gap-[10.33px] max-xl:flex-wrap max-xl:flex-col max-xl:items-center">
+                                    {options.map((optionslist, index) => {
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="w-full flex gap-[10.33px] justify-between"
+                                            >
+                                                {optionslist.map((option) => {
+                                                    return (
+                                                        <button
+                                                            key={option}
+                                                            className={`h-[40px] w-[40px]  px-2 mx-[3px] rounded-[10px] border-2 ${
+                                                                selectedOption === option
+                                                                    ? "bg-foreground text-background"
+                                                                    : "bg-background text-foreground"
+                                                            }`}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handleOptionChange(option);
+                                                            }}
+                                                        >
+                                                            {option}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                                <div>
-                                    <p className="text-[14px] ">Subject</p>
-                                    <div className="py-2">
-                                        <FormField
-                                            control={form.control}
-                                            name="subject"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <Input
-                                                            className={cn(
-                                                                "text-[14px]  bg-clip-text h-[45px]",
-                                                            )}
-                                                            id="subject"
-                                                            type="text"
-                                                            placeholder="What is it about?"
-                                                            disabled={false}
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        ></FormField>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p className="text-[14px] ">Message</p>
-                                    <div className="py-2">
-                                        <FormField
-                                            control={form.control}
-                                            name="message"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormControl>
-                                                        <Textarea
-                                                            placeholder="Write your message here..."
-                                                            className="text-[14px]  resize-none h-[95px]"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        ></FormField>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p className="text-[14px] ">Give us emoji</p>
-                                    <div className="pt-[10px]">
-                                        {" "}
-                                        <div className="flex gap-[17px] flex-wrap">
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("astonished")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("astonished");
-                                                }}
-                                            >
-                                                <Icons.astonished className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("cry")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("cry");
-                                                }}
-                                            >
-                                                <Icons.cry className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("unamused")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("unamused");
-                                                }}
-                                            >
-                                                <Icons.unamused className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("smirking")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("smirking");
-                                                }}
-                                            >
-                                                <Icons.smirking className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("happy")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("happy");
-                                                }}
-                                            >
-                                                <Icons.happy className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("more-happy")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("more-happy");
-                                                }}
-                                            >
-                                                <Icons.more_happy className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("in-love")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("in-love");
-                                                }}
-                                            >
-                                                <Icons.in_love className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]   flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("smiling")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("smiling");
-                                                }}
-                                            >
-                                                <Icons.smiling className="h-[30px] w-[30px]" />
-                                            </button>
-                                            <button
-                                                className={`h-[50px] w-[50px]  px-2 mx-[3px]    flex justify-center items-center rounded-full ${
-                                                    selectedEmoji.includes("vomiting")
-                                                        ? "bg-foreground"
-                                                        : "bg-background"
-                                                }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleEmojiChange("vomiting");
-                                                }}
-                                            >
-                                                <Icons.vomiting className="h-[30px] w-[30px]" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {validations.emoji && (
-                                        <p className="text-[0.8rem] font-medium text-destructive">
-                                            {validations.emoji}
-                                        </p>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <div className="flex justify-end w-full pt-[20px]">
-                            <Button
-                                disabled={
-                                    Object.keys(form.formState.errors).length > 0 ||
-                                    form.formState.isSubmitting
-                                }
-                                type="submit"
-                                className="px-[18px] py-[11px] rounded-[10px]"
-                            >
-                                {form.formState.isSubmitting && (
-                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                )}
-                                Send message
-                            </Button>
+                            </div>
+                            {validations.options && (
+                                <p className="text-[0.8rem] font-medium text-destructive mb-2">
+                                    {validations.options}
+                                </p>
+                            )}
                         </div>
-                    </form>
-                </Form>
-            </div>
-        </div>
+                        <div className="space-y-3">
+                            <CardTitle>Subject</CardTitle>
+
+                            <FormField
+                                control={form.control}
+                                name="subject"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                id="subject"
+                                                type="text"
+                                                placeholder="What is it about?"
+                                                disabled={false}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            ></FormField>
+                        </div>
+                        <div className="space-y-3">
+                            <CardTitle>Message</CardTitle>
+
+                            <FormField
+                                control={form.control}
+                                name="message"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder="Write your message here..."
+                                                className="text-[14px]  resize-none h-[95px]"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            ></FormField>
+                        </div>
+                        <div className="space-y-3">
+                            <CardTitle>Give us emoji</CardTitle>
+                            <div>
+                                <div className="flex gap-3 flex-wrap justify-center">
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("astonished")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("astonished");
+                                        }}
+                                    >
+                                        <Icons.astonished className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("cry")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("cry");
+                                        }}
+                                    >
+                                        <Icons.cry className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("unamused")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("unamused");
+                                        }}
+                                    >
+                                        <Icons.unamused className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("smirking")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("smirking");
+                                        }}
+                                    >
+                                        <Icons.smirking className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("happy")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("happy");
+                                        }}
+                                    >
+                                        <Icons.happy className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("more-happy")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("more-happy");
+                                        }}
+                                    >
+                                        <Icons.more_happy className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("in-love")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("in-love");
+                                        }}
+                                    >
+                                        <Icons.in_love className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2   flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("smiling")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("smiling");
+                                        }}
+                                    >
+                                        <Icons.smiling className="h-[30px] w-[30px]" />
+                                    </button>
+                                    <button
+                                        className={`h-[45px] w-[45px]  px-2    flex justify-center items-center rounded-full ${
+                                            selectedEmoji.includes("vomiting")
+                                                ? "bg-foreground"
+                                                : "bg-background"
+                                        }`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleEmojiChange("vomiting");
+                                        }}
+                                    >
+                                        <Icons.vomiting className="h-[30px] w-[30px]" />
+                                    </button>
+                                </div>
+                            </div>
+                            {validations.emoji && (
+                                <p className="text-[0.8rem] font-medium text-destructive">
+                                    {validations.emoji}
+                                </p>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
+                <div className="flex justify-end w-full pt-[20px]">
+                    <Button
+                        disabled={
+                            Object.keys(form.formState.errors).length > 0 ||
+                            form.formState.isSubmitting
+                        }
+                        type="submit"
+                        className="px-[18px] py-[11px] rounded-[10px]"
+                    >
+                        {form.formState.isSubmitting && (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        Send message
+                    </Button>
+                </div>
+            </form>
+        </Form>
     );
 }
