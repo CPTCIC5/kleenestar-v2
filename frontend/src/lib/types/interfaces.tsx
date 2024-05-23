@@ -54,4 +54,19 @@ interface ChatStoreState {
     setInputPrompts: (newInputPrompts: InputPrompt[]) => void;
 }
 
-export type { User, Profile, UserStoreState, Convo, InputPrompt, ChatStoreState };
+interface KnowledgeDataTypes {
+    title: string;
+    createdAt: string;
+    type: string;
+    id: number;
+}
+
+export type {
+    User,
+    Profile,
+    UserStoreState,
+    Convo,
+    InputPrompt,
+    ChatStoreState,
+    KnowledgeDataTypes,
+};
