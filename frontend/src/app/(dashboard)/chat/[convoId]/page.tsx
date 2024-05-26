@@ -206,7 +206,9 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                                         <ThumbsDown className="w-[18px] h-[18px]" />
                                                                     </div>
                                                                 </DialogTrigger>
-                                                                <ChatFeedbackForm />
+                                                                <ChatFeedbackForm
+                                                                    prompt_id={convoId}
+                                                                />
                                                             </Dialog>
                                                         </div>
                                                     </div>

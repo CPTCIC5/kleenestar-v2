@@ -3,19 +3,17 @@
 import { SearchBox } from "@/components/custom/SearchBox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// import { blockNotes } from "@/constants/constants";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { DotsHorizontalIcon, InfoCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { InfoCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
-import Cookies from "js-cookie";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { DateTimeFormatOptions } from "intl";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Icons } from "@/assets/icons";
 import useDebounce from "@/hooks/useDebounce";
+import { useBlockNotes } from "@/hooks/useBlocknotes";
+import { useDeleteBlockNote } from "@/hooks/useDeleteBlocknotes";
+import { convertDateTime } from "@/lib/services/convertDateTime";
 
 interface BlockNoteTypes {
     id: number;
@@ -26,115 +24,29 @@ interface BlockNoteTypes {
 
 function BlockNotesPage() {
     const router = useRouter();
-    const [blockNotes, setBlockNotes] = useState([]);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [loading, setLoading] = useState(true);
+
+    const { data: blockNotes = [], isLoading, isSuccess } = useBlockNotes();
+    const { mutate: deleteBlockNote } = useDeleteBlockNote();
+    const [currentBlockNotes, setCurrentBlockNotes] = React.useState<BlockNoteTypes[]>(blockNotes);
+
     const [searchQuery, setSearchQuery] = useState("");
-    const [initalRender, setInitialRender] = useState(true);
     const debounceValue = useDebounce(searchQuery, 1000);
-    const [userDetails, setUserDetails] = useState<{
-        id: string;
-        profile: { country: string };
-    }>({
-        id: "",
-        profile: {
-            country: "",
-        },
-    });
-    function convertDateTime(dateTimeStr: string) {
-        const date = new Date(dateTimeStr);
-        const options = {
-            year: "numeric" as const,
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: true,
-        };
-        return new Intl.DateTimeFormat("en-US", options as DateTimeFormatOptions).format(date);
-    }
-    const fetchBlockNotes = async () => {
-        try {
-            const response = await axios.get(`/api/channels/blocknotes/`, {
-                withCredentials: true,
-                headers: {
-                    "ngrok-skip-browser-warning": "69420",
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
-            console.log(response.data);
-            setBlockNotes(response.data);
-        } catch (err) {
-            console.log(err);
-            toast.error("Failed to fetch block note details");
-        }
-        setLoading(false);
-    };
-    const deleteBlockNote = async (id: number) => {
-        try {
-            const response = await axios.delete(`/api/channels/blocknotes/${id}/`, {
-                withCredentials: true,
-                headers: {
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
-            console.log(response.data);
-            toast.success("BlockNote Deleted Successfully!");
-            await fetchBlockNotes();
-        } catch (err) {
-            console.log(err);
-            toast.error("Failed to delete Block Note");
-        }
-    };
-    useEffect(() => {
-        const fetchWorkspaceDetails = async () => {
-            try {
-                const response = await axios.get(`/api/workspaces/`, {
-                    withCredentials: true,
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                });
-                console.log(response);
-                setIsLoggedIn(true);
-                console.log(isLoggedIn);
-                setUserDetails(response.data[0].root_user);
-            } catch (err) {
-                console.error(err);
-                router.push("/");
-            }
-        };
-        fetchWorkspaceDetails();
-    }, []);
 
-    useEffect(() => {
-        if (!isLoggedIn) return;
-        fetchBlockNotes();
-    }, [isLoggedIn]);
-    console.log(loading);
-
-    useEffect(() => {
-        if (!initalRender) {
-            handleSearch();
-        } else {
-            setInitialRender(false);
-        }
-    }, [debounceValue]);
+    React.useEffect(() => {
+        handleSearch();
+    }, [debounceValue, isSuccess, blockNotes]);
 
     const handleSearch = async () => {
         if (searchQuery === "") {
-            await fetchBlockNotes();
+            setCurrentBlockNotes(blockNotes);
         } else {
             const filteredBlockNotes = blockNotes.filter((blocknotes: { title: string }) =>
                 blocknotes.title.toLowerCase().includes(searchQuery.toLowerCase()),
             );
-            setBlockNotes(filteredBlockNotes);
+            setCurrentBlockNotes(filteredBlockNotes);
         }
     };
+
     return (
         <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[65px] pt-[99.5px] p-3">
             <div className="max-w-[912px] w-full flex flex-col">
@@ -160,7 +72,7 @@ function BlockNotesPage() {
                     </Link>
                 </div>
                 <div className="w-full flex max-xl:justify-center justify-center pt-10">
-                    {blockNotes?.length === 0 && !loading ? (
+                    {currentBlockNotes?.length === 0 && !isLoading ? (
                         <div className="flex items-center justify-center h-[150px]">
                             <span className="text-[15px] flex justify-center max-w-[629px] w-full text-center text-muted-foreground">
                                 Create notes from your chat with AI and share them with your team
@@ -169,7 +81,7 @@ function BlockNotesPage() {
                         </div>
                     ) : (
                         <div className="flex flex-wrap justify-center gap-[27px] mt-[27px]">
-                            {loading ? (
+                            {isLoading ? (
                                 <div className="flex mx-auto gap-12 flex-wrap max-xl:pl-10  justify-between">
                                     <div className="flex-col space-y-3">
                                         <Skeleton className="h-[150px] w-[150px] rounded-xl" />
@@ -194,7 +106,7 @@ function BlockNotesPage() {
                                     </div>
                                 </div>
                             ) : (
-                                blockNotes.map((note: BlockNoteTypes) => {
+                                currentBlockNotes?.map((note: BlockNoteTypes) => {
                                     return (
                                         <Card key={note.id} className="max-w-[206px] w-full">
                                             <CardHeader className="pb-2">
