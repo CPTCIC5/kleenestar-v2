@@ -36,6 +36,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -43,10 +44,13 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
     const router = useRouter();
     const queryClient = useQueryClient();
 
-    // const loggedIn = queryClient.getQueryData<boolean>(["loggedIn"]);
-    // if (!loggedIn) {
-    //     router.push("/get-started");
-    // }
+    const { workspaceData, isWorkspaceSuccess } = useWorkspaceData();
+
+    React.useEffect(() => {
+        if (isWorkspaceSuccess) {
+            if (workspaceData) router.push("/chat");
+        }
+    }, [isWorkspaceSuccess]);
 
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
@@ -92,11 +96,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
             }, 200);
         },
         onError: (error) => {
-            form.reset({
-                businessName: "",
-                Website: "",
-                selectedOption: "",
-            });
+            form.reset();
             toast.error("Failed to create Workspace, please try again");
         },
     });
@@ -159,7 +159,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                         <Select
                                             disabled={mutation.isPending}
                                             onValueChange={field.onChange}
-                                            defaultValue={field.value}
+                                            value={field.value}
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
