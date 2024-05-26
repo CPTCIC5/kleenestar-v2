@@ -15,7 +15,12 @@ import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export default function MakeNotes({ note }: { note: string }) {
+interface MakeNotesProps {
+    id: number;
+    note: string;
+}
+
+export default function MakeNotes({ note }: MakeNotesProps) {
     const [noteColor, setColor] = useState("");
     const form = useForm<MakeNoteFormSchemaTypes>({
         resolver: zodResolver(MakeNoteFormSchema),

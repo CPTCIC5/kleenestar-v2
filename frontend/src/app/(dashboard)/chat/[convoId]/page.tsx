@@ -161,8 +161,8 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                 </div>
                                             ) : null}
 
-                                            <div className="space-y-4">
-                                                <span className=" text-[16px] leading-[19.5px]">
+                                            <div className="space-y-4 w-full">
+                                                <div className=" w-full overflow-auto scrollbar-hide">
                                                     {item?.response_text === "thinking..." ? (
                                                         <PulsatingDots />
                                                     ) : (
@@ -170,7 +170,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                             {item?.response_text}
                                                         </Markdown>
                                                     )}
-                                                </span>
+                                                </div>
                                                 {item?.response_text !== "thinking..." ? (
                                                     <div className="flex gap-[15px] justify-start items-center">
                                                         <div>
@@ -188,6 +188,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                                     </div>
                                                                 </DialogTrigger>
                                                                 <MakeNotes
+                                                                    id={item?.id}
                                                                     note={item?.response_text}
                                                                 />
                                                             </Dialog>
