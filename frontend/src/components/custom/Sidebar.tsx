@@ -22,12 +22,9 @@ export default function Sidebar() {
 
     const mutation = useLogout();
 
-    if (isUserSuccess) {
-        console.log("userData", userData);
-    }
-
-    if (isWorkspaceSuccess) {
-        console.log("workspaceData", workspaceData);
+    if (isUserSuccess && isWorkspaceSuccess) {
+        console.log("User data: ", userData);
+        console.log("Workspace data: ", workspaceData);
     }
 
     return (

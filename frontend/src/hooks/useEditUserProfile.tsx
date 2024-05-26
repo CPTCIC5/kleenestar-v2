@@ -26,6 +26,7 @@ export function useEditUserProfile(userId: number) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["userData"] });
+            queryClient.invalidateQueries({ queryKey: ["workspaceData"] });
             toast.success("Name updated successfully");
         },
         onError: (error) => {

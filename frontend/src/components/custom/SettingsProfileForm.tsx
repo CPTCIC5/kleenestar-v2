@@ -89,6 +89,7 @@ export function SettingsProfileForm() {
             );
 
             queryClient.invalidateQueries({ queryKey: ["userData"] });
+            queryClient.invalidateQueries({ queryKey: ["workspaceData"] });
             toast.success("Name updated successfully");
         } catch (error) {
             toast.error("An unexpected error occurred. Please try again.");

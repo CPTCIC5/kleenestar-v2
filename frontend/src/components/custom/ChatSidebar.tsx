@@ -1,167 +1,87 @@
+"use client";
+
 import { Button, buttonVariants } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
-import {
-    BackpackIcon,
-    DotsHorizontalIcon,
-    DoubleArrowLeftIcon,
-    DoubleArrowRightIcon,
-    MagicWandIcon,
-    Pencil2Icon,
-    PlusCircledIcon,
-    Share2Icon,
-    TrashIcon,
-} from "@radix-ui/react-icons";
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon, MagicWandIcon } from "@radix-ui/react-icons";
 import { Separator } from "../ui/separator";
 import { SearchBox } from "./SearchBox";
-import { chatPrevious, chatToday, folders } from "@/constants/constants";
 import * as React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { ChatOptionButton } from "./ChatOptionButton";
-import { Folder } from "lucide-react";
-import { FolderOptionButton } from "./FolderOptionButton";
-import useChatStore from "@/lib/store/ConvoStore";
 import { Convo } from "@/lib/types/interfaces";
-import axios from "axios";
-import Cookies from "js-cookie";
 import useDebounce from "@/hooks/useDebounce";
+import { useFetchConvos } from "@/hooks/useFetchConvos";
+import { useAddConvo } from "@/hooks/useAddConvo";
+import { useCheckLastConvoEmpty } from "@/hooks/useCheckLastConvoEmpty";
+import { useRouter } from "next/navigation";
 
-interface ChatSidebarProps {
-    currentConvoId: number;
-    setCurrentConvoId: (id: number) => void;
-    setDeleteId: (id: number) => void;
-}
-
-export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: ChatSidebarProps) {
-    const setInputPrompts = useChatStore((state) => state.setInputPrompts);
-    const convos = useChatStore((state) => state.convos);
-    const addConvos = useChatStore((state) => state.addConvos);
+export function ChatSidebar() {
+    const router = useRouter();
+    const { data: convos = [], isLoading, isSuccess, error } = useFetchConvos();
+    const { mutate: addChatMutation } = useAddConvo();
     const [todayConvos, setTodayConvos] = React.useState<Convo[]>([]);
     const [previousConvos, setPreviousConvos] = React.useState<Convo[]>([]);
     const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
     const [rename, setRename] = React.useState<number | null>(null);
     const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);
     const [searchQuery, setSearchQuery] = React.useState("");
-    const [initalRender, setInitialRender] = React.useState(true);
     const debounceValue = useDebounce(searchQuery, 1000);
     const [currentConvos, setCurrentConvos] = React.useState<Convo[]>(convos);
+    const [currentConvoId, setCurrentConvoId] = React.useState<number | null>(null);
 
     React.useEffect(() => {
-        if (!initalRender) {
-            handleSearch();
-        } else {
-            setInitialRender(false);
-        }
+        handleSearch();
     }, [debounceValue]);
 
     const handleSearch = () => {
-        const filteredConvos = convos.filter((convo) =>
+        const filteredConvos = convos.filter((convo: Convo) =>
             convo.title.toLowerCase().includes(searchQuery.toLowerCase()),
         );
         setCurrentConvos(filteredConvos);
     };
-    // const [folderRename, setFolderRename] = React.useState<number | null>(null);
-    // const [toggleFolderOptions, setToggleFolderOptions] = React.useState<number | null>(null);
-    // const [openFolder, setOpenFolder] = React.useState<Array<number>>([]);
-
-    // const handleFolderOptions = (id: number) => {
-    //     if (openFolder.includes(id)) {
-    //         setOpenFolder(openFolder.filter((folder) => folder !== id));
-    //     } else {
-    //         setOpenFolder([...openFolder, id]);
-    //     }
-    // };
 
     React.useEffect(() => {
-        console.log("rerendered");
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
         const todayConvoList = currentConvos.filter((convo) => {
-            const today = new Date();
-            // console.log(convo.title);
-
             const convoDate = new Date(convo.created_at);
-            today.setHours(0, 0, 0, 0);
             convoDate.setHours(0, 0, 0, 0);
+            return convoDate.getTime() === today.getTime() && !convo.archived;
+        });
 
-            return convoDate.getTime() === today.getTime() && convo.archived === false;
+        const previousConvoList = currentConvos.filter((convo) => {
+            const convoDate = new Date(convo.created_at);
+            convoDate.setHours(0, 0, 0, 0);
+            return convoDate.getTime() !== today.getTime() && !convo.archived;
         });
 
         setTodayConvos(todayConvoList);
-
-        const previousConvoList = currentConvos.filter((convo) => {
-            const today = new Date();
-            // console.log(convo.title);
-
-            const convoDate = new Date(convo.created_at);
-            today.setHours(0, 0, 0, 0);
-            convoDate.setHours(0, 0, 0, 0);
-
-            return convoDate.getTime() !== today.getTime() && convo.archived === false;
-        });
-
         setPreviousConvos(previousConvoList);
-        console.log(todayConvos, previousConvos);
     }, [currentConvos]);
 
+    const lastConvo = todayConvos[0] || null;
+    const { data: isLastConvoEmpty, refetch: refetchConvoEmpty } = useCheckLastConvoEmpty(
+        lastConvo ? lastConvo.id : null,
+    );
+
     React.useEffect(() => {
-        setCurrentConvos(convos);
+        if (isSuccess) {
+            setCurrentConvos(convos);
+        }
     }, [convos]);
 
-    const checkIsEmpty = async () => {
-        if (todayConvos.length === 0) {
-            return false;
-        }
-        const { id } = todayConvos[0];
-        try {
-            const response = await axios.get(`/api/channels/convos/${id}/prompts/`, {
-                withCredentials: true,
-                headers: {
-                    "ngrok-skip-browser-warning": "69420",
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
-            return response.data.count === 0;
-        } catch (err) {
-            console.error(err);
-            return true;
+    const handleAddChat = async () => {
+        await refetchConvoEmpty();
+        if (!isLastConvoEmpty) {
+            addChatMutation();
         }
     };
 
-    const handleAddChat = async () => {
-        if (await checkIsEmpty()) {
-            return;
-        }
-        try {
-            await axios.post(
-                `/api/channels/convos/`,
-                {},
-                {
-                    withCredentials: true,
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-
-            const response = await axios.get(`/api/channels/convos/`, {
-                withCredentials: true,
-                headers: {
-                    "ngrok-skip-browser-warning": "69420",
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
-
-            addConvos(response.data.results);
-            setCurrentConvoId(response.data.results[0].id);
-            setInputPrompts([]);
-            setCurrentConvos(response.data.results);
-        } catch (err) {
-            console.error("Error adding chat", err);
-        }
+    const handleConvoClick = (convoId: number) => {
+        setCurrentConvoId(convoId);
+        router.push(`/chat/${convoId}`);
     };
 
     return (
@@ -228,57 +148,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                    {/* <div>
-                        <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground text-[10px]">FOLDERS</span>
-                            <div
-                                className={cn(
-                                    buttonVariants({ variant: "ghost" }),
-                                    `rounded-full transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-secondary p-0 h-min  focus-visible:ring-0 ml-2 cursor-pointer`,
-                                )}
-                            >
-                                <PlusCircledIcon className="h-4 w-4  text-muted-foreground" />
-                                <span className="sr-only">Close</span>
-                            </div>
-                        </div>
-                        <div className="max-h-[144px] overflow-auto small-scrollbar">
-                            {folders.map((folder) => {
-                                const chats = chatPrevious.filter(
-                                    (chat) => chat.folder_id === folder.id,
-                                );
-                                return (
-                                    <div key={folder.id}>
-                                        <FolderOptionButton
-                                            folder={folder}
-                                            toggleFolderOptions={toggleFolderOptions}
-                                            setToggleFolderOptions={setToggleFolderOptions}
-                                            folderRename={folderRename}
-                                            setFolderRename={setFolderRename}
-                                            onClick={() => handleFolderOptions(folder.id)}
-                                        />
-                                        <div
-                                            className={`${
-                                                openFolder.includes(folder.id) ? "block" : "hidden"
-                                            }`}
-                                        >
-                                            {chats.map((chat) => {
-                                                return (
-                                                    <ChatOptionButton
-                                                        key={chat.id}
-                                                        chat={chat}
-                                                        toggleOptions={toggleOptions}
-                                                        setToggleOptions={setToggleOptions}
-                                                        rename={rename}
-                                                        setRename={setRename}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div> */}
+
                     <div className="h-[503px] overflow-auto small-scrollbar ">
                         <div>
                             <div>
@@ -287,7 +157,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                             {todayConvos.map((chat) => {
                                 return (
                                     <ChatOptionButton
-                                        onClick={() => setCurrentConvoId(chat.id)}
+                                        onClick={() => handleConvoClick(chat.id)}
                                         currentConvoId={currentConvoId}
                                         key={chat.id}
                                         chat={chat}
@@ -308,7 +178,7 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId, setDeleteId }: 
                             {previousConvos.map((chat) => {
                                 return (
                                     <ChatOptionButton
-                                        onClick={() => setCurrentConvoId(chat.id)}
+                                        onClick={() => handleConvoClick(chat.id)}
                                         currentConvoId={currentConvoId}
                                         key={chat.id}
                                         chat={chat}

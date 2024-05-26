@@ -7,5 +7,5 @@ export const useUserData = () => {
         queryFn: getUserData,
     });
 
-    return { userData : data, isUserSuccess:isSuccess, isUserError: isError, userError: error };
+    return { userData: data, isUserSuccess: isSuccess, isUserError: isError, userError: error };
 };

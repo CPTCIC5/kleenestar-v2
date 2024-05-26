@@ -1,57 +1,43 @@
 "use client";
 
-import { ChatDisplay } from "@/components/custom/ChatDisplay";
-import { ChatSidebar } from "@/components/custom/ChatSidebar";
-import useChatStore from "@/lib/store/ConvoStore";
-import axios from "axios";
-import React from "react";
-import Cookies from "js-cookie";
+import RippleLoader from "@/components/ui/ripple-loader";
+import { useAddConvo } from "@/hooks/useAddConvo";
+import { useFetchConvos } from "@/hooks/useFetchConvos";
 import { useRouter } from "next/navigation";
-import NoteSheet from "@/components/custom/NoteSheet";
+import React from "react";
 
-function Chat() {
-    // const convos = useChatStore((state) => state.convos);
-    // const addConvos = useChatStore((state) => state.addConvos);
-    // const [currentConvoId, setCurrentConvoId] = React.useState<number>(convos[0]?.id);
-    // const [deleteId, setDeleteId] = React.useState<number>(-1);
-    // const navigate = useRouter();
+function ChatPageNew() {
+    const { data: convos, isLoading, isSuccess, error, refetch: refetchConvos } = useFetchConvos();
+    const router = useRouter();
 
-    // const fetchConvos = async () => {
-    //     try {
-    //         const response = await axios.get(`/api/channels/convos/`, {
-    //             withCredentials: true,
-    //             headers: {
-    //                 "ngrok-skip-browser-warning": "69420",
-    //                 "Content-Type": "application/json",
-    //                 "X-CSRFToken": Cookies.get("csrftoken"),
-    //             },
-    //         });
-    //         console.log(response);
+    const { mutateAsync: addConvoMutation, isSuccess: addConvoSuccess } = useAddConvo();
+    const hasAddedConvo = React.useRef(false);
 
-    //         addConvos(response.data.results);
-    //         setCurrentConvoId(response.data.results[0].id);
-    //     } catch (error) {
-    //         console.error("Error fetching convos:", error);
-    //     }
-    // };
+    React.useEffect(() => {
+        if (isSuccess && !hasAddedConvo.current) {
+            if (convos.length > 0) {
+                router.push(`/chat/${convos[0].id}`);
+            } else {
+                hasAddedConvo.current = true; // Prevent further calls
+                addConvoMutation();
+            }
+        }
+    }, [isSuccess, convos, router, addConvoMutation]);
 
-    // React.useEffect(() => {
-    //     fetchConvos();
-    // }, []);
+    if (isLoading)
+        return (
+            <div className="h-full w-full flex items-center justify-center ">
+                <RippleLoader />
+            </div>
+        );
+
+    if (error) return <div>Error loading conversations.</div>;
 
     return (
-        <div className="w-full h-screen flex items-start justify-center flex-1 bg-muted/40 max-sm:pt-[56px]">
-            {/* <ChatSidebar
-                currentConvoId={currentConvoId}
-                setCurrentConvoId={setCurrentConvoId}
-                setDeleteId={setDeleteId}
-            />
-            <div className=" flex-1 w-full h-full ">
-                <ChatDisplay currentConvoId={currentConvoId} />
-                <NoteSheet />
-            </div> */}
+        <div className="h-full w-full flex items-center justify-center ">
+            <RippleLoader />
         </div>
     );
 }
 
-export default Chat;
+export default ChatPageNew;

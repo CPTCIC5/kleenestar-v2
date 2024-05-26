@@ -1,15 +1,22 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import axiosInstance from "@/lib/axios/AxiosInstance";
 import Cookies from "js-cookie";
+import axios from "axios";
+import { toast } from "sonner";
 
 export function useLogout() {
     const router = useRouter();
 
     const mutation = useMutation({
         mutationFn: async () => {
-            return await axiosInstance.post(`/api/auth/logout/`, null);
+            return await axios.post(`/api/auth/logout/`, null, {
+                withCredentials: true,
+                headers: {
+                    "ngrok-skip-browser-warning": "69420",
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": Cookies.get("csrftoken"),
+                },
+            });
         },
         onSuccess: () => {
             Cookies.remove("csrftoken");

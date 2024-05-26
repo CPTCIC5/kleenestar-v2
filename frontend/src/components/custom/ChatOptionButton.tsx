@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
 import {
@@ -18,23 +20,18 @@ import {
     Share2Icon,
     TrashIcon,
 } from "@radix-ui/react-icons";
-import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/custom/CustomDropdown";
+} from "@/components/ui/dropdown-menu";
+import useDeleteConvo from "@/hooks/useDeleteConvo";
+import useRenameConvo from "@/hooks/useRenameConvo";
 import React from "react";
-import useChatStore from "@/lib/store/ConvoStore";
-import axios from "axios";
-import Cookies from "js-cookie";
 
 interface ChatOptionButtonProps {
-    currentConvoId: number;
+    currentConvoId: number | null;
     chat: {
         id: number;
         title: string;
@@ -56,70 +53,29 @@ export function ChatOptionButton({
     setRename,
     ...otherProps
 }: ChatOptionButtonProps) {
-    const convos = useChatStore((state) => state.convos);
-    const renameConvo = useChatStore((state) => state.renameConvo);
-    const deleteConvo = useChatStore((state) => state.deleteConvo);
-    const [newName, setNewName] = React.useState<string>("");
+    const { mutate: deleteConvo } = useDeleteConvo();
+    const { mutate: renameConvo } = useRenameConvo();
+    const [newName, setNewName] = React.useState<string>(chat.title);
 
-    const handleDeleteChat = async (id: number) => {
-        try {
-            await axios.delete(`/api/channels/convos/${id}/`, {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
-            deleteConvo(id);
-        } catch (err) {
-            console.error("Error deleting chat", err);
-        }
+    const handleDeleteChat = (id: number) => {
+        deleteConvo(id);
     };
 
-    const handleRenameChat = async (id: number, newName: string) => {
-        try {
-            await axios.patch(
-                `/api/channels/convos/${id}/`,
-                {
-                    title: newName,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
-            console.log(currentConvoId, id, newName);
-
-            renameConvo(id, newName);
-            console.log(convos);
-        } catch (error) {
-            console.error(error);
-        }
+    const handleRenameChat = (id: number, newName: string) => {
+        renameConvo({ id, newName });
     };
 
     const handleOptions = (id: number) => {
-        if (toggleOptions === id) {
-            setToggleOptions(null);
-        } else {
-            setToggleOptions(id);
-        }
+        setToggleOptions((prev) => (prev === id ? null : id));
     };
 
     const handleRename = (id: number) => {
-        if (rename === id) {
-            setRename(null);
-        } else {
-            setRename(id);
-        }
+        setRename((prev) => (prev === id ? null : id));
     };
 
     return (
         <div
             {...otherProps}
-            key={chat.id}
             className={cn(
                 buttonVariants({ variant: "ghost" }),
                 `relative w-full flex justify-start items-center text=[13px] font-medium group ${
@@ -156,39 +112,6 @@ export function ChatOptionButton({
                     {chat.title}
                 </span>
             )}
-            {/* <TryDropDown /> */}
-
-            {/* <Card
-                className={`absolute bottom-[10px] right-[10px] z-[100] translate-x-full translate-y-full ${
-                    toggleOptions === chat.id ? "block" : "hidden"
-                }`}
-            >
-                <CardContent className="flex flex-col p-0 z-[100]">
-                    <Button
-                        onClick={() => {
-                            handleRename(chat.id);
-                            setToggleOptions(null);
-                        }}
-                        variant="ghost"
-                        className="flex justify-start gap-2"
-                    >
-                        <Pencil2Icon className="h-4 w-4" />
-                        <span className="text-[14px] font-normal">Rename</span>
-                    </Button>
-                    <Button variant="ghost" className="flex justify-start gap-2">
-                        <BackpackIcon className="h-4 w-4" />
-                        <span className="text-[14px] font-normal">Add to folder</span>
-                    </Button>
-                    <Button variant="ghost" className="flex justify-start gap-2">
-                        <Share2Icon className="h-4 w-4" />
-                        <span className="text-[14px] font-normal">Share chat</span>
-                    </Button>
-                    <Button variant="ghost" className="flex justify-start gap-2">
-                        <TrashIcon className="h-4 w-4" />
-                        <span className="text-[14px] font-normal">Delete</span>
-                    </Button>
-                </CardContent>
-            </Card> */}
 
             <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -199,7 +122,12 @@ export function ChatOptionButton({
                         }`}
                     />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full max-w-[166px]">
+                <DropdownMenuContent
+                    sideOffset={10}
+                    align={"start"}
+                    alignOffset={50}
+                    className="w-full max-w-[166px]"
+                >
                     <Button
                         onClick={(e) => {
                             e.stopPropagation();

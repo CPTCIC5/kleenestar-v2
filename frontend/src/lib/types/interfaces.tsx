@@ -24,7 +24,7 @@ interface UserStoreState {
 
 interface Convo {
     id: number;
-    assitant_id: string;
+    thread_id: string;
     workspace: object;
     title: string;
     created_at: string;

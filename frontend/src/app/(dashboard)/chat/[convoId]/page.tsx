@@ -1,50 +1,58 @@
-import {
-    ArchiveRestore,
-    CircleHelp,
-    Clipboard,
-    ClipboardList,
-    ImageUp,
-    SendHorizonal,
-    SquareMenuIcon,
-    ThumbsDown,
-    X,
-} from "lucide-react";
-import { InputPrompt } from "@/constants/dummyChatData";
+"use client";
+
+import { ClipboardList, ThumbsDown, X } from "lucide-react";
 import * as React from "react";
-import { NewChatDisplay } from "./NewChatDisplay";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { NewChatDisplay } from "@/components/custom/NewChatDisplay";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components//ui/avatar";
 import { Icons } from "@/assets/icons";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Dialog, DialogTrigger } from "../ui/dialog";
-import MakeNotes from "./MakeNotes";
-import ChatFeedbackForm from "./ChatFeedbackForm";
-import { dummyMarkdownNote } from "@/constants/constants";
-import { Card, CardHeader } from "../ui/card";
+import { Dialog, DialogTrigger } from "@/components//ui/dialog";
+import MakeNotes from "@/components/custom/MakeNotes";
+import ChatFeedbackForm from "@/components/custom/ChatFeedbackForm";
+import { Card, CardHeader } from "@/components/ui/card";
 import { CrossCircledIcon, PaperPlaneIcon, UploadIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "../ui/button";
-import { Separator } from "../ui/separator";
-import useChatStore from "@/lib/store/ConvoStore";
+import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import axios from "axios";
-import Cookies from "js-cookie";
 import Image from "next/image";
-import PulsatingDots from "../ui/pulsating-dots";
+import PulsatingDots from "@/components/ui/pulsating-dots";
+import { useRouter } from "next/router";
+import { useFetchPrompts } from "@/hooks/useFetchPrompt";
+import { useCreatePrompt } from "@/hooks/useCreatePrompt";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUserData } from "@/hooks/useUserData";
 
-interface ChatDisplayProps {
-    currentConvoId: number;
+export interface Prompt {
+    id: number;
+    convo_id: number | null;
+    author: string;
+    text_query: string;
+    file_query: string | null;
+    response_text: string;
+    response_image: string;
+    created_at: string;
 }
 
-export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
-    const convos = useChatStore((state) => state.convos);
-    const inputPrompts = useChatStore((state) => state.inputPrompts);
-    const updateInputPrompts = useChatStore((state) => state.updateInputPrompts);
-    const setInputPrompts = useChatStore((state) => state.setInputPrompts);
-    const [Data, setData] = React.useState(InputPrompt);
-    const [uploadedFiles, setUploadedFiles] = React.useState<string | null>(null);
+function ChatDisplayPage({ params }: { params: { convoId: string } }) {
+    const convoId = Number(params.convoId);
+
+    const { userData } = useUserData();
+
     const [text, setText] = React.useState("");
+    const [uploadedFiles, setUploadedFiles] = React.useState<string | null>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+    const queryClient = useQueryClient();
+    const { data: prompts, isLoading } = useFetchPrompts(convoId);
+    const { mutateAsync: createPrompt } = useCreatePrompt();
+
+    const handleUploadFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            setUploadedFiles(URL.createObjectURL(event.target.files[0]));
+        }
+    };
 
     const handleRemoveFile = () => {
         setUploadedFiles(null);
@@ -54,105 +62,87 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
         fileInputRef.current?.click();
     };
 
-    const handleUploadFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            setUploadedFiles(URL.createObjectURL(event.target.files[0]));
-        }
-    };
-
     const sendMessage = async () => {
-        // if (currentConvoId === undefined) return;
-        console.log(text, uploadedFiles);
-        const inputText: string = text;
-        setText("");
         if (!text) {
             toast.warning("Please enter your message");
             return;
-        } else {
-            try {
-                //creates input prompt in the backend
-                inputPrompts.push({
-                    id: 0,
-                    convo_id: 0,
-                    author: "",
-                    text_query: inputText,
-                    file_query: "",
-                    response_text: "thinking...",
-                    response_image: "",
-                    created_at: "",
-                });
-                await axios.post(
-                    `/api/channels/convos/${currentConvoId}/prompts/create/`,
-                    {
-                        text_query: inputText,
-                        file_query: uploadedFiles,
-                    },
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "ngrok-skip-browser-warning": "69420",
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
-                    },
-                );
-                const response = await axios.get(
-                    `/api/channels/convos/${currentConvoId}/prompts/`,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "ngrok-skip-browser-warning": "69420",
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
-                    },
-                );
-                console.log(response);
-                inputPrompts.pop();
-                updateInputPrompts(response.data.results);
-            } catch (err) {
-                console.error(err);
-            }
+        }
+
+        const inputText: string = text;
+        setText("");
+
+        const tempPrompt: Prompt = {
+            id: Date.now(), // Temporarily use current timestamp as ID
+            convo_id: convoId,
+            author: "User",
+            text_query: inputText,
+            file_query: uploadedFiles,
+            response_text: "thinking...",
+            response_image: "",
+            created_at: new Date().toISOString(),
+        };
+
+        // Optimistically update the local state
+        queryClient.setQueryData<Prompt[]>(["prompts", convoId], (old) => [
+            ...(old || []),
+            tempPrompt,
+        ]);
+
+        try {
+            await createPrompt({ convoId, text: inputText, file: uploadedFiles });
+            await queryClient.invalidateQueries({ queryKey: ["prompts", convoId] });
+        } catch (error) {
+            console.error(error);
+            // If error, revert back the optimistic update
+            queryClient.setQueryData<Prompt[]>(["prompts", convoId], (old) =>
+                old?.filter((p) => p.id !== tempPrompt.id),
+            );
         }
     };
 
+    const chatContainerRef = React.useRef<HTMLDivElement>(null);
+
+    // Use effect to scroll to bottom when prompts change
     React.useEffect(() => {
-        if (currentConvoId === undefined) return;
-        const updatePrompts = async () => {
-            const response = await axios.get(`/api/channels/convos/${currentConvoId}/prompts/`, {
-                withCredentials: true,
-                headers: {
-                    "ngrok-skip-browser-warning": "69420",
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": Cookies.get("csrftoken"),
-                },
-            });
-            console.log(response.data.results);
-            setInputPrompts(response.data.results);
-        };
-        updatePrompts();
-    }, [currentConvoId, updateInputPrompts]);
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [prompts]);
+
+    React.useEffect(() => {
+        if (!convoId) return;
+    }, [convoId]);
+
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    };
 
     return (
         <div className=" w-full h-full pt-[10px] sm:pt-[69px] flex flex-col relative justify-between flex-1">
-            <section className="w-full h-full flex flex-col items-center px-[8px] overflow-auto large-scrollbar">
+            <section
+                ref={chatContainerRef}
+                className="w-full h-full flex flex-col items-center px-[8px] overflow-auto large-scrollbar"
+            >
                 <div className="max-w-[670.68px] w-full h-full  ">
-                    {inputPrompts.length === 0 ? (
+                    {prompts?.length === 0 ? (
                         <NewChatDisplay />
                     ) : (
                         <div className="w-full flex flex-col justify-center gap-[25px]">
-                            {inputPrompts.map((item, index) => {
+                            {prompts?.map((item: Prompt, index: number) => {
                                 return (
                                     <div key={index} className="flex flex-col gap-[25px]">
                                         <div className="flex items-start gap-[23.68px] pr-[24px]">
                                             <Avatar className="w-[35px] h-[35px] rounded-full ">
                                                 <AvatarImage
                                                     className="rounded-full border-2 border-muted"
-                                                    src="https://github.com/shadcn.png"
+                                                    src={userData?.profile?.avatar}
                                                     alt="@shadcn"
                                                 />
                                                 <AvatarFallback className="flex items-center justify-center">
-                                                    N
+                                                    {userData?.first_name?.charAt(0).toUpperCase()}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <span className=" text-[16px]">{item?.text_query}</span>
@@ -181,7 +171,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                                                         </Markdown>
                                                     )}
                                                 </span>
-                                                {item?.response_image === "thinking..." ? (
+                                                {item?.response_text !== "thinking..." ? (
                                                     <div className="flex gap-[15px] justify-start items-center">
                                                         <div>
                                                             <Dialog>
@@ -274,6 +264,7 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
                                 rows={1}
                                 className="my-0 py-0 w-full px-14  text-[16px] leading-[19.5px] resize-none outline-none overflow-y-auto max-h-[150px] text-muted-foreground bg-inherit small-scrollbar"
                                 placeholder="Type here..."
+                                onKeyPress={handleKeyPress}
                             />
                         </div>
                         <div
@@ -309,3 +300,5 @@ export function ChatDisplay({ currentConvoId }: ChatDisplayProps) {
         </div>
     );
 }
+
+export default ChatDisplayPage;
