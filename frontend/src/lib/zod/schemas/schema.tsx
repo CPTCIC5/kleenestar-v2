@@ -100,9 +100,22 @@ export const CreateWorkspaceFormSchema = z.object({
     selectedOption: z
         .string()
         .min(1, "Please select an option")
-        .refine((value) => ["E-commerce", "Sales", "Enterprise"].includes(value), {
-            message: "Invalid option selected. Please select a valid option.",
-        }),
+        .refine(
+            (value) =>
+                [
+                    "Retail",
+                    "Hospitality",
+                    "⁠Media",
+                    "⁠Technology",
+                    "⁠Finance",
+                    "⁠Sport",
+                    "⁠Beauty",
+                    "⁠Automotive",
+                ].includes(value),
+            {
+                message: "Invalid option selected. Please select a valid option.",
+            },
+        ),
 });
 
 export const SettingsProfileFormSchema = z.object({
