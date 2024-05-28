@@ -31,7 +31,7 @@ import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
 import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -95,9 +95,24 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                 router.push("/chat");
             }, 200);
         },
-        onError: (error) => {
+        onError: (error: AxiosError<{ data?: Record<string, string[]> }>) => {
+            const err = error as AxiosError<{ data?: Record<string, string[]> }>;
+
+            console.log(error);
             form.reset();
-            toast.error("Failed to create Workspace, please try again");
+
+            if (err.response?.data) {
+                const errorMessages = err.response.data;
+
+                // Iterate over the error messages and show a toast for each one
+                for (const [field, messages] of Object.entries(errorMessages)) {
+                    (messages as unknown as string[]).forEach((message: string) =>
+                        toast.error(message),
+                    );
+                }
+            } else {
+                toast.error("An unexpected error occurred. Please try again.");
+            }
         },
     });
 

@@ -32,10 +32,20 @@ export function useRegister() {
             toast.success("Registration Successful!");
             router.push("/create-workspace");
         },
-        onError: (error) => {
-            const err = error as AxiosError<{ email?: string[] }>;
-            if (err.response?.data?.email) {
-                toast.error(err.response.data.email[0]);
+        onError: (error: AxiosError<{ data?: Record<string, string[]> }>) => {
+            const err = error as AxiosError<{ data?: Record<string, string[]> }>;
+
+            console.log(error);
+
+            if (err.response?.data) {
+                const errorMessages = err.response.data;
+
+                // Iterate over the error messages and show a toast for each one
+                for (const [field, messages] of Object.entries(errorMessages)) {
+                    (messages as unknown as string[]).forEach((message: string) =>
+                        toast.error(message),
+                    );
+                }
             } else {
                 toast.error("An unexpected error occurred. Please try again.");
             }
