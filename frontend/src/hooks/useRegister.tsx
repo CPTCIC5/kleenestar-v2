@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { RegisterFormSchemaTypes } from "@/lib/types/types";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useRegister() {
     const router = useRouter();
@@ -32,23 +33,8 @@ export function useRegister() {
             toast.success("Registration Successful!");
             router.push("/create-workspace");
         },
-        onError: (error: AxiosError<{ data?: Record<string, string[]> }>) => {
-            const err = error as AxiosError<{ data?: Record<string, string[]> }>;
-
-            console.log(error);
-
-            if (err.response?.data) {
-                const errorMessages = err.response.data;
-
-                // Iterate over the error messages and show a toast for each one
-                for (const [field, messages] of Object.entries(errorMessages)) {
-                    (messages as unknown as string[]).forEach((message: string) =>
-                        toast.error(message),
-                    );
-                }
-            } else {
-                toast.error("An unexpected error occurred. Please try again.");
-            }
+        onError: (error) => {
+            toastAxiosError(error);
         },
     });
 

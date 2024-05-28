@@ -1,8 +1,18 @@
 "use client";
 
 import * as React from "react";
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { Icons } from "@/assets/icons";
+import Cookies from "js-cookie";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
+import { useCreateWorkspace } from "@/hooks/useCreateWorkspace";
+import toastAxiosError from "@/lib/services/toastAxiosError";
+import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
+import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
 
 import {
     Form,
@@ -12,7 +22,6 @@ import {
     FormMessage,
     FormLabel,
 } from "@/components/ui/form";
-
 import {
     Select,
     SelectContent,
@@ -20,37 +29,33 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-
-import { Input } from "@/components/ui/input";
-import { Icons } from "@/assets/icons";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
-import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
-import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
-import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useWorkspaceData } from "@/hooks/useWorkspaceData";
+import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function CreateWorkspace({ className, ...props }: WorkspaceFormProps) {
     const router = useRouter();
     const queryClient = useQueryClient();
+    const { workspaceData, isWorkspaceSuccess, isWorkspaceError, workspaceError } =
+        useWorkspaceData();
 
-    const { workspaceData, isWorkspaceSuccess } = useWorkspaceData();
+    // console.log(Cookies.get("loggedIn"));
 
     React.useEffect(() => {
         if (isWorkspaceSuccess) {
-            if (workspaceData) router.push("/chat");
+            if (workspaceData) {
+                toast.success("Workspace already exists!");
+                router.push("/chat");
+            }
         }
-    }, [isWorkspaceSuccess]);
+        if (isWorkspaceError) {
+            toastAxiosError(workspaceError);
+            router.push("/login");
+        }
+    }, [isWorkspaceSuccess, isWorkspaceError]);
 
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
@@ -67,54 +72,12 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
     const Website = watch("Website");
     const selectedOption = watch("selectedOption");
 
-    const mutation = useMutation({
-        mutationFn: async (data: CreateWorkspaceFormSchemaTypes) => {
-            try {
-                const response = await axios.post(
-                    `/api/workspaces/`,
-                    {
-                        business_name: data.businessName,
-                        website_url: data.Website,
-                        Industry: data.selectedOption,
-                    },
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": Cookies.get("csrftoken"),
-                        },
-                    },
-                );
-            } catch (error) {
-                throw error;
-            }
-        },
-        onSuccess: () => {
-            toast.success("Workspace Created Successfully!");
-            setTimeout(() => {
-                router.push("/chat");
-            }, 200);
-        },
-        onError: (error: AxiosError<{ data?: Record<string, string[]> }>) => {
-            const err = error as AxiosError<{ data?: Record<string, string[]> }>;
+    const mutation = useCreateWorkspace();
 
-            console.log(error);
-            form.reset();
-
-            if (err.response?.data) {
-                const errorMessages = err.response.data;
-
-                // Iterate over the error messages and show a toast for each one
-                for (const [field, messages] of Object.entries(errorMessages)) {
-                    (messages as unknown as string[]).forEach((message: string) =>
-                        toast.error(message),
-                    );
-                }
-            } else {
-                toast.error("An unexpected error occurred. Please try again.");
-            }
-        },
-    });
+    const onSubmit = (data: CreateWorkspaceFormSchemaTypes) => {
+        mutation.mutate(data);
+        form.reset();
+    };
 
     return (
         <Card className={cn(className)}>
