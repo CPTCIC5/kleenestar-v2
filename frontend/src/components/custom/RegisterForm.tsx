@@ -56,7 +56,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
     };
 
     return (
-        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]">
+        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px] bg-card">
             <CardHeader>
                 <CardTitle className="text-2xl font-mainhead ">Register</CardTitle>
                 <CardDescription>

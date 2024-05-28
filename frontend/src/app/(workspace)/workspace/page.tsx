@@ -19,7 +19,7 @@ const ChooseStart: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-center gap-6 pt-10 pb-10 max-xl:pt-4 max-xl:flex-col max-xl:gap-4">
                     <Link href="/invited-register">
-                        <Card className="h-[300px] w-[300px] hover:shadow-lg hover:scale-[1.02] max-xl:h-[200px] max-xl:w-[200px]">
+                        <Card className="h-[300px] w-[300px] hover:shadow-lg hover:scale-[1.02] max-xl:h-[200px] max-xl:w-[200px] bg-muted">
                             <CardContent className="h-full p-6 flex flex-col items-center justify-between">
                                 <Icons.workspaceYes className="w-[80%] h-[80%]" />
                                 <p className="text-center max-xl:text-sm">I have a workspace</p>
@@ -27,7 +27,7 @@ const ChooseStart: React.FC = () => {
                         </Card>
                     </Link>
                     <Link href="/register">
-                        <Card className="h-[300px] w-[300px] hover:shadow-lg hover:scale-[1.02] max-xl:h-[200px] max-xl:w-[200px]">
+                        <Card className="h-[300px] w-[300px] hover:shadow-lg hover:scale-[1.02] max-xl:h-[200px] max-xl:w-[200px] bg-muted">
                             <CardContent className="h-full p-6 flex flex-col items-center justify-between">
                                 <Icons.workspaceNo className="w-[80%] h-[80%] " />
                                 <p className="text-center max-xl:text-sm">
