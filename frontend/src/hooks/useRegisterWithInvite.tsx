@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { InvitedRegisterFormSchemaTypes } from "@/lib/types/types";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useRegisterWithInvite() {
     const router = useRouter();
@@ -34,12 +35,7 @@ export function useRegisterWithInvite() {
             router.push("/chat");
         },
         onError: (error) => {
-            const err = error as AxiosError<{ email?: string[] }>;
-            if (err.response?.data?.email) {
-                toast.error(err.response.data.email[0]);
-            } else {
-                toast.error("An unexpected error occurred. Please try again.");
-            }
+            toastAxiosError(error);
         },
     });
 

@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { LoginFormSchemaTypes } from "@/lib/types/types";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useLogin() {
     const router = useRouter();
@@ -31,12 +32,7 @@ export function useLogin() {
             router.push("/chat");
         },
         onError: (error) => {
-            const err = error as AxiosError<{ detail: string }>;
-            if (err.response?.data) {
-                toast.error(err.response.data.detail);
-            } else {
-                toast.error("An unexpected error occurred. Please try again.");
-            }
+            toastAxiosError(error);
         },
     });
 
