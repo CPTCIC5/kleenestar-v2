@@ -3,14 +3,11 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/assets/icons";
-import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 import { useCreateWorkspace } from "@/hooks/useCreateWorkspace";
-import toastAxiosError from "@/lib/services/toastAxiosError";
 import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
 import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
 
@@ -32,17 +29,14 @@ import {
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
+import RippleLoader from "../ui/ripple-loader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function CreateWorkspace({ className, ...props }: WorkspaceFormProps) {
     const router = useRouter();
-    const queryClient = useQueryClient();
-    const { workspaceData, isWorkspaceSuccess, isWorkspaceError, workspaceError } =
-        useWorkspaceData();
-
-    // console.log(Cookies.get("loggedIn"));
+    const { workspaceData, isWorkspaceLoading, isWorkspaceSuccess } = useWorkspaceData();
 
     React.useEffect(() => {
         if (isWorkspaceSuccess) {
@@ -51,11 +45,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                 router.push("/chat");
             }
         }
-        if (isWorkspaceError) {
-            toastAxiosError(workspaceError);
-            router.push("/login");
-        }
-    }, [isWorkspaceSuccess, isWorkspaceError]);
+    }, [isWorkspaceSuccess]);
 
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
@@ -79,6 +69,14 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
         form.reset();
     };
 
+    if (isWorkspaceLoading) {
+        return (
+            <div className="flex items-center justify-center p-4">
+                <RippleLoader />
+            </div>
+        );
+    }
+
     return (
         <Card className={cn(className)}>
             <CardHeader>
@@ -88,7 +86,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
 
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit((data) => mutation.mutate(data))}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="grid gap-4">
                             <FormField
                                 control={form.control}
