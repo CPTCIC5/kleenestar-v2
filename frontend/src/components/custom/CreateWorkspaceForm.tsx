@@ -75,7 +75,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                     {
                         business_name: data.businessName,
                         website_url: data.Website,
-                        industry: data.selectedOption,
+                        Industry: data.selectedOption,
                     },
                     {
                         withCredentials: true,
