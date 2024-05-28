@@ -167,7 +167,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="Retail ">Retail </SelectItem>
+                                                <SelectItem value="Retail">Retail</SelectItem>
                                                 <SelectItem value="Hospitality">
                                                     Hospitality
                                                 </SelectItem>

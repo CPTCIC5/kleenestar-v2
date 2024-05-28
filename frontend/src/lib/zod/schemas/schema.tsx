@@ -103,14 +103,14 @@ export const CreateWorkspaceFormSchema = z.object({
         .refine(
             (value) =>
                 [
+                    "Sport",
                     "Retail",
                     "Hospitality",
-                    "⁠Media",
-                    "⁠Technology",
-                    "⁠Finance",
-                    "⁠Sport",
-                    "⁠Beauty",
-                    "⁠Automotive",
+                    "Media",
+                    "Technology",
+                    "Finance",
+                    "Beauty",
+                    "Automotive",
                 ].includes(value),
             {
                 message: "Invalid option selected. Please select a valid option.",
