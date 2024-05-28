@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function SettingsProfileForm() {
     const queryClient = useQueryClient();
@@ -92,7 +93,7 @@ export function SettingsProfileForm() {
             queryClient.invalidateQueries({ queryKey: ["workspaceData"] });
             toast.success("Name updated successfully");
         } catch (error) {
-            toast.error("An unexpected error occurred. Please try again.");
+            toastAxiosError(error);
         }
     };
 
