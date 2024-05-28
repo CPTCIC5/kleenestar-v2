@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { toast } from "sonner";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useLogout() {
     const router = useRouter();
@@ -19,15 +20,11 @@ export function useLogout() {
             });
         },
         onSuccess: () => {
-            Cookies.remove("csrftoken");
-            Cookies.remove("sessionid");
             toast.success("Logout successfully !!");
-            setTimeout(() => {
-                router.push("/");
-            }, 100);
+            router.push("/");
         },
         onError: (error) => {
-            toast.error("Logout Failed");
+            toastAxiosError(error);
         },
     });
 

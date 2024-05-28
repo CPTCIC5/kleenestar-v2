@@ -1,8 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { SettingsSecurityFormSchemaTypes } from "@/lib/types/types";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useChangePassword() {
     const mutation = useMutation({
@@ -28,13 +29,7 @@ export function useChangePassword() {
             toast.success(response.data.message);
         },
         onError: (error) => {
-            const err = error as AxiosError<{ error: string }>;
-            const message = err?.response?.data?.error;
-            if (message) {
-                toast.error(message);
-            } else {
-                toast.error("An unexpected error occurred. Please try again.");
-            }
+            toastAxiosError(error);
         },
     });
 

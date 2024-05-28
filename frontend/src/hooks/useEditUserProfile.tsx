@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useEditUserProfile(userId: number) {
     const router = useRouter();
@@ -30,7 +31,7 @@ export function useEditUserProfile(userId: number) {
             toast.success("Name updated successfully");
         },
         onError: (error) => {
-            toast.error("An unexpected error occurred. Please try again.");
+            toastAxiosError(error);
         },
     });
 
