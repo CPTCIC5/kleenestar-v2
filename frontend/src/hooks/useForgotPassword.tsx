@@ -2,8 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ForgotPasswordFormSchemaTypes } from "@/lib/types/types";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useForgotPassword() {
     const router = useRouter();
@@ -30,12 +31,7 @@ export function useForgotPassword() {
             router.push("/login");
         },
         onError: (error) => {
-            const err = error as AxiosError<{ email?: string[] }>;
-            if (err.response?.data?.email) {
-                toast.warning("This email is not registered with us. Please try again.");
-            } else {
-                toast.error("An unexpected error occurred. Please try again.");
-            }
+            toastAxiosError(error);
         },
     });
 
