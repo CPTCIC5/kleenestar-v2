@@ -11,10 +11,12 @@ export function useLogin() {
 
     const mutation = useMutation({
         mutationFn: async (data: LoginFormSchemaTypes) => {
+            const newEmail = data.email.toLowerCase();
+
             return await axios.post(
                 `/api/auth/login/`,
                 {
-                    email: data.email,
+                    email: newEmail,
                     password: data.password,
                 },
                 {
@@ -27,7 +29,8 @@ export function useLogin() {
                 },
             );
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            console.log(data);
             toast.success("Login Successfull!");
             router.push("/chat");
         },

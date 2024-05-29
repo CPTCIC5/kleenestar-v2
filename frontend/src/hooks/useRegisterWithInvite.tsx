@@ -1,9 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import axios from "axios";
-import { InvitedRegisterFormSchemaTypes } from "@/lib/types/types";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { InvitedRegisterFormSchemaTypes } from "@/lib/types/types";
 import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useRegisterWithInvite() {
@@ -11,10 +11,12 @@ export function useRegisterWithInvite() {
 
     const mutation = useMutation({
         mutationFn: async (data: InvitedRegisterFormSchemaTypes) => {
+            const newEmail = data.email.toLowerCase();
+
             return await axios.post(
                 `/api/auth/signup/`,
                 {
-                    email: data.email,
+                    email: newEmail,
                     password: data.password,
                     confirm_password: data.confirmPassword,
                     newsletter: data.newsletter,
@@ -30,7 +32,11 @@ export function useRegisterWithInvite() {
                 },
             );
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            if (data?.statusText === "IM Used") {
+                toast.error("Invite Code is already used!");
+                return;
+            }
             toast.success("Registration Successful!");
             router.push("/chat");
         },

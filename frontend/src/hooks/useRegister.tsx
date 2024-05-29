@@ -1,9 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import axios from "axios";
-import { RegisterFormSchemaTypes } from "@/lib/types/types";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { RegisterFormSchemaTypes } from "@/lib/types/types";
 import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useRegister() {
@@ -11,10 +11,11 @@ export function useRegister() {
 
     const mutation = useMutation({
         mutationFn: async (data: RegisterFormSchemaTypes) => {
+            const newEmail = data.email.toLowerCase();
             return await axios.post(
                 `/api/auth/signup/`,
                 {
-                    email: data.email,
+                    email: newEmail,
                     password: data.password,
                     confirm_password: data.confirmPassword,
                     newsletter: data.newsletter,

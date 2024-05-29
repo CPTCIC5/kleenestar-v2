@@ -1,9 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
+import axios from "axios";
 import Cookies from "js-cookie";
-import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
 import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useCreateWorkspace() {
@@ -12,11 +12,13 @@ export function useCreateWorkspace() {
     const mutation = useMutation({
         mutationFn: async (data: CreateWorkspaceFormSchemaTypes) => {
             try {
+                const newWebsiteUrl = data.Website.toLowerCase();
+
                 const response = await axios.post(
                     `/api/workspaces/`,
                     {
                         business_name: data.businessName,
-                        website_url: data.Website,
+                        website_url: newWebsiteUrl,
                         Industry: data.selectedOption,
                     },
                     {
