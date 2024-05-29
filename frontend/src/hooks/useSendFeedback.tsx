@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useSendFeedback() {
     const mutation = useMutation({
@@ -18,7 +19,7 @@ export function useSendFeedback() {
             toast.success("Thanks for Submitting your Feedback!");
         },
         onError: (error) => {
-            toast.error("Failed to submit feedback");
+            toastAxiosError(error);
         },
     });
 
