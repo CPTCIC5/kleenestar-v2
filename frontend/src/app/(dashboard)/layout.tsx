@@ -1,6 +1,6 @@
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { getUserData } from "@/lib/services/getUserData";
-import { getWorkspaceData } from "@/lib/services/getWorkspaceData";
+import { getUserData } from "@/app/actions/getUserData";
+import { getWorkspaceData } from "@/app/actions/getWorkspaceData";
 
 import Sidebar from "@/components/custom/Sidebar";
 
@@ -20,6 +20,9 @@ export default async function DashboardLayout({
         queryKey: ["userData"],
         queryFn: getUserData,
     });
+
+    // console.log("Prefetched workspaceData", queryClient.getQueryData(["workspaceData"]));
+    // console.log("Prefetched userData", queryClient.getQueryData(["userData"]));
 
     return (
         <>

@@ -25,14 +25,8 @@ import React from "react";
 import { useUserData } from "@/hooks/useUserData";
 import { useEditUserProfile } from "@/hooks/useEditUserProfile";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { toast } from "sonner";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useQueryClient } from "@tanstack/react-query";
-import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function SettingsProfileForm() {
-    const queryClient = useQueryClient();
     const { userData } = useUserData();
 
     const form = useForm<SettingsProfileFormSchemaTypes>({
@@ -71,30 +65,17 @@ export function SettingsProfileForm() {
         }
     };
 
-    const onSubmit = async (data: SettingsProfileFormSchemaTypes) => {
-        try {
-            const response = await axios.patch(
-                `/api/auth/users/${userData?.id}/`,
-                {
-                    avatar: file,
-                    first_name: data.firstName,
-                    last_name: data.lastName,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-CSRFToken": Cookies.get("csrftoken"),
-                    },
-                },
-            );
+    const mutation = useEditUserProfile(userData?.id);
 
-            queryClient.invalidateQueries({ queryKey: ["userData"] });
-            queryClient.invalidateQueries({ queryKey: ["workspaceData"] });
-            toast.success("Name updated successfully");
-        } catch (error) {
-            toastAxiosError(error);
+    const onSubmit = async (data: SettingsProfileFormSchemaTypes) => {
+        const formData = new FormData();
+        formData.append("first_name", data.firstName);
+        formData.append("last_name", data.lastName);
+        if (file) {
+            formData.append("avatar", file);
         }
+
+        mutation.mutate(formData);
     };
 
     return (
