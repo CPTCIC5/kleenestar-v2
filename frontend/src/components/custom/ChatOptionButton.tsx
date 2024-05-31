@@ -16,6 +16,7 @@ import {
 import {
     BackpackIcon,
     DotsHorizontalIcon,
+    HamburgerMenuIcon,
     Pencil2Icon,
     Share2Icon,
     TrashIcon,
@@ -24,14 +25,17 @@ import { Input } from "../ui/input";
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useDeleteConvo from "@/hooks/useDeleteConvo";
 import useRenameConvo from "@/hooks/useRenameConvo";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 interface ChatOptionButtonProps {
     currentConvoId: number | null;
+    setCurrentConvoId: React.Dispatch<React.SetStateAction<number | null>>;
     chat: {
         id: number;
         title: string;
@@ -46,6 +50,7 @@ interface ChatOptionButtonProps {
 
 export function ChatOptionButton({
     currentConvoId,
+    setCurrentConvoId,
     chat,
     toggleOptions,
     setToggleOptions,
@@ -53,9 +58,11 @@ export function ChatOptionButton({
     setRename,
     ...otherProps
 }: ChatOptionButtonProps) {
+    const router = useRouter();
     const { mutate: deleteConvo } = useDeleteConvo();
     const { mutate: renameConvo } = useRenameConvo();
     const [newName, setNewName] = React.useState<string>(chat.title);
+    const inputRef = useRef<HTMLInputElement>(null); // Create a reference to the input element
 
     const handleDeleteChat = (id: number) => {
         deleteConvo(id);
@@ -71,6 +78,10 @@ export function ChatOptionButton({
 
     const handleRename = (id: number) => {
         setRename((prev) => (prev === id ? null : id));
+
+        setTimeout(() => {
+            inputRef.current?.focus(); // Focus the input element
+        }, 250);
     };
 
     return (
@@ -78,45 +89,49 @@ export function ChatOptionButton({
             {...otherProps}
             className={cn(
                 buttonVariants({ variant: "ghost" }),
-                `relative w-full flex justify-start items-center text=[13px] font-medium group ${
-                    toggleOptions === chat.id || currentConvoId === chat.id
-                        ? "bg-accent text-accent-foreground"
-                        : ""
+                `relative w-full flex justify-start px-2 items-center text=[13px] font-medium group !mt-0 ${
+                    currentConvoId === chat.id || toggleOptions === chat.id ? "bg-accent" : ""
                 }`,
             )}
         >
-            {rename === chat.id ? (
-                <Input
-                    type="text"
-                    className="w-full p-0 focus-visible:ring-0 border-none outline-none text-muted-foreground pr-5"
-                    placeholder="New title"
-                    defaultValue={chat.title}
-                    autoFocus
-                    onChange={(e) => setNewName(e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
-                    onBlur={(e) => {
+            <input
+                ref={inputRef} // Attach the reference to the input element
+                id="rename-chat"
+                type="text"
+                className={`w-full p-0 pl-1 mr-5 z-30 ${rename === chat.id ? "block" : "hidden"}`}
+                placeholder="New title"
+                defaultValue={chat.title}
+                onChange={(e) => setNewName(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                onBlur={(e) => {
+                    handleRenameChat(chat.id, newName);
+                    setRename(null);
+                }} // add the rename api thing also to this
+                onKeyPress={(event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
                         handleRenameChat(chat.id, newName);
                         setRename(null);
-                    }} // add the rename api thing also to this
-                    onKeyPress={(event) => {
-                        if (event.key === "Enter") {
-                            event.preventDefault();
-                            handleRenameChat(chat.id, newName);
-                            setRename(null);
-                            // add the rename api thing also to this
-                        }
-                    }}
-                />
-            ) : (
-                <span className="w-full pr-6 overflow-hidden whitespace-nowrap overflow-ellipsis">
-                    {chat.title}
-                </span>
-            )}
+                        // add the rename api thing also to this
+                    }
+                }}
+            />
 
-            <DropdownMenu>
+            <span
+                className={`w-full pr-6 pl-1 overflow-hidden whitespace-nowrap overflow-ellipsis ${
+                    rename === chat.id ? "hidden" : "block"
+                } `}
+            >
+                {chat.title}
+            </span>
+
+            <DropdownMenu
+                onOpenChange={() => {
+                    handleOptions(chat.id);
+                }}
+            >
                 <DropdownMenuTrigger>
-                    <DotsHorizontalIcon
-                        onClick={() => handleOptions(chat.id)}
+                    <HamburgerMenuIcon
                         className={`absolute top-1/2 -translate-y-1/2 right-3 h-4 w-4 group-hover:block  ${
                             toggleOptions === chat.id ? "block" : "hidden"
                         }`}
@@ -128,37 +143,21 @@ export function ChatOptionButton({
                     alignOffset={50}
                     className="w-full max-w-[166px]"
                 >
-                    <Button
+                    <DropdownMenuItem
                         onClick={(e) => {
                             e.stopPropagation();
                             handleRename(chat.id);
-                            setToggleOptions(null);
                         }}
-                        variant="ghost"
-                        className="flex justify-start gap-2 w-full"
                     >
-                        <Pencil2Icon className="h-4 w-4" />
+                        <Pencil2Icon className="mr-2 -4 w-4" />
                         <span className="text-[14px] font-normal">Rename</span>
-                    </Button>
-                    <Button variant="ghost" className="flex justify-start gap-2 w-full">
-                        <BackpackIcon className="h-4 w-4" />
-                        <span className="text-[14px] font-normal">Add to folder</span>
-                    </Button>
-                    <Button variant="ghost" className="flex justify-start gap-2 w-full">
-                        <Share2Icon className="h-4 w-4" />
-                        <span className="text-[14px] font-normal">Share chat</span>
-                    </Button>
-
+                    </DropdownMenuItem>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button
-                                onClick={() => setToggleOptions(null)}
-                                variant="ghost"
-                                className="flex justify-start gap-2 w-full"
-                            >
-                                <TrashIcon className="h-4 w-4" />
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                <TrashIcon className="mr-2 h-4 w-4" />
                                 <span className="text-[14px] font-normal">Delete</span>
-                            </Button>
+                            </DropdownMenuItem>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
@@ -171,7 +170,8 @@ export function ChatOptionButton({
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.stopPropagation();
                                         handleDeleteChat(chat.id);
                                     }}
                                 >

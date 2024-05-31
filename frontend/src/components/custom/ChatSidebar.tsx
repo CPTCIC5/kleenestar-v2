@@ -12,23 +12,71 @@ import { ChatOptionButton } from "./ChatOptionButton";
 import { Convo } from "@/lib/types/interfaces";
 import useDebounce from "@/hooks/useDebounce";
 import { useFetchConvos } from "@/hooks/useFetchConvos";
-import { useAddConvo } from "@/hooks/useAddConvo";
-import { useCheckLastConvoEmpty } from "@/hooks/useCheckLastConvoEmpty";
 import { useRouter } from "next/navigation";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
+import { Skeleton } from "../ui/skeleton";
+import { useAddConvo } from "@/hooks/useAddConvo";
 
-export function ChatSidebar() {
+interface ChatSidebarProps {
+    currentConvoId: number | null;
+    setCurrentConvoId: React.Dispatch<React.SetStateAction<number | null>>;
+}
+
+export function ChatSidebar({ currentConvoId, setCurrentConvoId }: ChatSidebarProps) {
     const router = useRouter();
-    const { data: convos = [], isLoading, isSuccess, error } = useFetchConvos();
-    const { mutate: addChatMutation } = useAddConvo();
+
+    const {
+        data: convos = [],
+        isLoading: isConvoLoading,
+        isSuccess: isConvoSuccess,
+        error: convoError,
+    } = useFetchConvos();
+    const { workspaceData, isWorkspaceSuccess } = useWorkspaceData();
+    const { addChat: addConvo, isPending: isAddingConvo } = useAddConvo();
+
+    const [updatedConvos, setUpdatedConvos] = React.useState<Convo[]>(convos);
     const [todayConvos, setTodayConvos] = React.useState<Convo[]>([]);
     const [previousConvos, setPreviousConvos] = React.useState<Convo[]>([]);
+
     const [openSidebar, setOpenSidebar] = React.useState<boolean>(false);
     const [rename, setRename] = React.useState<number | null>(null);
     const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);
     const [searchQuery, setSearchQuery] = React.useState("");
     const debounceValue = useDebounce(searchQuery, 1000);
-    const [currentConvos, setCurrentConvos] = React.useState<Convo[]>(convos);
-    const [currentConvoId, setCurrentConvoId] = React.useState<number | null>(null);
+
+    const handleAddChat = async () => {
+        try {
+            await addConvo();
+        } catch (error) {
+            console.error("Error adding convo:", error);
+        }
+    };
+
+    const isTodayConvo = (convo: Convo) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const convoDate = new Date(convo.created_at);
+        convoDate.setHours(0, 0, 0, 0);
+        return convoDate.getTime() === today.getTime() && !convo.archived;
+    };
+
+    const isPreviousConvo = (convo: Convo) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const convoDate = new Date(convo.created_at);
+        convoDate.setHours(0, 0, 0, 0);
+        return convoDate.getTime() !== today.getTime() && !convo.archived;
+    };
+
+    React.useEffect(() => {
+        if (isConvoSuccess) {
+            const todayConvoList = convos.filter(isTodayConvo);
+            const previousConvoList = convos.filter(isPreviousConvo);
+
+            setTodayConvos(todayConvoList);
+            setPreviousConvos(previousConvoList);
+        }
+    }, [convos, isConvoSuccess]);
 
     React.useEffect(() => {
         handleSearch();
@@ -38,45 +86,8 @@ export function ChatSidebar() {
         const filteredConvos = convos.filter((convo: Convo) =>
             convo.title.toLowerCase().includes(searchQuery.toLowerCase()),
         );
-        setCurrentConvos(filteredConvos);
-    };
-
-    React.useEffect(() => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const todayConvoList = currentConvos.filter((convo) => {
-            const convoDate = new Date(convo.created_at);
-            convoDate.setHours(0, 0, 0, 0);
-            return convoDate.getTime() === today.getTime() && !convo.archived;
-        });
-
-        const previousConvoList = currentConvos.filter((convo) => {
-            const convoDate = new Date(convo.created_at);
-            convoDate.setHours(0, 0, 0, 0);
-            return convoDate.getTime() !== today.getTime() && !convo.archived;
-        });
-
-        setTodayConvos(todayConvoList);
-        setPreviousConvos(previousConvoList);
-    }, [currentConvos]);
-
-    const lastConvo = todayConvos[0] || null;
-    const { data: isLastConvoEmpty, refetch: refetchConvoEmpty } = useCheckLastConvoEmpty(
-        lastConvo ? lastConvo.id : null,
-    );
-
-    React.useEffect(() => {
-        if (isSuccess) {
-            setCurrentConvos(convos);
-        }
-    }, [convos]);
-
-    const handleAddChat = async () => {
-        await refetchConvoEmpty();
-        if (!isLastConvoEmpty) {
-            addChatMutation();
-        }
+        setTodayConvos(filteredConvos.filter(isTodayConvo));
+        setPreviousConvos(filteredConvos.filter(isPreviousConvo));
     };
 
     const handleConvoClick = (convoId: number) => {
@@ -122,9 +133,9 @@ export function ChatSidebar() {
                 </div>
 
                 <CardContent className="p-0">
-                    <div>
+                    <div className="space-y-1">
                         <CardTitle className="font-mainhead font-bold text-[20px] leading-none">
-                            Workspace
+                            {workspaceData ? workspaceData.business_name : "Workspace"}
                         </CardTitle>
                         <CardDescription className="text-[13px] leading-none ">
                             Smart decisions start now.
@@ -133,6 +144,7 @@ export function ChatSidebar() {
                     <div className="my-4 space-y-4">
                         <Button
                             onClick={handleAddChat}
+                            disabled={isAddingConvo}
                             variant="outline"
                             className="flex justify-center items-center w-full gap-[8px] focus-visible:ring-0"
                         >
@@ -150,46 +162,74 @@ export function ChatSidebar() {
                     </div>
 
                     <div className="h-[503px] overflow-auto small-scrollbar ">
-                        <div>
-                            <div>
-                                <span className="text-muted-foreground text-[10px]">TODAY</span>
-                            </div>
-                            {todayConvos.map((chat) => {
-                                return (
-                                    <ChatOptionButton
-                                        onClick={() => handleConvoClick(chat.id)}
-                                        currentConvoId={currentConvoId}
-                                        key={chat.id}
-                                        chat={chat}
-                                        toggleOptions={toggleOptions}
-                                        setToggleOptions={setToggleOptions}
-                                        rename={rename}
-                                        setRename={setRename}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <div>
-                            <div>
-                                <span className="text-muted-foreground text-[10px]">
-                                    PREVIOUS 7 DAYS
-                                </span>
-                            </div>
-                            {previousConvos.map((chat) => {
-                                return (
-                                    <ChatOptionButton
-                                        onClick={() => handleConvoClick(chat.id)}
-                                        currentConvoId={currentConvoId}
-                                        key={chat.id}
-                                        chat={chat}
-                                        toggleOptions={toggleOptions}
-                                        setToggleOptions={setToggleOptions}
-                                        rename={rename}
-                                        setRename={setRename}
-                                    />
-                                );
-                            })}
-                        </div>
+                        {isConvoLoading ? (
+                            <>
+                                <div className="space-y-2 opacity-50">
+                                    <Skeleton className="w-2/4 h-7 mb-4" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                </div>
+                                <div className="space-y-2 mt-4 opacity-50">
+                                    <Skeleton className="w-2/4 h-7 mb-4" />
+
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                    <Skeleton className="w-full h-7" />
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="space-y-1">
+                                    <div>
+                                        <span className="text-muted-foreground text-[10px]">
+                                            TODAY
+                                        </span>
+                                    </div>
+                                    {todayConvos.map((chat) => {
+                                        return (
+                                            <ChatOptionButton
+                                                onClick={() => handleConvoClick(chat.id)}
+                                                currentConvoId={currentConvoId}
+                                                setCurrentConvoId={setCurrentConvoId}
+                                                key={chat.id}
+                                                chat={chat}
+                                                toggleOptions={toggleOptions}
+                                                setToggleOptions={setToggleOptions}
+                                                rename={rename}
+                                                setRename={setRename}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                <div>
+                                    <div>
+                                        <span className="text-muted-foreground text-[10px]">
+                                            PREVIOUS 7 DAYS
+                                        </span>
+                                    </div>
+                                    {previousConvos.map((chat) => {
+                                        return (
+                                            <ChatOptionButton
+                                                onClick={() => handleConvoClick(chat.id)}
+                                                currentConvoId={currentConvoId}
+                                                setCurrentConvoId={setCurrentConvoId}
+                                                key={chat.id}
+                                                chat={chat}
+                                                toggleOptions={toggleOptions}
+                                                setToggleOptions={setToggleOptions}
+                                                rename={rename}
+                                                setRename={setRename}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </CardContent>
             </Card>

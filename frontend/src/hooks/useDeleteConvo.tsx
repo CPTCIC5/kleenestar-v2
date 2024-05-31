@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useFetchConvos } from "./useFetchConvos";
 import { useRouter } from "next/navigation";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import axios from "axios";
 
 const deleteConvo = async (id: number) => {
