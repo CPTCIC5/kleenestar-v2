@@ -108,11 +108,9 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
-    }, [prompts]);
 
-    React.useEffect(() => {
-        if (!convoId) return;
-    }, [convoId]);
+        console.log(prompts);
+    }, [prompts]);
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === "Enter" && !event.shiftKey) {
@@ -202,7 +200,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                                     </div>
                                                                 </DialogTrigger>
                                                                 <MakeNotes
-                                                                    id={item?.id}
+                                                                    prompt_id={item?.id}
                                                                     note={item?.response_text}
                                                                 />
                                                             </Dialog>
@@ -222,7 +220,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                                     </div>
                                                                 </DialogTrigger>
                                                                 <ChatFeedbackForm
-                                                                    prompt_id={convoId}
+                                                                    prompt_id={item?.id}
                                                                 />
                                                             </Dialog>
                                                         </div>

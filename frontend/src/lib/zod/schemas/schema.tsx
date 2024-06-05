@@ -179,7 +179,8 @@ export const FeedbackFormSchema = z.object({
 });
 
 export const MakeNoteFormSchema = z.object({
-    notes: z.string().min(1, { message: "Note is required" }).max(500, {
+    blocknote_id: z.number().int().positive().nonnegative(),
+    note: z.string().min(1, { message: "Note is required" }).max(500, {
         message: "A Note cannot exceed 500 characters",
     }),
 });

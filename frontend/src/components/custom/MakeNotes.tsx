@@ -1,3 +1,5 @@
+"use client";
+
 import { DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,93 +12,120 @@ import { MakeNoteFormSchemaTypes } from "@/lib/types/types";
 import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import avatar from "@/assets/images/avatar.jpg";
-import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useBlockNotes } from "@/hooks/useBlocknotes";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useCreateNote } from "@/hooks/useCreateNote";
 
 interface MakeNotesProps {
-    id: number;
+    prompt_id: number;
     note: string;
 }
 
-export default function MakeNotes({ note }: MakeNotesProps) {
+interface BlockNoteTypes {
+    id: number;
+    image: string;
+    created_at: string;
+    title: string;
+}
+
+export default function MakeNotes({ prompt_id, note }: MakeNotesProps) {
+    const { data: blockNotes = [], isLoading, isSuccess } = useBlockNotes();
+    const [colorOption, setColorOption] = useState(0);
     const [noteColor, setColor] = useState("");
     const form = useForm<MakeNoteFormSchemaTypes>({
         resolver: zodResolver(MakeNoteFormSchema),
         mode: "onChange",
     });
-    const onSubmit = (values: MakeNoteFormSchemaTypes) => {
-        console.log(values);
+
+    const { mutate: mutateCreateNote } = useCreateNote();
+
+    const onSubmit = (data: MakeNoteFormSchemaTypes) => {
+        console.log("blocknote_id", Number(data.blocknote_id));
+        console.log("color", noteColor);
+        console.log("notes", data.note);
+
+        const noteData = {
+            blocknote_id: Number(data.blocknote_id),
+            note: data.note,
+            colorOption: colorOption,
+        };
+
+        mutateCreateNote({ id: prompt_id, data: noteData });
     };
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-                <DialogContent className="max-w-[660.61px] w-full">
-                    <DialogHeader>
-                        <div className=" font-mainhead text-[18px] text-foreground">
-                            Make a note
-                        </div>
-                        <div className="text-[14px]  ">
-                            Save your important findings as notes and find them in your blocknote
-                            space.
-                        </div>
-                    </DialogHeader>
-                    <Card>
-                        <CardContent className="py-[24px] overflow-auto scrollbar-hide max-h-[200px] h-full  ">
-                            <Markdown remarkPlugins={[remarkGfm]}>{note}</Markdown>
-                        </CardContent>
-                    </Card>
+        <DialogContent className="max-w-[660.61px] w-full">
+            <DialogHeader>
+                <div className=" font-mainhead text-[18px] text-foreground">Make a note</div>
+                <div className="text-[14px]  ">
+                    Save your important findings as notes and find them in your blocknote space.
+                </div>
+            </DialogHeader>
+            <Card>
+                <CardContent className="py-[24px] overflow-auto scrollbar-hide max-h-[200px] h-full  ">
+                    <Markdown remarkPlugins={[remarkGfm]}>{note}</Markdown>
+                </CardContent>
+            </Card>
 
-                    <div className="py-[10px] flex justify-between">
-                        <div className=" font-mainhead text-[15px] text-foreground">Note</div>
-                        <div className="flex group cursor-pointer items-center">
-                            <Card className="fixed right-10  group-hover:block hover:block hidden bg-foreground text-background py-[10px] mx-2 px-[20px]  ">
-                                <div className="flex gap-4 items-center">
-                                    <div
-                                        onClick={() => {
-                                            setColor("90EE90");
-                                        }}
-                                        className="w-[20px] hover:scale-125 border-background h-[20px] rounded-full bg-green-500"
-                                    ></div>
-                                    <div
-                                        onClick={() => {
-                                            setColor("FFCCCC");
-                                        }}
-                                        className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-red-500"
-                                    ></div>
-                                    <div
-                                        onClick={() => {
-                                            setColor("D3D3D3");
-                                        }}
-                                        className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-gray-500"
-                                    ></div>
-                                    <div
-                                        onClick={() => {
-                                            setColor("E6E6FA");
-                                        }}
-                                        className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-violet-500"
-                                    ></div>
-                                    <div
-                                        onClick={() => {
-                                            setColor("ADD8E6");
-                                        }}
-                                        className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-blue-500"
-                                    ></div>
-                                </div>
-                            </Card>
-                            <Icons.colorPalatte className="" />
+            <div className="py-[10px] flex justify-between">
+                <div className=" font-mainhead text-[15px] text-foreground">Note</div>
+                <div className="flex group cursor-pointer items-center">
+                    <Card className="fixed right-10  group-hover:block hover:block hidden bg-foreground text-background py-[10px] mx-2 px-[20px]  ">
+                        <div className="flex gap-4 items-center">
+                            <div
+                                onClick={() => {
+                                    setColor("#90EE90");
+                                    setColorOption(1);
+                                }}
+                                className="w-[20px] hover:scale-125 border-background h-[20px] rounded-full bg-green-500"
+                            ></div>
+                            <div
+                                onClick={() => {
+                                    setColor("#FFCCCC");
+                                    setColorOption(2);
+                                }}
+                                className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-red-500"
+                            ></div>
+                            <div
+                                onClick={() => {
+                                    setColor("#D3D3D3");
+                                    setColorOption(3);
+                                }}
+                                className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-gray-500"
+                            ></div>
+                            <div
+                                onClick={() => {
+                                    setColor("#E6E6FA");
+                                    setColorOption(4);
+                                }}
+                                className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-violet-500"
+                            ></div>
+                            <div
+                                onClick={() => {
+                                    setColor("#ADD8E6");
+                                    setColorOption(5);
+                                }}
+                                className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-blue-500"
+                            ></div>
                         </div>
-                    </div>
+                    </Card>
+                    <Icons.colorPalatte className="" />
+                </div>
+            </div>
+
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
                     <FormField
                         control={form.control}
-                        name="notes"
+                        name="note"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
                                     <Textarea
-                                        style={{ backgroundColor: `#${noteColor}` }}
+                                        style={{ backgroundColor: `${noteColor}` }}
                                         placeholder="Say something here..."
                                         className={cn(
                                             noteColor === ""
@@ -117,33 +146,65 @@ export default function MakeNotes({ note }: MakeNotesProps) {
                                             "text-[12px]",
                                         )}
                                     >
-                                        {form.watch("notes")?.length || 0} / 500 characters
+                                        {form.watch("note")?.length || 0} / 500 characters
                                     </div>
                                 </div>
                             </FormItem>
                         )}
-                    ></FormField>
+                    />
                     <div className=" flex justify-between items-center">
-                        <Card className="max-w-[247px] max-xl:max-w-[180px] py-[7px] px-[10px] rounded-[10px]  w-full bg-foreground">
-                            <div className="w-full items-center flex justify-between">
-                                <div className="flex text-[13px] items-center  text-background gap-4">
-                                    <div className="w-fit h-fit rounded-full bg-red-100 border-gray-600 border-2">
-                                        <Image
-                                            width={40}
-                                            className="rounded-full w-[20px] h-[20px]"
-                                            height={40}
-                                            loading="lazy"
-                                            src={avatar}
-                                            alt="avatar"
-                                        ></Image>
-                                    </div>
-                                    Tristan&apos;s notes
-                                </div>
-                                <div className="text-background w-[20px] h-[20px] ">
-                                    <Icons.down_chevron />
-                                </div>
-                            </div>
-                        </Card>
+                        <FormField
+                            control={form.control}
+                            name="blocknote_id"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Select
+                                        onValueChange={(value) =>
+                                            field.onChange(parseInt(value, 10))
+                                        }
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Blocknote" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {blockNotes.map((item: BlockNoteTypes) => {
+                                                return (
+                                                    <SelectItem
+                                                        value={String(item.id)}
+                                                        key={item.id}
+                                                    >
+                                                        <div className="flex flex-row gap-[9px] items-center justify-start">
+                                                            <Avatar className="w-[20px] h-[20px]  rounded-full ">
+                                                                <AvatarImage
+                                                                    className="rounded-full border-2 border-muted"
+                                                                    src={
+                                                                        item.image
+                                                                            ? `https://twemoji.maxcdn.com/v/latest/svg/${item.image}.svg`
+                                                                            : "https://github.com/shadcn.png"
+                                                                    }
+                                                                    alt="@shadcn"
+                                                                />
+                                                                <AvatarFallback className="flex items-center justify-center">
+                                                                    N
+                                                                </AvatarFallback>
+                                                            </Avatar>
+
+                                                            <span className="text-[12px]">
+                                                                {item.title}
+                                                            </span>
+                                                        </div>
+                                                    </SelectItem>
+                                                );
+                                            })}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <Button
                             disabled={
                                 Object.keys(form.formState.errors).length > 0 ||
@@ -158,8 +219,8 @@ export default function MakeNotes({ note }: MakeNotesProps) {
                             Save note
                         </Button>
                     </div>
-                </DialogContent>
-            </form>
-        </Form>
+                </form>
+            </Form>
+        </DialogContent>
     );
 }
