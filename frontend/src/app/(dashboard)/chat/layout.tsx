@@ -4,7 +4,7 @@ import { ChatSidebar } from "@/components/custom/ChatSidebar";
 import { useFetchConvos } from "@/hooks/useFetchConvos";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import Cookies from "js-cookie";
 import { Convo } from "@/lib/types/interfaces";
@@ -16,11 +16,24 @@ export default function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const queryClient = useQueryClient();
     const router = useRouter();
+    const pathname = usePathname();
+    const isChatRoot = pathname === "/chat/";
+    
+
+    const queryClient = useQueryClient();
+
     const [currentConvoId, setCurrentConvoId] = React.useState<number | null>(null);
     const { data: convos, isLoading, isSuccess } = useFetchConvos();
     const hasAddedConvo = React.useRef(false);
+
+    React.useEffect(()=>{
+        const chatIdMatch = pathname.match(/^\/chat\/(\d+)\/?$/);
+        if(!isChatRoot && chatIdMatch){
+            setCurrentConvoId(parseInt(chatIdMatch[1]));
+        }
+
+    },[pathname])
 
     const { mutate: addConvoMutation, isSuccess: addConvoSuccess } = useMutation({
         mutationFn: async () => {
@@ -67,8 +80,13 @@ export default function DashboardLayout({
     React.useEffect(() => {
         if (isSuccess && !hasAddedConvo.current) {
             if (convos.length > 0) {
-                setCurrentConvoId(convos[0].id);
-                router.push(`/chat/${convos[0].id}`);
+                console.log("entered");
+
+                if (isChatRoot) {
+                    console.log("path changed to :", `/chat/${convos[0].id}`);
+                    setCurrentConvoId(convos[0].id);
+                    router.push(`/chat/${convos[0].id}`);
+                }
             } else {
                 hasAddedConvo.current = true; // Prevent further calls
                 addConvoMutation();

@@ -18,7 +18,6 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import Image from "next/image";
 import PulsatingDots from "@/components/ui/pulsating-dots";
-import { useRouter } from "next/router";
 import { useFetchPrompts } from "@/hooks/useFetchPrompt";
 import { useCreatePrompt } from "@/hooks/useCreatePrompt";
 import { useQueryClient } from "@tanstack/react-query";
