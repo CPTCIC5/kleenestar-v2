@@ -7,7 +7,7 @@ import toastAxiosError from "@/lib/services/toastAxiosError";
 type CreateNoteType = {
     blocknote_id: number;
     note: string;
-    colorOption: number;
+    color: string;
 };
 
 export function useCreateNote() {
@@ -19,7 +19,7 @@ export function useCreateNote() {
                 {
                     blocknote: data.blocknote_id,
                     note_text: data.note,
-                    color: data.colorOption,
+                    color: data.color,
                 },
                 {
                     withCredentials: true,

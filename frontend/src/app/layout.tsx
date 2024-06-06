@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat, Syne } from "next/font/google";
 import "./globals.css";
+import "../assets/markdown.css"
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";

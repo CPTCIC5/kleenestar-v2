@@ -33,7 +33,6 @@ interface BlockNoteTypes {
 
 export default function MakeNotes({ prompt_id, note }: MakeNotesProps) {
     const { data: blockNotes = [], isLoading, isSuccess } = useBlockNotes();
-    const [colorOption, setColorOption] = useState(0);
     const [noteColor, setColor] = useState("");
     const form = useForm<MakeNoteFormSchemaTypes>({
         resolver: zodResolver(MakeNoteFormSchema),
@@ -50,7 +49,7 @@ export default function MakeNotes({ prompt_id, note }: MakeNotesProps) {
         const noteData = {
             blocknote_id: Number(data.blocknote_id),
             note: data.note,
-            colorOption: colorOption,
+            color: noteColor,
         };
 
         mutateCreateNote({ id: prompt_id, data: noteData });
@@ -64,8 +63,8 @@ export default function MakeNotes({ prompt_id, note }: MakeNotesProps) {
                     Save your important findings as notes and find them in your blocknote space.
                 </div>
             </DialogHeader>
-            <Card>
-                <CardContent className="py-[24px] overflow-auto scrollbar-hide max-h-[200px] h-full  ">
+            <Card className="markdown-body ">
+                <CardContent className="py-[24px] overflow-auto scrollbar-hide max-h-[200px] h-full ">
                     <Markdown remarkPlugins={[remarkGfm]}>{note}</Markdown>
                 </CardContent>
             </Card>
@@ -78,35 +77,30 @@ export default function MakeNotes({ prompt_id, note }: MakeNotesProps) {
                             <div
                                 onClick={() => {
                                     setColor("#90EE90");
-                                    setColorOption(1);
                                 }}
                                 className="w-[20px] hover:scale-125 border-background h-[20px] rounded-full bg-green-500"
                             ></div>
                             <div
                                 onClick={() => {
                                     setColor("#FFCCCC");
-                                    setColorOption(2);
                                 }}
                                 className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-red-500"
                             ></div>
                             <div
                                 onClick={() => {
                                     setColor("#D3D3D3");
-                                    setColorOption(3);
                                 }}
                                 className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-gray-500"
                             ></div>
                             <div
                                 onClick={() => {
                                     setColor("#E6E6FA");
-                                    setColorOption(4);
                                 }}
                                 className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-violet-500"
                             ></div>
                             <div
                                 onClick={() => {
                                     setColor("#ADD8E6");
-                                    setColorOption(5);
                                 }}
                                 className="w-[20px] hover:scale-125 h-[20px] rounded-full bg-blue-500"
                             ></div>

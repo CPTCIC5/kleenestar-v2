@@ -33,6 +33,7 @@ function BlockNotesPage() {
     const debounceValue = useDebounce(searchQuery, 1000);
 
     React.useEffect(() => {
+        console.log("blockNotes", blockNotes);
         handleSearch();
     }, [debounceValue, isSuccess, blockNotes]);
 
@@ -108,7 +109,11 @@ function BlockNotesPage() {
                             ) : (
                                 currentBlockNotes?.map((note: BlockNoteTypes) => {
                                     return (
-                                        <Card key={note.id} className="max-w-[206px] w-full">
+                                        <Card
+                                            key={note.id}
+                                            className="max-w-[206px] w-full"
+                                            onClick={() => router.push(`/blocknotes/${note.id}`)}
+                                        >
                                             <CardHeader className="pb-2">
                                                 <div className="flex items-center justify-between ">
                                                     <Avatar className="w-[40.44px] h-[40.44px] relative rounded-full">

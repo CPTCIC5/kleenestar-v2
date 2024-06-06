@@ -1,5 +1,5 @@
 "use client";
-
+import { useIndividualNotes } from "@/hooks/useIndividualNote";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
     Card,
@@ -34,10 +34,49 @@ import Image from "next/image";
 import landscapeImg from "@/assets/images/landscape.png";
 import portraitImg from "@/assets/images/portrait.jpg";
 import { MessageCircleMore } from "lucide-react";
+import { convertDateTime } from "@/lib/services/convertDateTime";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-export default function IndividualBlocknotesPage() {
+type NoteType = {
+    id: number;
+    note_text: string;
+    color: string;
+    prompt: {
+        convo: string;
+        response_text: string;
+    };
+    created_at: string;
+};
+
+type BlockNoteType = {
+    id: number;
+    image: string;
+    created_at: string;
+    title: string;
+    blocknote: {
+        id: number;
+        title: string;
+        image: string;
+        created_at: string;
+    };
+    notes: NoteType[];
+};
+
+function IndividualBlocknotesPage({ params }: { params: { noteId: string } }) {
+    const noteId = parseInt(params.noteId);
     const router = useRouter();
-    const note = blocknotes;
+
+    const { data: noteData, isSuccess } = useIndividualNotes(noteId);
+    const [blockNoteData, setBlockNoteData] = React.useState<BlockNoteType | null>(null);
+
+    React.useEffect(() => {
+        if (isSuccess) {
+            console.log("noteData", noteData);
+            console.log("blocknoteData", noteData[0].blocknote);
+            setBlockNoteData(noteData[0].blocknote);
+        }
+    }, [noteData, isSuccess]);
 
     const [isEditing, setIsEditing] = React.useState<number>(-1);
     console.log(isEditing);
@@ -70,20 +109,27 @@ export default function IndividualBlocknotesPage() {
                     <Card>
                         <CardHeader className="p-3">
                             <div className="flex items-center space-x-2">
-                                <Avatar className="w-[40.44px] h-[40.44px] relative rounded-full">
+                                <Avatar className="w-[40.44px] h-[40.44px] relative rounded-full border-2 border-muted p-[7px]">
                                     <AvatarImage
-                                        className="rounded-full border-2 border-muted"
                                         alt="blocknote-image"
-                                        src={"https://github.com/shadcn.png"}
+                                        src={
+                                            blockNoteData?.image
+                                                ? `https://twemoji.maxcdn.com/v/latest/svg/${blockNoteData?.image}.svg`
+                                                : "https://github.com/shadcn.png"
+                                        }
                                     />
                                 </Avatar>
 
                                 <div className="flex-1">
                                     <CardTitle className="text-[15px]">
-                                        Tristan&apos;s notes
+                                        {blockNoteData?.title}
                                     </CardTitle>
                                     <CardDescription className="text-[11px]">
-                                        Last modified: 15/4/2024, 12:12:45 PM
+                                        {`Last modified: ${
+                                            blockNoteData &&
+                                            blockNoteData.created_at &&
+                                            convertDateTime(blockNoteData?.created_at)
+                                        }`}
                                     </CardDescription>
                                 </div>
 
@@ -100,11 +146,15 @@ export default function IndividualBlocknotesPage() {
                 </div>
 
                 <div className="w-full grid  grid-cols-1 md:grid-cols-2 gap-4 mx-auto mt-4 items-start ">
-                    {notes.map((note) => {
+                    {noteData?.map((note: NoteType) => {
                         return (
                             <Card key={note.id}>
                                 <CardHeader className="flex flex-row items-center justify-between">
-                                    <CardDescription>{note.date}</CardDescription>
+                                    <CardDescription>
+                                        {note &&
+                                            note.created_at &&
+                                            convertDateTime(note?.created_at)}
+                                    </CardDescription>
                                     {isNoteEditing !== note.id ? (
                                         <div className="flex space-x-3 items-center">
                                             <div
@@ -149,7 +199,7 @@ export default function IndividualBlocknotesPage() {
                                         style={{ backgroundColor: note.color }}
                                         className="rounded-xl p-3"
                                     >
-                                        {note.note}
+                                        {note.note_text}
                                     </div>
                                     <div>
                                         <Image
@@ -159,13 +209,19 @@ export default function IndividualBlocknotesPage() {
                                         />
                                     </div>
 
-                                    <div>{note.response_query}</div>
+                                    <div className="h-[550px] border border-muted rounded-xl overflow-auto scrollbar-hide p-2 markdown-body">
+                                        <Markdown remarkPlugins={[remarkGfm]}>
+                                            {note?.prompt?.response_text}
+                                        </Markdown>
+                                    </div>
                                 </CardContent>
                                 <CardFooter>
                                     <div className="flex flex-row justify-between items-center rounded-xl bg-muted w-full p-1">
-                                        <CardTitle className="pl-1">{note.title}</CardTitle>
+                                        <CardTitle className="pl-1">
+                                            {note?.prompt?.convo}
+                                        </CardTitle>
                                         <Link
-                                            href={`/chat`}
+                                            href={`/chat/${note?.prompt?.convo}/`}
                                             className={cn(
                                                 buttonVariants({ variant: "ghost" }),
                                                 " w-[38px] h-[38px] rounded-full p-2",
@@ -183,3 +239,5 @@ export default function IndividualBlocknotesPage() {
         </div>
     );
 }
+
+export default IndividualBlocknotesPage;

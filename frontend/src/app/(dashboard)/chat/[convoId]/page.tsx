@@ -23,7 +23,6 @@ import { useFetchPrompts } from "@/hooks/useFetchPrompt";
 import { useCreatePrompt } from "@/hooks/useCreatePrompt";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUserData } from "@/hooks/useUserData";
-import "../../../../assets/github-markdown.css";
 
 export interface Prompt {
     id: number;
@@ -148,7 +147,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                         </div>
 
                                         <div
-                                            className={`bg-[#0d1117] p-[24px] w-full flex  gap-[23.68px] rounded-3xl ${
+                                            className={`markdown-body p-[24px] w-full flex  gap-[23.68px] rounded-3xl ${
                                                 item?.response_text === "thinking..."
                                                     ? "items-center"
                                                     : "items-start"
@@ -166,7 +165,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                         <PulsatingDots />
                                                     </span>
                                                 ) : (
-                                                    <div className="w-full markdown-body overflow-auto scrollbar-hide">
+                                                    <div className="w-full  overflow-auto scrollbar-hide">
                                                         <Markdown remarkPlugins={[remarkGfm]}>
                                                             {item?.response_text}
                                                         </Markdown>
