@@ -9,7 +9,8 @@ export default function AuthLayout({
         <>
             <div className="relative w-full h-screen flex">
                 <div className="absolute top-[32px] left-[32px] flex items-center gap-[12px]  z-10 max-lg:text-foreground ">
-                    <Icons.logoDark className="h-[34px] w-[34px]" />
+                    <Icons.logoDark className="h-[34px] w-[34px] dark:hidden" />
+                    <Icons.logoLight className="h-[34px] w-[34px] hidden dark:block" />
                     <span className=" font-mainhead text-[27px] max-xs:hidden">Kleenestar</span>
                 </div>
 

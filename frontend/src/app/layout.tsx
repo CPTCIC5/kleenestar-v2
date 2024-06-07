@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat, Syne } from "next/font/google";
 import "./globals.css";
-import "../assets/markdown.css"
+import "../assets/markdown.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
@@ -36,12 +36,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={
-                    (cn("min-h-screen h-full bg-background  antialiased"),
+                className={cn(
+                    "min-h-screen h-full bg-background  antialiased",
                     fontInter.variable,
                     fontMontserrat.variable,
-                    fontSyne.variable)
-                }
+                    fontSyne.variable,
+                )}
             >
                 <TanstackProvider>
                     <ThemeProvider
