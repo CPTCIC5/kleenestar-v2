@@ -10,7 +10,5 @@ export const isConvoEmpty = async (convoId: number) => {
             "X-CSRFToken": Cookies.get("csrftoken"),
         },
     });
-
-    // console.log(`prompt :${convoId} =>`, response);
     return response.data.count === 0;
 };

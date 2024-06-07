@@ -1,7 +1,7 @@
 interface User {
     first_name: string;
     last_name: string;
-    id?: number; // id can be undefined
+    id?: number;
     email?: string;
     is_active?: boolean;
     profile?: Profile;
