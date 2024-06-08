@@ -21,9 +21,6 @@ export default async function DashboardLayout({
         queryFn: getUserData,
     });
 
-    // console.log("Prefetched workspaceData", queryClient.getQueryData(["workspaceData"]));
-    // console.log("Prefetched userData", queryClient.getQueryData(["userData"]));
-
     return (
         <>
             <div className="flex min-h-screen bg-muted/40 w-full flex-col ">

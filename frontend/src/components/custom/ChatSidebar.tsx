@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 import { Skeleton } from "../ui/skeleton";
 import { useAddConvo } from "@/hooks/useAddConvo";
+import { Icons } from "@/assets/icons";
 
 interface ChatSidebarProps {
     currentConvoId: number | null;
@@ -145,11 +146,13 @@ export function ChatSidebar({ currentConvoId, setCurrentConvoId }: ChatSidebarPr
                         <Button
                             onClick={handleAddChat}
                             disabled={isAddingConvo}
-                            variant="outline"
-                            className="flex justify-center items-center w-full gap-[8px] focus-visible:ring-0"
+                            className={cn(
+                                buttonVariants({ variant: "outline" }),
+                                "flex justify-center items-center w-full gap-[8px] focus-visible:ring-0   border-blue-500",
+                            )}
                         >
-                            <MagicWandIcon className="h-4 w-4" />
-                            <span className="text-[13px]">New chat</span>
+                            <Icons.solarMagicStickLine className="h-4 w-4 text-blue-500" />
+                            <span className="text-[13px] text-blue-500">New chat</span>
                         </Button>
                         <Separator className="w-full" />
                         <SearchBox

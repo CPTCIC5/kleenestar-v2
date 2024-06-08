@@ -300,26 +300,6 @@ export const Icons = {
             />
         </svg>
     ),
-    solarBinLine: (props: IconProps) => (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="128"
-            height="128"
-            viewBox="0 0 24 24"
-        >
-            <g fill="none" stroke="#ea580c" strokeWidth="1.5">
-                <path d="M3.033 8.89c-.48-3.204-.72-4.805.177-5.848C4.108 2 5.728 2 8.967 2h6.066c3.24 0 4.859 0 5.757 1.042c.897 1.043.657 2.644.176 5.848l-1.2 8c-.365 2.438-.548 3.656-1.392 4.383c-.844.727-2.076.727-4.541.727h-3.666c-2.465 0-3.697 0-4.541-.727c-.844-.727-1.027-1.945-1.393-4.383z" />
-                <path strokeLinecap="round" d="M21 6H3" />
-                <path
-                    strokeLinejoin="round"
-                    d="m8 6l-4.5 5l7.5 8m3-13L4 16M20 6L7 19m6 0l7.5-8L16 6m-6 0l10 10M4 6l13 13"
-                    opacity=".5"
-                />
-                <path strokeLinecap="round" d="M19 19H5" />
-            </g>
-        </svg>
-    ),
     fileUnknown: (props: IconProps) => (
         <svg
             {...props}
@@ -449,6 +429,75 @@ export const Icons = {
                     opacity=".5"
                     fill="#ffffff"
                 />
+            </g>
+        </svg>
+    ),
+    solarPen2Line: (props: IconProps) => (
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" d="M4 22h16" opacity=".5" />
+                <path d="m14.63 2.921l-.742.742l-6.817 6.817c-.462.462-.693.692-.891.947a5.24 5.24 0 0 0-.599.969c-.139.291-.242.601-.449 1.22l-.875 2.626l-.213.641a.848.848 0 0 0 1.073 1.073l.641-.213l2.625-.875c.62-.207.93-.31 1.221-.45a5.19 5.19 0 0 0 .969-.598c.255-.199.485-.43.947-.891l6.817-6.817l.742-.742a3.146 3.146 0 0 0-4.45-4.449Z" />
+                <path
+                    d="M13.888 3.664S13.98 5.24 15.37 6.63c1.39 1.39 2.966 1.483 2.966 1.483m-12.579 9.63l-1.5-1.5"
+                    opacity=".5"
+                />
+            </g>
+        </svg>
+    ),
+    solarMenuDotsLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="5" cy="12" r="2" />
+                <circle cx="12" cy="12" r="2" opacity=".5" />
+                <circle cx="19" cy="12" r="2" />
+            </g>
+        </svg>
+    ),
+    solarMagicStickLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <g fill="none" stroke="currentColor">
+                <path
+                    stroke-width="1.5"
+                    d="M3.845 7.922a2.883 2.883 0 1 1 4.077-4.077l12.234 12.233a2.884 2.884 0 0 1-4.078 4.078z"
+                />
+                <path stroke-linecap="round" stroke-width="1.5" d="m6 10l4-4" opacity=".5" />
+                <path d="M16.1 2.307a.483.483 0 0 1 .9 0l.43 1.095a.482.482 0 0 0 .272.274l1.091.432a.486.486 0 0 1 0 .903l-1.09.432a.485.485 0 0 0-.273.273L17 6.81a.483.483 0 0 1-.9 0l-.43-1.095a.485.485 0 0 0-.273-.273l-1.09-.432a.486.486 0 0 1 0-.903l1.09-.432a.485.485 0 0 0 .273-.274z" />
+                <path
+                    d="M19.967 9.13a.483.483 0 0 1 .9 0l.156.399c.05.125.148.224.273.273l.398.158a.486.486 0 0 1 0 .902l-.398.158a.485.485 0 0 0-.273.273l-.156.4a.483.483 0 0 1-.9 0l-.157-.4a.485.485 0 0 0-.272-.273l-.398-.158a.486.486 0 0 1 0-.902l.398-.158a.485.485 0 0 0 .272-.273zM5.133 15.307a.483.483 0 0 1 .9 0l.157.4a.48.48 0 0 0 .272.273l.398.157a.486.486 0 0 1 0 .903l-.398.158a.484.484 0 0 0-.272.273l-.157.4a.483.483 0 0 1-.9 0l-.157-.4a.484.484 0 0 0-.272-.273l-.398-.158a.486.486 0 0 1 0-.903l.398-.157a.484.484 0 0 0 .272-.274z"
+                    opacity=".5"
+                />
+            </g>
+        </svg>
+    ),
+    solarBinLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <g fill="none" stroke="#ea580c" strokeWidth="1.5">
+                <path d="M3.033 8.89c-.48-3.204-.72-4.805.177-5.848C4.108 2 5.728 2 8.967 2h6.066c3.24 0 4.859 0 5.757 1.042c.897 1.043.657 2.644.176 5.848l-1.2 8c-.365 2.438-.548 3.656-1.392 4.383c-.844.727-2.076.727-4.541.727h-3.666c-2.465 0-3.697 0-4.541-.727c-.844-.727-1.027-1.945-1.393-4.383z" />
+                <path strokeLinecap="round" d="M21 6H3" />
+                <path
+                    strokeLinejoin="round"
+                    d="m8 6l-4.5 5l7.5 8m3-13L4 16M20 6L7 19m6 0l7.5-8L16 6m-6 0l10 10M4 6l13 13"
+                    opacity=".5"
+                />
+                <path strokeLinecap="round" d="M19 19H5" />
             </g>
         </svg>
     ),

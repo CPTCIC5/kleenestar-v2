@@ -32,6 +32,7 @@ import useDeleteConvo from "@/hooks/useDeleteConvo";
 import useRenameConvo from "@/hooks/useRenameConvo";
 import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { Icons } from "@/assets/icons";
 
 interface ChatOptionButtonProps {
     currentConvoId: number | null;
@@ -131,8 +132,8 @@ export function ChatOptionButton({
                 }}
             >
                 <DropdownMenuTrigger>
-                    <HamburgerMenuIcon
-                        className={`absolute top-1/2 -translate-y-1/2 right-3 h-4 w-4 group-hover:block  ${
+                    <Icons.solarMenuDotsLine
+                        className={`absolute top-1/2 -translate-y-1/2 right-3 h-5 w-5 group-hover:block  ${
                             toggleOptions === chat.id ? "block" : "hidden"
                         }`}
                     />
@@ -149,14 +150,14 @@ export function ChatOptionButton({
                             handleRename(chat.id);
                         }}
                     >
-                        <Pencil2Icon className="mr-2 -4 w-4" />
+                        <Icons.solarPen2Line className="mr-2 h-4 w-4" />
                         <span className="text-[14px] font-normal">Rename</span>
                     </DropdownMenuItem>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                <TrashIcon className="mr-2 h-4 w-4" />
-                                <span className="text-[14px] font-normal">Delete</span>
+                                <Icons.solarBinLine className="mr-2 h-4 w-4" />
+                                <span className="text-[14px] font-normal text-orange-600">Delete</span>
                             </DropdownMenuItem>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
