@@ -29,14 +29,14 @@ export default function Sidebar() {
 
     return (
         <TooltipProvider>
-            <aside className="fixed inset-y-0 left-0 z-40 hidden w-14 flex-col border-r bg-background sm:flex">
+            <aside className="fixed inset-y-0 left-0 z-40 hidden w-14 flex-col bg-muted/40 sm:flex">
                 <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
                     <Link
                         href="/get-started"
-                        className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+                        className="group flex h-8 w-8 shrink-0 gap-2 items-center justify-center rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
                     >
-                        <Icons.logoLight className="h-4 w-4 transition-all group-hover:scale-110 dark:hidden" />
-                        <Icons.logoDark className="h-4 w-4 transition-all hidden dark:group-hover:scale-110 dark:block" />
+                        <Icons.logoDark className="transition-all group-hover:scale-110 dark:hidden" />
+                        <Icons.logoLight className="transition-all hidden dark:group-hover:scale-110 dark:block" />
                         <span className="sr-only">Kleenestar</span>
                     </Link>
                     <Separator />
@@ -47,7 +47,7 @@ export default function Sidebar() {
                                 href="/chat"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarChatRoundLine className="h-5 w-5" />
+                                <Icons.solarChatRoundLine className="h-6 w-6" />
                                 <span className="sr-only">Chat</span>
                             </Link>
                         </TooltipTrigger>
@@ -59,7 +59,7 @@ export default function Sidebar() {
                                 href="/blocknotes"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarClipboardLine className="h-5 w-5" />
+                                <Icons.solarClipboardLine className="h-6 w-6" />
                                 <span className="sr-only">Blocknotes</span>
                             </Link>
                         </TooltipTrigger>
@@ -72,7 +72,7 @@ export default function Sidebar() {
                                 href="/knowledge"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarBook2Line className="h-5 w-5" />
+                                <Icons.solarBook2Line className="h-6 w-6" />
                                 <span className="sr-only">Knowledge</span>
                             </Link>
                         </TooltipTrigger>
@@ -84,7 +84,7 @@ export default function Sidebar() {
                                 href="/channels"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarBoltCircleLine className="h-5 w-5" />
+                                <Icons.solarBoltCircleLine className="h-6 w-6" />
                                 <span className="sr-only">Connect channels</span>
                             </Link>
                         </TooltipTrigger>
@@ -97,7 +97,7 @@ export default function Sidebar() {
                                 href="/billing"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarAirbudsCaseChargeLine className="h-5 w-5" />
+                                <Icons.solarAirbudsCaseChargeLine className="h-6 w-6" />
                                 <span className="sr-only">Plans and billing</span>
                             </Link>
                         </TooltipTrigger>
@@ -109,7 +109,7 @@ export default function Sidebar() {
                                 href="/team"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarUserGroupRoundedLine className="h-5 w-5" />
+                                <Icons.solarUserGroupRoundedLine className="h-6 w-6" />
                                 <span className="sr-only">Team members</span>
                             </Link>
                         </TooltipTrigger>
@@ -121,7 +121,7 @@ export default function Sidebar() {
                                 href="/feedback"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Icons.solarUserSpeakRoundedLine className="h-5 w-5" />
+                                <Icons.solarUserSpeakRoundedLine className="h-6 w-6" />
                                 <span className="sr-only">Support and feedback</span>
                             </Link>
                         </TooltipTrigger>
@@ -129,27 +129,40 @@ export default function Sidebar() {
                     </Tooltip>
                 </nav>
                 <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
+                    <ModeToggle />
                     <Separator />
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <div
-                                onClick={() => mutation.mutate()}
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            <Link
+                                href={"/settings"}
+                                className={cn(
+                                    buttonVariants({ variant: "outline", size: "icon" }),
+                                    "rounded-full p-0 z-50 ring-2 ring-background",
+                                )}
                             >
-                                <Icons.solarExitLine className="h-5 w-5" />
-                                <span className="sr-only">Sign out</span>
-                            </div>
+                                <Avatar className="w-[35px] h-[35px] rounded-full ">
+                                    <AvatarImage
+                                        className="rounded-full border-2 border-muted"
+                                        src={userData?.profile?.avatar}
+                                        alt="@shadcn"
+                                    />
+                                    <AvatarFallback className="flex items-center justify-center">
+                                        {userData?.first_name?.charAt(0).toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <span className="sr-only">Settings</span>
+                            </Link>
                         </TooltipTrigger>
-                        <TooltipContent side="right">Sign out</TooltipContent>
+                        <TooltipContent side="right">Settings</TooltipContent>
                     </Tooltip>
                 </nav>
             </aside>
 
-            <header className="fixed top-0 inset-x-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4  sm:h-auto sm:border-0 justify-between sm:justify-end  sm:px-6 sm:gap-4 sm:py-4 sm:pl-14 sm:bg-transparent ">
+            <header className="fixed top-0 inset-x-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4  sm:h-auto sm:border-0 justify-between sm:hidden sm:justify-end  sm:px-6 sm:gap-4 sm:py-4 sm:pl-14 sm:bg-transparent ">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button size="icon" variant="outline" className="sm:hidden">
-                            <Icons.solarSidebarLine className="h-5 w-5" />
+                            <Icons.solarSidebarLine className="h-6 w-6" />
                             <span className="sr-only">Toggle Menu</span>
                         </Button>
                     </SheetTrigger>
@@ -157,72 +170,65 @@ export default function Sidebar() {
                         <nav className="grid gap-6 text-lg font-medium">
                             <Link
                                 href="/"
-                                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+                                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground md:text-base"
                             >
-                                <Icons.logoLight className="h-5 w-5 transition-all group-hover:scale-110 dark:hidden" />
-                                <Icons.logoDark className="h-5 w-5 transition-all hidden dark:group-hover:scale-110 dark:block" />
+                                <Icons.logoDark className="transition-all group-hover:scale-110 dark:hidden" />
+                                <Icons.logoLight className="transition-all hidden dark:group-hover:scale-110 dark:block" />
                                 <span className="sr-only">Kleenestar</span>
                             </Link>
                             <Link
                                 href="/chat"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarChatRoundLine className="h-5 w-5" />
+                                <Icons.solarChatRoundLine className="h-6 w-6" />
                                 Chat
                             </Link>
                             <Link
                                 href="/blocknotes"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarClipboardLine className="h-5 w-5" />
+                                <Icons.solarClipboardLine className="h-6 w-6" />
                                 Blocknotes
                             </Link>
                             <Link
                                 href="/knowledge"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarBook2Line className="h-5 w-5" />
+                                <Icons.solarBook2Line className="h-6 w-6" />
                                 Knowledge
                             </Link>
                             <Link
                                 href="/channels"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarBoltCircleLine className="h-5 w-5" />
+                                <Icons.solarBoltCircleLine className="h-6 w-6" />
                                 Connect channels
                             </Link>
                             <Link
                                 href="/billing"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarAirbudsCaseChargeLine className="h-5 w-5" />
+                                <Icons.solarAirbudsCaseChargeLine className="h-6 w-6" />
                                 Plans and billing
                             </Link>
                             <Link
                                 href="/team"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarUserGroupRoundedLine className="h-5 w-5" />
+                                <Icons.solarUserGroupRoundedLine className="h-6 w-6" />
                                 Team members
                             </Link>
                             <Link
                                 href="/feedback"
                                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                             >
-                                <Icons.solarUserSpeakRoundedLine className="h-5 w-5" />
+                                <Icons.solarUserSpeakRoundedLine className="h-6 w-6" />
                                 Feedback
                             </Link>
-                            <div
-                                onClick={() => mutation.mutate()}
-                                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                            >
-                                <Icons.solarExitLine className="h-5 w-5" />
-                                Sign out
-                            </div>
                         </nav>
                     </SheetContent>
                 </Sheet>
-                <div className="flex flex-row gap-2 items-center">
+                <div className="flex flex-row gap-2 items-center sm:hidden">
                     <ModeToggle />
                     <Link
                         href={"/settings"}
