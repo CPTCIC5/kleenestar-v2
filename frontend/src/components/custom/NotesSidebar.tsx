@@ -33,23 +33,23 @@ export default function NotesSidebar() {
                 </div>
                 <Separator className="w-full" />
 
-                <div className="columns-1 sm:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin">
-                    <div className="rounded-xl p-4 break-inside-avoid   bg-green-100">
+                <div className="columns-1 sm:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin text-black">
+                    <div className="rounded-xl p-4 break-inside-avoid   bg-green-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
                             ok! We should consider moving forward with A/B testing.
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-blue-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-blue-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
                             ok!
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-red-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-red-100 dark:bg-opacity-50">
                         <div>I got this insight today concerning our active campaigns</div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100 dark:bg-opacity-50">
                         <div>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
                             repellendus itaque commodi enim officiis vitae nostrum qui quaerat vel
@@ -58,19 +58,19 @@ export default function NotesSidebar() {
                         </div>
                     </div>
 
-                    <div className="rounded-xl p-4 break-inside-avoid bg-yellow-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-yellow-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
                             ok! We should consider moving forward with A/B testing.
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-pink-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-pink-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
                             ok!
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100 dark:bg-opacity-50">
                         <div>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
                             repellendus itaque commodi enim officiis vitae nostrum qui quaerat vel
@@ -78,22 +78,22 @@ export default function NotesSidebar() {
                             accusantium quia, dicta modi pariatur.
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid  bg-green-100">
+                    <div className="rounded-xl p-4 break-inside-avoid  bg-green-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
                             ok! We should consider moving forward with A/B testing.
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-blue-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-blue-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
                             ok!
                         </div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-red-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-red-100 dark:bg-opacity-50">
                         <div>I got this insight today concerning our active campaigns</div>
                     </div>
-                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100">
+                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100 dark:bg-opacity-50">
                         <div>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
                             repellendus itaque commodi enim officiis vitae nostrum qui quaerat vel

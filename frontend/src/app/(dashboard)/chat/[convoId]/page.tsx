@@ -35,7 +35,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useChannelsData } from "@/hooks/useChannelsData";
 import ChannelIcon from "@/components/custom/ChannelIcon";
 import { Skeleton } from "@/components/ui/skeleton";
-import NotesSidebar from "@/components/custom/NoteSheet";
+import NotesSidebar from "@/components/custom/NotesSidebar";
 
 function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     const convoId = Number(params.convoId);
