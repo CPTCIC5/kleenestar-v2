@@ -1,68 +1,108 @@
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet";
-import { DoubleArrowLeftIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import NoteSheetCard from "./NoteSheetCard";
-import { dummySheetNotesData } from "@/constants/constants";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+
 import { Icons } from "@/assets/icons";
+import { buttonVariants } from "../ui/button";
+import { cn } from "@/lib/utils";
+import { Separator } from "../ui/separator";
 
-export default function NoteSheet() {
+export default function NotesSidebar() {
     return (
-			<Sheet>
-				<SheetTrigger asChild>
-					<div className="absolute z-10  rounded-full border-2  right-0 top-[45%]">
-						<DoubleArrowLeftIcon className="h-[18px] w-[18px] m-2" />
-					</div>
-				</SheetTrigger>
-				<SheetContent className="px-[15px] h-[100vh]">
-					<SheetHeader>
-						<div className="flex gap-[15px] items-center">
-							<div className="text-[16px] text-bold font-mainhead">Notes</div>
-							<QuestionMarkCircledIcon />
-						</div>
-						<hr className="w-2 mt-[17px] mb-[13px]" />
-						<div className=" h-[90vh] pb-10 overflow-auto scrollbar-hide">
-							<div
-								style={{
-									columnCount: 2,
-									columnGap: "1em",
-								}}>
-								{dummySheetNotesData.map((sheetData, index) => {
-									return (
-										<div
-											style={{ breakInside: "avoid", marginBottom: "1em" }}
-											key={index}>
-											<NoteSheetCard
-												name={sheetData.name}
-												content={sheetData.content}
-												color={sheetData.color}
-											/>
-										</div>
-									)
-								})}
-							</div>
-						</div>
+        <Sheet>
+            <SheetTrigger asChild>
+                <div
+                    className={cn(
+                        buttonVariants({
+                            variant: "ghost",
+                        }),
+                        "h-fit p-1 cursor-pointer",
+                    )}
+                >
+                    <Icons.solarClipboardLine className="w-6 h-6" />
+                </div>
+            </SheetTrigger>
+            <SheetContent
+                side={"right"}
+                className="rounded-xl max-sm:rounded-r-none sm:w-[395px] max-w-[395px]  sm:h-[calc(100%-2rem)] sm:right-4 sm:top-4 flex flex-col gap-4 "
+                overlayClassName="bg-black/50 backdrop-blur-sm"
+            >
+                <div className="flex gap-3 item">
+                    <SheetTitle className="font-mainhead font-bold text-2xl leading-none">
+                        Notes
+                    </SheetTitle>
+                    <Icons.solarQuestionCircleLine className="w-4 h-4" />
+                </div>
+                <Separator className="w-full" />
 
-						{/* <div className="flex flex-wrap h-[90vh] pb-10 scrollbar-hide gap-4 overflow-auto">
-						{dummySheetNotesData.map((sheetData) => {
-							return (
-								<NoteSheetCard
-									name={sheetData.name}
-									content={sheetData.content}
-									color={sheetData.color}
-								/>
-							)
-						})}
-					</div> */}
-					</SheetHeader>
-				</SheetContent>
-			</Sheet>
-		)
+                <div className="columns-1 sm:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin">
+                    <div className="rounded-xl p-4 break-inside-avoid   bg-green-100">
+                        <div>
+                            I got this insight today concerning our active campaigns, the pattern is
+                            ok! We should consider moving forward with A/B testing.
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-blue-100">
+                        <div>
+                            I got this insight today concerning our active campaigns, the pattern is
+                            ok!
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-red-100">
+                        <div>I got this insight today concerning our active campaigns</div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100">
+                        <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
+                            repellendus itaque commodi enim officiis vitae nostrum qui quaerat vel
+                            magnam maxime, officia dignissimos illo voluptatibus culpa harum
+                            accusantium quia, dicta modi pariatur.
+                        </div>
+                    </div>
+
+                    <div className="rounded-xl p-4 break-inside-avoid bg-yellow-100">
+                        <div>
+                            I got this insight today concerning our active campaigns, the pattern is
+                            ok! We should consider moving forward with A/B testing.
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-pink-100">
+                        <div>
+                            I got this insight today concerning our active campaigns, the pattern is
+                            ok!
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100">
+                        <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
+                            repellendus itaque commodi enim officiis vitae nostrum qui quaerat vel
+                            magnam maxime, officia dignissimos illo voluptatibus culpa harum
+                            accusantium quia, dicta modi pariatur.
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid  bg-green-100">
+                        <div>
+                            I got this insight today concerning our active campaigns, the pattern is
+                            ok! We should consider moving forward with A/B testing.
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-blue-100">
+                        <div>
+                            I got this insight today concerning our active campaigns, the pattern is
+                            ok!
+                        </div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-red-100">
+                        <div>I got this insight today concerning our active campaigns</div>
+                    </div>
+                    <div className="rounded-xl p-4 break-inside-avoid bg-green-100">
+                        <div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
+                            repellendus itaque commodi enim officiis vitae nostrum qui quaerat vel
+                            magnam maxime, officia dignissimos illo voluptatibus culpa harum
+                            accusantium quia, dicta modi pariatur.
+                        </div>
+                    </div>
+                </div>
+            </SheetContent>
+        </Sheet>
+    );
 }

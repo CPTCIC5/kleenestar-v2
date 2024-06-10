@@ -35,6 +35,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useChannelsData } from "@/hooks/useChannelsData";
 import ChannelIcon from "@/components/custom/ChannelIcon";
 import { Skeleton } from "@/components/ui/skeleton";
+import NotesSidebar from "@/components/custom/NoteSheet";
 
 function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     const convoId = Number(params.convoId);
@@ -84,20 +85,21 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
             created_at: new Date().toISOString(),
         };
 
+        setPrompts((old) => [...(old || []), loadingPrompt]);
+
         // Optimistically update the local state
-        queryClient.setQueryData<Prompt[]>(["prompts", convoId], (old) => [
-            ...(old || []),
-            loadingPrompt,
-        ]);
+
+        // queryClient.setQueryData<Prompt[]>(["prompts", convoId], (old) => [
+        //     ...(old || []),
+        //     loadingPrompt,
+        // ]);
 
         try {
             await createPrompt({ convoId, text: inputText, file: uploadedFile });
             await queryClient.invalidateQueries({ queryKey: ["prompts", convoId] });
         } catch (error) {
-            console.error(error);
-            queryClient.setQueryData<Prompt[]>(["prompts", convoId], (old) =>
-                old?.filter((p) => p.id !== loadingPrompt.id),
-            );
+            console.error("Error sending message:", error);
+            setPrompts((old) => old.filter((prompt) => prompt.id !== loadingPrompt.id));
         }
     };
 
@@ -168,11 +170,11 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                     <div className="flex gap-5 items-center justify-start">
                         {isChannelsLoading ? (
                             <div className="flex justify-start items-center gap-5">
-                                <Skeleton className="rounded-full w-7 h-7"/>
-                                <Skeleton className="rounded-full w-7 h-7"/>
-                                <Skeleton className="rounded-full w-7 h-7"/>
-                                <Skeleton className="rounded-full w-7 h-7"/>
-                                <Skeleton className="rounded-full w-7 h-7"/>
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
                             </div>
                         ) : (
                             <div className="flex justify-start items-center gap-5">
@@ -218,16 +220,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                         >
                             <Icons.solarArchiveUpLine className="w-6 h-6" />
                         </div>
-                        <div
-                            className={cn(
-                                buttonVariants({
-                                    variant: "ghost",
-                                }),
-                                "h-fit p-1 cursor-pointer",
-                            )}
-                        >
-                            <Icons.solarClipboardLine className="w-6 h-6" />
-                        </div>
+                        <NotesSidebar />
                     </div>
                 </div>
                 <Card className="h-full w-full bg-inherit overflow-hidden ">
