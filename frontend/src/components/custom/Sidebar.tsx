@@ -33,10 +33,10 @@ export default function Sidebar() {
                 <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
                     <Link
                         href="/get-started"
-                        className="group flex h-8 w-8 shrink-0 gap-2 items-center justify-center rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+                        className="group flex h-9 w-9 shrink-0 gap-2 items-center justify-center rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
                     >
-                        <Icons.logoDark className="transition-all group-hover:scale-110 dark:hidden" />
-                        <Icons.logoLight className="transition-all hidden dark:group-hover:scale-110 dark:block" />
+                        <Icons.logoDark className="h-full w-full transition-all group-hover:scale-110 dark:hidden" />
+                        <Icons.logoLight className="h-full w-full transition-all hidden dark:group-hover:scale-110 dark:block" />
                         <span className="sr-only">Kleenestar</span>
                     </Link>
                     <Separator />

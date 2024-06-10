@@ -9,7 +9,7 @@ const createPrompt = async ({
 }: {
     convoId: number;
     text: string;
-    file: string | null;
+    file: File | null;
 }) => {
     await axios.post(
         `/api/channels/convos/${convoId}/prompts/create/`,
@@ -30,6 +30,7 @@ export const useCreatePrompt = () => {
     return useMutation({
         mutationFn: createPrompt,
         onSuccess: (data, variables) => {
+            console.log("prompts", variables.convoId);
             queryClient.invalidateQueries({ queryKey: ["prompts", variables.convoId] });
         },
     });

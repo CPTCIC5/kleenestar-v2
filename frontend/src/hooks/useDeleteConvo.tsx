@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { useFetchConvos } from "./useFetchConvos";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { Convo } from "@/lib/types/interfaces";
+import toastAxiosError from "@/lib/services/toastAxiosError";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const deleteConvo = async (id: number) => {
     await axios.delete(`/api/channels/convos/${id}/`, {
@@ -19,22 +19,28 @@ const deleteConvo = async (id: number) => {
 const useDeleteConvo = () => {
     const queryClient = useQueryClient();
     const router = useRouter();
-    const { refetch: refetchConvos } = useFetchConvos();
 
     return useMutation({
         mutationFn: (id: number) => deleteConvo(id),
+
         onSuccess: async () => {
-            queryClient.invalidateQueries({ queryKey: ["convos"] });
-            const { data: convos } = await refetchConvos();
-            if (convos && convos.length > 0) {
-                const nextConvoId = convos[0].id;
-                router.push(`/chat/${nextConvoId}`);
-            } else {
-                router.push(`/chat`);
+            await queryClient.invalidateQueries({ queryKey: ["convos"] });
+        },
+        onSettled: async (data, error) => {
+            try {
+                const convos: Convo[] = (await queryClient.getQueryData(["convos"])) || [];
+                if (convos.length > 0) {
+                    const nextConvoId = convos[0].id;
+                    router.push(`/chat/${nextConvoId}`);
+                } else {
+                    router.push(`/chat`);
+                }
+            } catch (error) {
+                console.error("Error handling mutation result:", error);
             }
         },
-        onError: () => {
-            toast.error("An unexpected error occurred. Please try again.");
+        onError: (error) => {
+            toastAxiosError(error);
         },
     });
 };

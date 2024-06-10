@@ -1,7 +1,12 @@
 "use client";
 
+import React, { useRef } from "react";
+import { Icons } from "@/assets/icons";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { usePathname } from "next/navigation";
+import useDeleteConvo from "@/hooks/useDeleteConvo";
+import useRenameConvo from "@/hooks/useRenameConvo";
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -14,29 +19,14 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
-    BackpackIcon,
-    DotsHorizontalIcon,
-    HamburgerMenuIcon,
-    Pencil2Icon,
-    Share2Icon,
-    TrashIcon,
-} from "@radix-ui/react-icons";
-import { Input } from "../ui/input";
-import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useDeleteConvo from "@/hooks/useDeleteConvo";
-import useRenameConvo from "@/hooks/useRenameConvo";
-import React, { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { Icons } from "@/assets/icons";
+import { buttonVariants } from "../ui/button";
 
 interface ChatOptionButtonProps {
-    currentConvoId: number | null;
-    setCurrentConvoId: React.Dispatch<React.SetStateAction<number | null>>;
     chat: {
         id: number;
         title: string;
@@ -50,8 +40,6 @@ interface ChatOptionButtonProps {
 }
 
 export function ChatOptionButton({
-    currentConvoId,
-    setCurrentConvoId,
     chat,
     toggleOptions,
     setToggleOptions,
@@ -59,7 +47,17 @@ export function ChatOptionButton({
     setRename,
     ...otherProps
 }: ChatOptionButtonProps) {
-    const router = useRouter();
+    const pathname = usePathname();
+    const isChatRoot = pathname === "/chat/";
+    const [currentConvoId, setCurrentConvoId] = React.useState<number | null>(null);
+
+    React.useEffect(() => {
+        const chatIdMatch = pathname.match(/^\/chat\/(\d+)\/?$/);
+        if (!isChatRoot && chatIdMatch) {
+            setCurrentConvoId(parseInt(chatIdMatch[1]));
+        }
+    }, [pathname, isChatRoot]);
+
     const { mutate: deleteConvo } = useDeleteConvo();
     const { mutate: renameConvo } = useRenameConvo();
     const [newName, setNewName] = React.useState<string>(chat.title);
@@ -107,13 +105,12 @@ export function ChatOptionButton({
                 onBlur={(e) => {
                     handleRenameChat(chat.id, newName);
                     setRename(null);
-                }} // add the rename api thing also to this
+                }}
                 onKeyPress={(event) => {
                     if (event.key === "Enter") {
                         event.preventDefault();
                         handleRenameChat(chat.id, newName);
                         setRename(null);
-                        // add the rename api thing also to this
                     }
                 }}
             />
@@ -157,7 +154,9 @@ export function ChatOptionButton({
                         <AlertDialogTrigger asChild>
                             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                                 <Icons.solarBinLine className="mr-2 h-4 w-4" />
-                                <span className="text-[14px] font-normal text-orange-600">Delete</span>
+                                <span className="text-[14px] font-normal text-orange-600">
+                                    Delete
+                                </span>
                             </DropdownMenuItem>
                         </AlertDialogTrigger>
                         <AlertDialogContent>

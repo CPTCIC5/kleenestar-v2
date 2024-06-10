@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
-import toastAxiosError from "@/lib/services/toastAxiosError";
+import { useRouter } from "next/navigation";
 import { Convo } from "@/lib/types/interfaces";
 import { isConvoEmpty } from "@/lib/services/isConvoEmpty";
+import toastAxiosError from "@/lib/services/toastAxiosError";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const useAddConvo = () => {
     const queryClient = useQueryClient();
@@ -27,13 +27,11 @@ export const useAddConvo = () => {
             );
         },
         onSuccess: async () => {
-            console.log("Chat added");
             await queryClient.invalidateQueries({ queryKey: ["convos"] });
         },
         onSettled: async (data, error) => {
             try {
                 const convos: Convo[] = (await queryClient.getQueryData(["convos"])) || [];
-
                 if (convos.length > 0) {
                     const nextConvoId = convos[0].id;
                     router.push(`/chat/${nextConvoId}`);
@@ -42,7 +40,6 @@ export const useAddConvo = () => {
                 }
             } catch (error) {
                 console.error("Error handling mutation result:", error);
-                toast.error("An unexpected error occurred. Please try again.");
             }
         },
         onError: (error) => {
@@ -58,18 +55,14 @@ export const useAddConvo = () => {
             if (lastConvoId) {
                 const isLastConvoEmpty = await isConvoEmpty(lastConvoId);
                 if (!isLastConvoEmpty) {
-                    console.log("Last convo is not empty, proceeding with mutation");
                     mutation.mutate();
                     return;
                 }
             }
-
-            console.log("Last convo is empty, not adding a new chat");
         } catch (error) {
-            console.error("Error checking if last convo is empty:", error);
-            toast.error("Failed to check if last convo is empty");
+            toastAxiosError(error);
         }
     };
 
-    return { addChat, isPending: mutation.isPending };
+    return { addConvoMutation: mutation, addChat, isPending: mutation.isPending };
 };

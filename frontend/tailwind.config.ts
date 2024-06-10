@@ -91,6 +91,7 @@ const config = {
                 xs: "380px",
                 ms: "480px",
                 xl: "750px",
+                xlg: "1100px",
             },
         },
     },

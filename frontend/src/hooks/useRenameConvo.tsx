@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 import axios from "axios";
 import Cookies from "js-cookie";
+import toastAxiosError from "@/lib/services/toastAxiosError";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const renameConvo = async (id: number, newName: string) => {
     await axios.patch(
@@ -26,8 +26,8 @@ const useRenameConvo = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["convos"] });
         },
-        onError: () => {
-            toast.error("An unexpected error occurred. Please try again.");
+        onError: (error) => {
+            toastAxiosError(error);
         },
     });
 };
