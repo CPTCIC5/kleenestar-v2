@@ -38,10 +38,5 @@ export default function DashboardLayout({
         }
     }, [isSuccess, convos, router, addConvoMutate, isChatRoot]);
 
-    return (
-        <div className="relative w-full h-screen flex-1 bg-muted/40 max-sm:pt-[56px]">
-            <ChatSidebar />
-            {children}
-        </div>
-    );
+    return <div className="w-full h-screen flex-1 bg-muted/40 max-sm:pt-[56px]">{children}</div>;
 }

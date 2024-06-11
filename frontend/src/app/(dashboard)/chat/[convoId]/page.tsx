@@ -1,6 +1,5 @@
 "use client";
 import { Icons } from "@/assets/icons";
-import ChatFeedbackForm from "@/components/custom/ChatFeedbackForm";
 import MakeNotes from "@/components/custom/MakeNotes";
 import { NewChatDisplay } from "@/components/custom/NewChatDisplay";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -36,6 +35,9 @@ import { useChannelsData } from "@/hooks/useChannelsData";
 import ChannelIcon from "@/components/custom/ChannelIcon";
 import { Skeleton } from "@/components/ui/skeleton";
 import NotesSidebar from "@/components/custom/NotesSidebar";
+import { ChatSidebar } from "@/components/custom/ChatSidebar";
+import AdditionalFeedbackDialog from "@/components/custom/AdditionalFeedbackDialog";
+import CreateNoteDialog from "@/components/custom/CreateNoteDialog";
 
 function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     const convoId = Number(params.convoId);
@@ -60,6 +62,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
 
     React.useEffect(() => {
         if (isSuccess) {
+            console.log(fetchedPrompts);
             setPrompts(fetchedPrompts);
         }
     }, [isSuccess, fetchedPrompts]);
@@ -167,35 +170,38 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
         <div className="w-full h-full p-[18px] xlg:pl-2 flex items-center justify-center gap-5">
             <div className="w-full h-full flex-[2] hidden xlg:flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
-                    <div className="flex gap-5 items-center justify-start">
-                        {isChannelsLoading ? (
-                            <div className="flex justify-start items-center gap-5">
-                                <Skeleton className="rounded-full w-7 h-7" />
-                                <Skeleton className="rounded-full w-7 h-7" />
-                                <Skeleton className="rounded-full w-7 h-7" />
-                                <Skeleton className="rounded-full w-7 h-7" />
-                                <Skeleton className="rounded-full w-7 h-7" />
-                            </div>
-                        ) : (
-                            <div className="flex justify-start items-center gap-5">
-                                {channelsData?.map((channel: { channel_type: number }) => {
-                                    return (
-                                        <ChannelIcon
-                                            key={channel.channel_type}
-                                            channelType={channel.channel_type}
-                                            className="w-7 h-7"
-                                        />
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
+                    <ChatSidebar />
+                    <div className="flex items-center justify-end gap-5">
+                        <div className="flex gap-5 items-center justify-start">
+                            {isChannelsLoading ? (
+                                <div className="flex justify-start items-center gap-5">
+                                    <Skeleton className="rounded-full w-7 h-7" />
+                                    <Skeleton className="rounded-full w-7 h-7" />
+                                    <Skeleton className="rounded-full w-7 h-7" />
+                                    <Skeleton className="rounded-full w-7 h-7" />
+                                    <Skeleton className="rounded-full w-7 h-7" />
+                                </div>
+                            ) : (
+                                <div className="flex justify-start items-center gap-5">
+                                    {channelsData?.map((channel: { channel_type: number }) => {
+                                        return (
+                                            <ChannelIcon
+                                                key={channel.channel_type}
+                                                channelType={channel.channel_type}
+                                                className="w-7 h-7"
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
 
-                    <div
-                        onClick={() => router.push("/channels")}
-                        className="w-[38px] h-[38px] bg-primary rounded-full flex items-center justify-center cursor-pointer"
-                    >
-                        <Icons.solarBoltCircleLine className="w-6 h-6 text-background" />
+                        <div
+                            onClick={() => router.push("/channels")}
+                            className="w-[38px] h-[38px] bg-primary rounded-full flex items-center justify-center cursor-pointer"
+                        >
+                            <Icons.solarBoltCircleLine className="w-6 h-6 text-background" />
+                        </div>
                     </div>
                 </div>
                 <Card className="w-full h-full bg-inherit">
@@ -264,7 +270,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                     </div>
                                                 </div>
 
-                                                <div className="markdown-body w-full p-6 rounded-2xl ">
+                                                <div className="markdown-body w-full p-6 rounded-2xl  ">
                                                     {prompt?.response_text === "..." ? (
                                                         <div className="flex  gap-4 items-center">
                                                             <Icons.logoDark className="w-9 h-9  dark:hidden " />
@@ -281,43 +287,16 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                                 </Markdown>
                                                             </div>
                                                             <div className="flex gap-3 justify-start items-center">
-                                                                <Dialog>
-                                                                    <DialogTrigger asChild>
-                                                                        <div
-                                                                            className={cn(
-                                                                                buttonVariants({
-                                                                                    variant:
-                                                                                        "outline",
-                                                                                }),
-                                                                                "h-fit p-1 cursor-pointer",
-                                                                            )}
-                                                                        >
-                                                                            <Icons.solarClipboardLine className="w-4 h-4" />
-                                                                        </div>
-                                                                    </DialogTrigger>
-                                                                    <MakeNotes
-                                                                        prompt_id={prompt?.id}
-                                                                        note={prompt?.response_text}
-                                                                    />
-                                                                </Dialog>
-                                                                <Dialog>
-                                                                    <DialogTrigger asChild>
-                                                                        <div
-                                                                            className={cn(
-                                                                                buttonVariants({
-                                                                                    variant:
-                                                                                        "outline",
-                                                                                }),
-                                                                                "h-fit p-1 cursor-pointer",
-                                                                            )}
-                                                                        >
-                                                                            <Icons.solarDislikeLine className="w-4 h-4" />
-                                                                        </div>
-                                                                    </DialogTrigger>
-                                                                    <ChatFeedbackForm
-                                                                        prompt_id={prompt?.id}
-                                                                    />
-                                                                </Dialog>
+                                                                <CreateNoteDialog
+                                                                    prompt_id={prompt?.id}
+                                                                    response_text={
+                                                                        prompt?.response_text
+                                                                    }
+                                                                />
+
+                                                                <AdditionalFeedbackDialog
+                                                                    prompt_id={prompt?.id}
+                                                                />
                                                             </div>
                                                         </div>
                                                     )}

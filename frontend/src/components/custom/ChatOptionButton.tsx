@@ -68,6 +68,7 @@ export function ChatOptionButton({
     };
 
     const handleRenameChat = (id: number, newName: string) => {
+        console.log("Renaming chat", id, newName);
         renameConvo({ id, newName });
     };
 
@@ -97,7 +98,7 @@ export function ChatOptionButton({
                 ref={inputRef} // Attach the reference to the input element
                 id="rename-chat"
                 type="text"
-                className={`w-full p-0 pl-1 mr-5 z-30 ${rename === chat.id ? "block" : "hidden"}`}
+                className={`w-full p-0 pl-1 mr-8 z-30 ${rename === chat.id ? "block" : "hidden"}`}
                 placeholder="New title"
                 defaultValue={chat.title}
                 onChange={(e) => setNewName(e.target.value)}
@@ -174,6 +175,7 @@ export function ChatOptionButton({
                                         e.stopPropagation();
                                         handleDeleteChat(chat.id);
                                     }}
+                                    className="bg-destructive"
                                 >
                                     Delete
                                 </AlertDialogAction>

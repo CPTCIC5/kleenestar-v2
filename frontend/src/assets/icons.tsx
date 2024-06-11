@@ -432,6 +432,34 @@ export const Icons = {
             </g>
         </svg>
     ),
+    solarColorPaletteLine: (props: IconProps) => (
+        <svg {...props} xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M2 12.026c0 5.146 3.867 9.387 8.847 9.96c.735.085 1.447-.228 1.97-.753a1.68 1.68 0 0 0 0-2.372c-.523-.525-.95-1.307-.555-1.934c1.576-2.508 9.738 3.251 9.738-4.9C22 6.488 17.523 2 12 2S2 6.489 2 12.026Z" />
+                <circle cx="17.5" cy="11.5" r="1.5" opacity=".5" />
+                <circle cx="6.5" cy="11.5" r="1.5" opacity=".5" />
+                <path
+                    d="M11 7a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0Zm5 0a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0Z"
+                    opacity=".5"
+                />
+            </g>
+        </svg>
+    ),
+    solarHambugerMenuLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5">
+                <path d="M20 7H4" />
+                <path d="M20 12H4" opacity=".5" />
+                <path d="M20 17H4" />
+            </g>
+        </svg>
+    ),
     solarQuestionCircleLine: (props: IconProps) => (
         <svg
             {...props}
@@ -1735,26 +1763,7 @@ export const Icons = {
             ></path>
         </svg>
     ),
-    colorPalatte: (props: IconProps) => (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-palette"
-        >
-            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
-            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
-            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
-            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
-        </svg>
-    ),
+
     feedback: (props: IconProps) => (
         <svg
             xmlns="http://www.w3.org/2000/svg"

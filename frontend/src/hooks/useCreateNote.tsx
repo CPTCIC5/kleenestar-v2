@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import toastAxiosError from "@/lib/services/toastAxiosError";
 
 type CreateNoteType = {
-    blocknote_id: number;
+    blocknote_id: number | null;
     note: string;
     color: string;
 };
@@ -13,7 +13,7 @@ type CreateNoteType = {
 export function useCreateNote() {
     const mutation = useMutation({
         mutationFn: async ({ id, data }: { id: number; data: CreateNoteType }) => {
-            console.log({ id, data });
+            if (data.blocknote_id === null || data.note === "" || data.color === "") return;
             return await axios.post(
                 `/api/channels/prompts/${id}/create-note/`,
                 {

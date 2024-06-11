@@ -95,18 +95,18 @@ export function ChatSidebar({}: ChatSidebarProps) {
             <SheetTrigger asChild>
                 <div
                     className={cn(
-                        buttonVariants({ variant: "outline" }),
-                        `absolute z-[50] left-0 top-[110px] max-sm:left-16 max-sm:top-[11.2px] rounded-full p-2 py-2 h-min  focus-visible:ring-0 cursor-pointer`,
+                        buttonVariants({ variant: "secondary" }),
+                        `h-fit p-1 cursor-pointer hover:bg-muted-foreground/10`,
                     )}
                 >
-                    <DoubleArrowRightIcon className="h-4 w-4" />
+                    <Icons.solarHambugerMenuLine className="h-7 w-7 bg-transparent" />
                     <span className="sr-only">Close</span>
                 </div>
             </SheetTrigger>
 
             <SheetContent
                 side={"left"}
-                className="rounded-xl max-sm:rounded-l-none sm:w-[292px] max-w-[292px]  sm:h-[calc(100%-2rem)] sm:left-16 sm:top-4 "
+                className="rounded-xl max-sm:rounded-l-none sm:w-96 max-w-96  sm:h-[calc(100%-2rem)] sm:left-16 sm:top-4 "
                 overlayClassName="bg-black/50 backdrop-blur-sm"
             >
                 <div className="space-y-1">

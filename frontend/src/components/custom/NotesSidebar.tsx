@@ -22,7 +22,7 @@ export default function NotesSidebar() {
             </SheetTrigger>
             <SheetContent
                 side={"right"}
-                className="rounded-xl max-sm:rounded-r-none sm:w-[395px] max-w-[395px]  sm:h-[calc(100%-2rem)] sm:right-4 sm:top-4 flex flex-col gap-4 "
+                className="rounded-xl max-sm:rounded-r-none sm:max-w-xl max-w-xl  sm:h-[calc(100%-2rem)] sm:right-4 sm:top-4 flex flex-col gap-4 "
                 overlayClassName="bg-black/50 backdrop-blur-sm"
             >
                 <div className="flex gap-3 item">
@@ -33,7 +33,7 @@ export default function NotesSidebar() {
                 </div>
                 <Separator className="w-full" />
 
-                <div className="columns-1 sm:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin text-black">
+                <div className="columns-1 ms:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin text-black">
                     <div className="rounded-xl p-4 break-inside-avoid   bg-green-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is
