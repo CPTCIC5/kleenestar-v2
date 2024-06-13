@@ -432,6 +432,39 @@ export const Icons = {
             </g>
         </svg>
     ),
+    solarMagnifierLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <defs>
+                <mask id="IconifyId190103a2477fa216e17">
+                    <g fill="none" stroke-width="1.5">
+                        <circle cx="11.5" cy="11.5" r="9.5" stroke="gray" />
+                        <path stroke="#fff" stroke-linecap="round" d="m20 20l2 2" />
+                    </g>
+                </mask>
+            </defs>
+            <path fill="currentColor" d="M0 0h24v24H0z" mask="url(#IconifyId190103a2477fa216e17)" />
+        </svg>
+    ),
+    solarAddCircleLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10" opacity=".5" />
+                <path stroke-linecap="round" d="M15 12h-3m0 0H9m3 0V9m0 3v3" />
+            </g>
+        </svg>
+    ),
     solarLinkLine: (props: IconProps) => (
         <svg
             {...props}

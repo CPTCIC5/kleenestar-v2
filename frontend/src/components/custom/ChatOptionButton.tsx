@@ -89,7 +89,7 @@ export function ChatOptionButton({
             {...otherProps}
             className={cn(
                 buttonVariants({ variant: "ghost" }),
-                `relative w-full flex justify-start px-2 items-center text=[13px] font-medium group !mt-0 ${
+                `h-10 relative w-full flex justify-start px-2 items-center font-medium group !mt-0 ${
                     currentConvoId === chat.id || toggleOptions === chat.id ? "bg-accent" : ""
                 }`,
             )}

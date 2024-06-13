@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { ChatSidebar } from "@/components/custom/ChatSidebar";
 
-export default function DashboardLayout({
+export default function ChatLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

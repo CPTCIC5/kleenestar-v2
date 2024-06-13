@@ -123,7 +123,7 @@ export function ChatSidebar({}: ChatSidebarProps) {
                         disabled={isAddingConvo}
                         className={cn(
                             buttonVariants({ variant: "outline" }),
-                            "flex justify-center items-center w-full gap-[8px] focus-visible:ring-0 border-blue-500 hover:bg-blue-50 text-blue-500 hover:text-blue-600",
+                            "w-full h-10 rounded-xl bg-background flex justify-center items-center  gap-[8px] focus-visible:ring-0 border-blue-500 hover:bg-blue-50 text-blue-500 hover:text-blue-600",
                         )}
                     >
                         <Icons.solarMagicStickLine className="h-5 w-5" />
@@ -133,7 +133,7 @@ export function ChatSidebar({}: ChatSidebarProps) {
                     <SearchBox
                         type="text"
                         placeholder="Search a chat…"
-                        className="w-full "
+                        className="w-full h-10 rounded-xl bg-background "
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />

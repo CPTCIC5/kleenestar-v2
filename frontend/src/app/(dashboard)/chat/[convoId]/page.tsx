@@ -167,8 +167,8 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     };
 
     return (
-        <div className="w-full h-full p-[18px] xlg:pl-2 flex items-center justify-center gap-5">
-            <div className="w-full h-full flex-[2] hidden xlg:flex flex-col gap-4">
+        <div className="w-full h-full p-4 xlg:pl-2 flex items-center justify-center gap-5">
+            <div className="w-full h-full  hidden xlg:flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
                     <ChatSidebar />
                     <div className="flex items-center justify-end gap-5">
@@ -212,7 +212,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                     </CardHeader>
                 </Card>
             </div>
-            <div className="w-full h-full flex-[1] max-w-2xl xlg:min-w-[500px] flex flex-col gap-4">
+            <div className="w-full h-full  max-w-2xl xlg:min-w-[500px] flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
                     <span className="font-mainhead">Campaign overview</span>
                     <div className="flex gap-5">

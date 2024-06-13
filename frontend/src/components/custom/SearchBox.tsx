@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { SearchIcon } from "lucide-react";
 import { TooltipProvider } from "../ui/tooltip";
+import { Icons } from "@/assets/icons";
 
 export interface SearchBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
@@ -22,7 +23,7 @@ const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
                     {...props}
                 ></input>
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer text-muted-foreground">
-                    <SearchIcon />
+                    <Icons.solarMagnifierLine className="h-5 w-5" />
                 </div>
             </div>
         );
