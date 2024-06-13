@@ -32,21 +32,10 @@ interface ChatOptionButtonProps {
         title: string;
         created_at: string;
     };
-    toggleOptions: number | null;
-    setToggleOptions: React.Dispatch<React.SetStateAction<number | null>>;
-    rename: number | null;
-    setRename: React.Dispatch<React.SetStateAction<number | null>>;
     onClick?: () => void;
 }
 
-export function ChatOptionButton({
-    chat,
-    toggleOptions,
-    setToggleOptions,
-    rename,
-    setRename,
-    ...otherProps
-}: ChatOptionButtonProps) {
+export function ChatOptionButton({ chat, ...otherProps }: ChatOptionButtonProps) {
     const pathname = usePathname();
     const isChatRoot = pathname === "/chat/";
     const [currentConvoId, setCurrentConvoId] = React.useState<number | null>(null);
@@ -60,6 +49,8 @@ export function ChatOptionButton({
 
     const { mutate: deleteConvo } = useDeleteConvo();
     const { mutate: renameConvo } = useRenameConvo();
+    const [rename, setRename] = React.useState<number | null>(null);
+    const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);
     const [newName, setNewName] = React.useState<string>(chat.title);
     const inputRef = useRef<HTMLInputElement>(null); // Create a reference to the input element
 

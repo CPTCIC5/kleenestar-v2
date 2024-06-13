@@ -37,8 +37,7 @@ export function ChatSidebar({}: ChatSidebarProps) {
 
     const [searchQuery, setSearchQuery] = React.useState("");
     const debounceValue = useDebounce(searchQuery, 1000);
-    const [rename, setRename] = React.useState<number | null>(null);
-    const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);
+
 
     const isTodayConvo = (convo: Convo) => {
         const today = new Date();
@@ -172,10 +171,6 @@ export function ChatSidebar({}: ChatSidebarProps) {
                                             onClick={() => handleConvoClick(chat.id)}
                                             key={chat.id}
                                             chat={chat}
-                                            toggleOptions={toggleOptions}
-                                            setToggleOptions={setToggleOptions}
-                                            rename={rename}
-                                            setRename={setRename}
                                         />
                                     );
                                 })}
@@ -192,10 +187,7 @@ export function ChatSidebar({}: ChatSidebarProps) {
                                             onClick={() => handleConvoClick(chat.id)}
                                             key={chat.id}
                                             chat={chat}
-                                            toggleOptions={toggleOptions}
-                                            setToggleOptions={setToggleOptions}
-                                            rename={rename}
-                                            setRename={setRename}
+
                                         />
                                     );
                                 })}
