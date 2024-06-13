@@ -1,6 +1,5 @@
 "use client";
 import { Icons } from "@/assets/icons";
-import MakeNotes from "@/components/custom/MakeNotes";
 import { NewChatDisplay } from "@/components/custom/NewChatDisplay";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -38,6 +37,7 @@ import NotesSidebar from "@/components/custom/NotesSidebar";
 import { ChatSidebar } from "@/components/custom/ChatSidebar";
 import AdditionalFeedbackDialog from "@/components/custom/AdditionalFeedbackDialog";
 import CreateNoteDialog from "@/components/custom/CreateNoteDialog";
+import ShareChatDialog from "@/components/custom/ShareChatDialog";
 
 function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     const convoId = Number(params.convoId);
@@ -216,16 +216,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
                     <span className="font-mainhead">Campaign overview</span>
                     <div className="flex gap-5">
-                        <div
-                            className={cn(
-                                buttonVariants({
-                                    variant: "ghost",
-                                }),
-                                "h-fit p-1 cursor-pointer",
-                            )}
-                        >
-                            <Icons.solarArchiveUpLine className="w-6 h-6" />
-                        </div>
+                        <ShareChatDialog prompts={prompts} userData={userData} />
                         <NotesSidebar />
                     </div>
                 </div>
