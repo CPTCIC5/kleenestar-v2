@@ -47,12 +47,14 @@ export default function Connect_Channels() {
     console.log(channelsData);
 
     const isChannelEnabled = (channel_type: number) => {
-        if (channelsData.channel_type === channel_type) {
-            const { key_1, key_2, key_3, key_4, key_5 } = channelsData.credentials;
-            if (key_1 !== "" || key_2 !== "" || key_3 !== "" || key_4 !== "" || key_5 !== "") {
-                return true;
-            }
-        }
+		for (const channel of channelsData) {
+			if (channel.channel_type === channel_type) {
+				const { key_1, key_2, key_3, key_4, key_5 } = channel.credentials
+				if (key_1 || key_2 || key_3 || key_4 || key_5) {
+					return true;
+				}
+			}
+		}
         return false;
     };
 
