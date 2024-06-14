@@ -90,7 +90,7 @@ export default function Connect_Channels() {
                     isChannelLoading={isChannelsLoading}
                 />
                 <ConnectChannelCard
-                    channel={{ type: 4, key: "tiktok", name: "TikTok" }}
+                    channel={{ type: 5, key: "tiktok", name: "TikTok" }}
                     channelEnabled={isChannelEnabled(5)}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
