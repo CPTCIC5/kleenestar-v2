@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import TanstackProvider from "@/lib/providers/TanstackProvider";
+import Script from "next/script";
 
 const fontInter = Inter({
     subsets: ["latin"],
@@ -54,6 +55,22 @@ export default function RootLayout({
                         <Toaster expand={true} position="bottom-right" richColors />
                     </ThemeProvider>
                 </TanstackProvider>
+
+                {/* Google Tag Manager script */}
+                <Script
+                    async
+                    src="https://www.googletagmanager.com/gtag/js?id=G-5V1STFY91V"
+                    strategy="afterInteractive"
+                />
+                <Script id="google-analytics" strategy="afterInteractive">
+                    {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+
+                        gtag('config', 'G-5V1STFY91V');
+                    `}
+                </Script>
             </body>
         </html>
     );

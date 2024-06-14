@@ -13,6 +13,8 @@ const CHANNEL_ICONS: { [key: number]: React.ComponentType<any> } = {
     4: Icons.logoLinkedin,
     5: Icons.logoTiktok,
     6: Icons.logoReddit,
+    7: Icons.logoShopify,
+    8: Icons.logoGoogleAnalytics,
 };
 
 const ChannelIcon: React.FC<ChannelIconProps> = (props) => {

@@ -11,7 +11,7 @@ import { useBlockNotes } from "@/hooks/useBlocknotes";
 import useDebounce from "@/hooks/useDebounce";
 import { useDeleteBlockNote } from "@/hooks/useDeleteBlocknotes";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface BlockNote {
     id: number;
@@ -41,7 +41,7 @@ export default function BlocknotesLayout({
         setBlocknotes(filteredBlocknotes || []);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         // console.log("blockNotes", blocknotesData);
         handleSearch();
     }, [debounceValue, isSuccess, blocknotesData]);
