@@ -167,7 +167,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     };
 
     return (
-        <div className="w-full h-full p-4 xlg:pl-2 flex items-center justify-center gap-5">
+        <div className="w-full h-full pt-4 px-2  sm:p-4 xlg:pl-2 flex items-center justify-center gap-5">
             <div className="w-full h-full  hidden xlg:flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
                     <ChatSidebar />

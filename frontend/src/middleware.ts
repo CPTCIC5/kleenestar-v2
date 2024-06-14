@@ -3,8 +3,10 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
     const loggedIn = request.cookies.get("loggedIn");
+    const csrfToken = request.cookies.get("csrftoken");
+    const sessionId = request.cookies.get("sessionid");
 
-    if (!loggedIn || loggedIn.value !== "true") {
+    if (!loggedIn || loggedIn.value !== "true" || !csrfToken || !sessionId) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 

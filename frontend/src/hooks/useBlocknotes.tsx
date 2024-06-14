@@ -18,6 +18,5 @@ export const useBlockNotes = () => {
     return useQuery({
         queryKey: ["blockNotes"],
         queryFn: fetchBlockNotes,
-        staleTime: 1000 * 60 * 5,
     });
 };

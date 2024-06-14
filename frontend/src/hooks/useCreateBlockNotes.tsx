@@ -1,6 +1,8 @@
+import toastAxiosError from "@/lib/services/toastAxiosError";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 const createBlockNote = async ({ title, image }: { title: string; image: string | null }) => {
     const response = await axios.post(
@@ -23,6 +25,10 @@ export const useCreateBlockNote = () => {
         mutationFn: createBlockNote,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["blockNotes"] });
+            toast.success("Blocknote created successfully");
+        },
+        onError: (error) => {
+            toastAxiosError(error);
         },
     });
 };
