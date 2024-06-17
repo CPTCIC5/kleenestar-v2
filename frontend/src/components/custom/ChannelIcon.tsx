@@ -1,5 +1,6 @@
 import React from "react";
 import { Icons } from "@/assets/icons";
+import { useTheme } from "next-themes";
 
 interface ChannelIconProps {
     channelType: number;
@@ -18,9 +19,22 @@ const CHANNEL_ICONS: { [key: number]: React.ComponentType<any> } = {
 };
 
 const ChannelIcon: React.FC<ChannelIconProps> = (props) => {
-    const { channelType, ...rest } = props;
+    const { channelType, className, ...rest } = props;
     const IconComponent = CHANNEL_ICONS[channelType];
-    return IconComponent ? <IconComponent {...rest} /> : null;
+    const theme = useTheme();
+
+    // Determine which version of the icon to render based on theme
+    const getIcon = () => {
+        if (channelType === 3) {
+            // For Twitter icon
+            return theme.theme === "dark" ? Icons.logoTwitterWhite : Icons.logoTwitter;
+        }
+        return IconComponent;
+    };
+
+    const SelectedIcon = getIcon();
+
+    return SelectedIcon ? <SelectedIcon className={className} {...rest} /> : null;
 };
 
 export default ChannelIcon;

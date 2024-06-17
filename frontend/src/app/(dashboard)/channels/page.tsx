@@ -7,6 +7,18 @@ import Cookies from "js-cookie";
 import { Icons } from "@/assets/icons";
 import { useChannelsData } from "@/hooks/useChannelsData";
 import ConnectChannelCard from "@/components/custom/ConnectChannelCard";
+import React, { useState } from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface Credentials {
     key_1: string;
@@ -40,6 +52,7 @@ const OauthController = async (key: string) => {
 };
 
 export default function Connect_Channels() {
+    const [openShopifyModal, setOpenShopifyModal] = useState<boolean>(false);
     const {
         data: channelsData = [],
         isLoading: isChannelsLoading,
@@ -130,6 +143,7 @@ export default function Connect_Channels() {
                         channelData={channelsData.find(
                             (channel: Channel) => channel.channel_type === 7,
                         )}
+                        setOpenShopifyModal={setOpenShopifyModal}
                         OauthController={OauthController}
                         isChannelLoading={isChannelsLoading}
                     />
@@ -144,6 +158,23 @@ export default function Connect_Channels() {
                     />
                 </div>
             </div>
+
+            {openShopifyModal && (
+                <Dialog open={openShopifyModal} onOpenChange={setOpenShopifyModal}>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle className="font-mainhead">Shopify shop name</DialogTitle>
+                            <DialogDescription>
+                                Enter the name of your Shopify shop to connect it to Kleenestar.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <Input id="shopifyShopName" placeholder="shop name" />
+                        <DialogFooter className="flex items-center justify-end">
+                            <Button type="submit">Proceed</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            )}
         </div>
     );
 }
