@@ -53,12 +53,18 @@ const OauthController = async (key: string) => {
 
 export default function Connect_Channels() {
     const [openShopifyModal, setOpenShopifyModal] = useState<boolean>(false);
+    const [shopifyShop, setShopifyShop] = useState<string>("")
     const {
         data: channelsData = [],
         isLoading: isChannelsLoading,
         isSuccess: isChannelsSuccess,
     } = useChannelsData();
     console.log(channelsData);
+
+    const handleShopifyOauth = () => {
+        OauthController(`shopify/?shop=${shopifyShop}`);
+        setOpenShopifyModal(false)
+    }
 
     const isChannelEnabled = (channel_type: number) => {
         for (const channel of channelsData) {
@@ -70,111 +76,129 @@ export default function Connect_Channels() {
     };
 
     return (
-        <div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20 space-y-6">
-            <div className="gap-2 flex items-center">
-                <CardTitle className="font-mainhead">Connect channels</CardTitle>
-                <Icons.solarQuestionCircleLine className="h-4 w-4" />
-            </div>
-            <div className="flex flex-wrap gap-x-7 gap-6 max-md:justify-center w-full">
-                <ConnectChannelCard
-                    channel={{ type: 1, key: "google", name: "Google Adwords" }}
-                    channelEnabled={isChannelEnabled(1)}
-                    channelData={channelsData.find(
-                        (channel: Channel) => channel.channel_type === 1,
-                    )}
-                    OauthController={OauthController}
-                    isChannelLoading={isChannelsLoading}
-                />
-                <ConnectChannelCard
-                    channel={{ type: 2, key: "facebook", name: "Meta" }}
-                    channelEnabled={isChannelEnabled(2)}
-                    channelData={channelsData.find(
-                        (channel: Channel) => channel.channel_type === 2,
-                    )}
-                    OauthController={OauthController}
-                    isChannelLoading={isChannelsLoading}
-                />
-                <ConnectChannelCard
-                    channel={{ type: 3, key: "twitter", name: "Twitter" }}
-                    channelEnabled={isChannelEnabled(3)}
-                    channelData={channelsData.find(
-                        (channel: Channel) => channel.channel_type === 3,
-                    )}
-                    OauthController={OauthController}
-                    isChannelLoading={isChannelsLoading}
-                />
-                <ConnectChannelCard
-                    channel={{ type: 4, key: "linkedin", name: "Linkedin" }}
-                    channelEnabled={isChannelEnabled(4)}
-                    channelData={channelsData.find(
-                        (channel: Channel) => channel.channel_type === 4,
-                    )}
-                    OauthController={OauthController}
-                    isChannelLoading={isChannelsLoading}
-                />
-                <ConnectChannelCard
-                    channel={{ type: 5, key: "tiktok", name: "TikTok" }}
-                    channelEnabled={isChannelEnabled(5)}
-                    channelData={channelsData.find(
-                        (channel: Channel) => channel.channel_type === 5,
-                    )}
-                    OauthController={OauthController}
-                    isChannelLoading={isChannelsLoading}
-                />
-                <ConnectChannelCard
-                    channel={{ type: 6, key: "reddit", name: "Reddit" }}
-                    channelEnabled={isChannelEnabled(6)}
-                    channelData={channelsData.find(
-                        (channel: Channel) => channel.channel_type === 6,
-                    )}
-                    OauthController={OauthController}
-                    isChannelLoading={isChannelsLoading}
-                />
-            </div>
-            <div className="!mt-12 space-y-6">
-                <div className="gap-2 flex items-center">
-                    <CardTitle className="font-mainhead">Connect web analytics</CardTitle>
-                    <Icons.solarQuestionCircleLine className="h-4 w-4" />
-                </div>
-                <div className="flex flex-wrap gap-x-7 gap-6 max-md:justify-center w-full">
-                    <ConnectChannelCard
-                        channel={{ type: 7, key: "shopify", name: "Shopify" }}
-                        channelEnabled={isChannelEnabled(7)}
-                        channelData={channelsData.find(
-                            (channel: Channel) => channel.channel_type === 7,
-                        )}
-                        setOpenShopifyModal={setOpenShopifyModal}
-                        OauthController={OauthController}
-                        isChannelLoading={isChannelsLoading}
-                    />
-                    <ConnectChannelCard
-                        channel={{ type: 8, key: "facebook", name: "Google Analytics" }}
-                        channelEnabled={false}
-                        channelData={channelsData.find(
-                            (channel: Channel) => channel.channel_type === 7,
-                        )}
-                        OauthController={OauthController}
-                        isChannelLoading={isChannelsLoading}
-                    />
-                </div>
-            </div>
+			<div className="mx-auto pt-[70.5px] max-w-[692px] max-xl:w-[90%] max-xl:pb-20 space-y-6">
+				<div className="gap-2 flex items-center">
+					<CardTitle className="font-mainhead">Connect channels</CardTitle>
+					<Icons.solarQuestionCircleLine className="h-4 w-4" />
+				</div>
+				<div className="flex flex-wrap gap-x-7 gap-6 max-md:justify-center w-full">
+					<ConnectChannelCard
+						channel={{ type: 1, key: "google", name: "Google Adwords" }}
+						channelEnabled={isChannelEnabled(1)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 1
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
+					<ConnectChannelCard
+						channel={{ type: 2, key: "facebook", name: "Meta" }}
+						channelEnabled={isChannelEnabled(2)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 2
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
+					<ConnectChannelCard
+						channel={{ type: 3, key: "twitter", name: "Twitter" }}
+						channelEnabled={isChannelEnabled(3)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 3
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
+					<ConnectChannelCard
+						channel={{ type: 4, key: "linkedin", name: "Linkedin" }}
+						channelEnabled={isChannelEnabled(4)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 4
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
+					<ConnectChannelCard
+						channel={{ type: 5, key: "tiktok", name: "TikTok" }}
+						channelEnabled={isChannelEnabled(5)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 5
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
+					<ConnectChannelCard
+						channel={{ type: 6, key: "reddit", name: "Reddit" }}
+						channelEnabled={isChannelEnabled(6)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 6
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
+				</div>
+				<div className="!mt-12 space-y-6">
+					<div className="gap-2 flex items-center">
+						<CardTitle className="font-mainhead">
+							Connect web analytics
+						</CardTitle>
+						<Icons.solarQuestionCircleLine className="h-4 w-4" />
+					</div>
+					<div className="flex flex-wrap gap-x-7 gap-6 max-md:justify-center w-full">
+						<ConnectChannelCard
+							channel={{ type: 7, key: "shopify", name: "Shopify" }}
+							channelEnabled={isChannelEnabled(7)}
+							channelData={channelsData.find(
+								(channel: Channel) => channel.channel_type === 7
+							)}
+							setOpenShopifyModal={setOpenShopifyModal}
+							OauthController={OauthController}
+							isChannelLoading={isChannelsLoading}
+						/>
+						<ConnectChannelCard
+							channel={{ type: 8, key: "facebook", name: "Google Analytics" }}
+							channelEnabled={isChannelEnabled(1)}
+							channelData={channelsData.find(
+								(channel: Channel) => channel.channel_type === 7
+							)}
+							OauthController={OauthController}
+							isChannelLoading={isChannelsLoading}
+						/>
+					</div>
+				</div>
 
-            {openShopifyModal && (
-                <Dialog open={openShopifyModal} onOpenChange={setOpenShopifyModal}>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle className="font-mainhead">Shopify shop name</DialogTitle>
-                            <DialogDescription>
-                                Enter the name of your Shopify shop to connect it to Kleenestar.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <Input id="shopifyShopName" placeholder="shop name" />
-                        <DialogFooter className="flex items-center justify-end">
-                            <Button type="submit">Proceed</Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-            )}
-        </div>
-    );
+				{openShopifyModal && (
+					<Dialog
+						open={openShopifyModal}
+						onOpenChange={setOpenShopifyModal}>
+						<DialogContent className="sm:max-w-[425px]">
+							<DialogHeader>
+								<DialogTitle className="font-mainhead">
+									Shopify shop name
+								</DialogTitle>
+								<DialogDescription>
+									Enter the name of your Shopify shop to connect it to
+									Kleenestar.
+								</DialogDescription>
+							</DialogHeader>
+							<Input
+								id="shopifyShopName"
+								placeholder="shop name"
+                                name="shop name"
+                                value={shopifyShop}
+                                onChange={(e) => setShopifyShop(e.target.value)}
+							/>
+							<DialogFooter className="flex items-center justify-end">
+								<Button
+                                    disabled={shopifyShop.length === 0}
+									onClick={handleShopifyOauth}
+									type="submit">
+									Proceed
+								</Button>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
+				)}
+			</div>
+		)
 }
