@@ -178,7 +178,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
         <div className="w-full h-full pt-4 px-2  sm:p-4 xlg:pl-2 flex items-center justify-center gap-5">
             <div className="w-full h-full  hidden xlg:flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
-                    <ChatSidebar />
+                    <ChatSidebar className="max-xlg:hidden" />
                     <div className="flex items-center justify-end gap-5">
                         <div className="flex gap-5 items-center justify-start">
                             {isChannelsLoading ? (
@@ -222,6 +222,7 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
             </div>
             <div className="w-full h-full  max-w-2xl xlg:min-w-[500px] flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
+                    <ChatSidebar className="xlg:hidden" />
                     <span className="font-mainhead">
                         {prompts.length === 0 ? "New Chat" : prompts[0].convo.title}
                     </span>

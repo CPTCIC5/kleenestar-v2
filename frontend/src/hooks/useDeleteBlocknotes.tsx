@@ -36,9 +36,9 @@ export const useDeleteBlockNote = () => {
                     (await queryClient.getQueryData(["blockNotes"])) || [];
                 if (blocknotes.length > 0) {
                     const nextBlocknoteId = blocknotes[0].id;
-                    router.push(`/blocknotes/${nextBlocknoteId}`);
+                    router.push(`/blocknote/${nextBlocknoteId}`);
                 } else {
-                    router.push(`/blocknotes`);
+                    router.push(`/blocknote`);
                 }
             } catch (error) {
                 console.error("Error handling mutation result of blocknotes:", error);

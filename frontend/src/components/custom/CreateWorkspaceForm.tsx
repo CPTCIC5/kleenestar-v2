@@ -31,6 +31,7 @@ import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import RippleLoader from "../ui/ripple-loader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import ClassicLoader from "../ui/classic-loader";
 
 interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -72,7 +73,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
     if (isWorkspaceLoading) {
         return (
             <div className="flex items-center justify-center p-4">
-                <RippleLoader />
+                <ClassicLoader />
             </div>
         );
     }

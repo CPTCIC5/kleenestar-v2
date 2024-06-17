@@ -137,7 +137,7 @@ export default function Connect_Channels() {
                         channel={{ type: 8, key: "facebook", name: "Google Analytics" }}
                         channelEnabled={false}
                         channelData={channelsData.find(
-                            (channel: Channel) => channel.channel_type === 1,
+                            (channel: Channel) => channel.channel_type === 7,
                         )}
                         OauthController={OauthController}
                         isChannelLoading={isChannelsLoading}

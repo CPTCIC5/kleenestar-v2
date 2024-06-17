@@ -18,9 +18,11 @@ import { DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "../ui/sheet";
 
-interface ChatSidebarProps {}
+interface ChatSidebarProps {
+    className?: string;
+}
 
-export function ChatSidebar({}: ChatSidebarProps) {
+export function ChatSidebar({ className }: ChatSidebarProps) {
     const router = useRouter();
 
     const {
@@ -37,7 +39,6 @@ export function ChatSidebar({}: ChatSidebarProps) {
 
     const [searchQuery, setSearchQuery] = React.useState("");
     const debounceValue = useDebounce(searchQuery, 1000);
-
 
     const isTodayConvo = (convo: Convo) => {
         const today = new Date();
@@ -96,6 +97,7 @@ export function ChatSidebar({}: ChatSidebarProps) {
                     className={cn(
                         buttonVariants({ variant: "secondary" }),
                         `h-fit p-1 cursor-pointer hover:bg-muted-foreground/10`,
+                        className,
                     )}
                 >
                     <Icons.solarHambugerMenuLine className="h-7 w-7 bg-transparent" />
@@ -105,7 +107,9 @@ export function ChatSidebar({}: ChatSidebarProps) {
 
             <SheetContent
                 side={"left"}
-                className="rounded-xl max-sm:rounded-l-none sm:w-96 max-w-96  sm:h-[calc(100%-2rem)] sm:left-16 sm:top-4 "
+                className={cn(
+                    "rounded-xl max-sm:rounded-l-none sm:w-96 max-w-96  sm:h-[calc(100%-2rem)] sm:left-16 sm:top-4 ",
+                )}
                 overlayClassName="bg-black/50 backdrop-blur-sm"
             >
                 <div className="space-y-1">
@@ -187,7 +191,6 @@ export function ChatSidebar({}: ChatSidebarProps) {
                                             onClick={() => handleConvoClick(chat.id)}
                                             key={chat.id}
                                             chat={chat}
-
                                         />
                                     );
                                 })}

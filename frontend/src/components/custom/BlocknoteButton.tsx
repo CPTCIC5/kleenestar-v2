@@ -21,7 +21,7 @@ interface BlocknoteButtonProps {
 
 export function BlocknoteButton({ blocknote, ...otherProps }: BlocknoteButtonProps) {
     const pathname = usePathname();
-    const isBlocknoteRoot = pathname === "/blocknotes/";
+    const isBlocknoteRoot = pathname === "/blocknote/";
     const [currentBlocknoteId, setCurrentBlocknoteId] = React.useState<number | null>(null);
 
     console.log(blocknote, "blocknote");

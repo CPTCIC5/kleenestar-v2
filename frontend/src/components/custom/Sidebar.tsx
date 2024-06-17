@@ -61,7 +61,7 @@ export default function Sidebar() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="/blocknotes"
+                                href="/blocknote"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Icons.solarClipboardLine className="h-6 w-6" />
@@ -164,11 +164,7 @@ export default function Sidebar() {
             </aside>
 
             <header className="fixed top-0 inset-x-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4  sm:h-auto sm:border-0 justify-between sm:hidden sm:justify-end  sm:px-6 sm:gap-4 sm:py-4 sm:pl-14 sm:bg-transparent ">
-                <div className="flex items-center gap-3">
-                    <SidebarSheet />
-
-                    {pathname === "/chat" || (pathname.startsWith("/chat/") && <ChatSidebar />)}
-                </div>
+                <SidebarSheet />
                 <div className="flex flex-row gap-2 items-center sm:hidden">
                     <ModeToggle />
                     <Link

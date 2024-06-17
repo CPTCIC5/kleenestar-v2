@@ -30,7 +30,7 @@ const SidebarSheet = () => {
                         Chat
                     </Link>
                     <Link
-                        href="/blocknotes"
+                        href="/blocknote"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
                         <Icons.solarClipboardLine className="h-6 w-6" />

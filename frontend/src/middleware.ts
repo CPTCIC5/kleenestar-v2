@@ -18,9 +18,7 @@ export const config = {
     matcher: [
         "/create-workspace/:path*",
         "/chat/:path*",
-        "/blocknotes/:path*",
-        "/create-blocknotes/:path*",
-        "/individual-blocknote/:path*",
+        "/blocknote/:path*",
         "/knowledge/:path*",
         "/channels/:path*",
         "/billing/:path*",

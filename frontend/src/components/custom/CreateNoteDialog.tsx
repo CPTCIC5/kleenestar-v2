@@ -42,6 +42,7 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
     const [note, setNote] = useState<string>("");
     const [blocknoteId, setBlocknoteId] = useState<number | null>(null);
     const [errors, setErrors] = useState<string[]>([]);
+    const [selectValue, setSelectValue] = useState<string>("");
 
     const onSubmit = () => {
         const newErrors = [];
@@ -67,6 +68,7 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
         setColor("");
         setNote("");
         setBlocknoteId(null);
+        setSelectValue("");
         setErrors([]);
     };
 
@@ -105,7 +107,7 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
                     <div className="flex justify-between items-center gap-5">
                         <Label>Note</Label>
                         <div className="flex group cursor-pointer items-center pl-4">
-                            <Card className="fixed right-10 mx-2  group-hover:block hover:block hidden text-background p-1 bg-muted">
+                            <Card className="fixed right-10 mx-2  group-hover:block hover:block hidden text-background p-1 ">
                                 <div className="flex gap-3 items-center">
                                     <div
                                         onClick={() => {
@@ -148,7 +150,7 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
                         onChange={(e) => setNote(e.target.value)}
                         placeholder="Say something here..."
                         style={{ backgroundColor: `${color}` }}
-                        className={`resize-none h-28 rounded-lg scrollbar-thin focus-visible:ring-ring/30`}
+                        className={`text-black resize-none h-28 rounded-lg scrollbar-thin focus-visible:ring-ring/30`}
                     />
                 </div>
                 {errors.length !== 0 && (
@@ -167,35 +169,38 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
                 )}
                 <DialogFooter className="flex flex-row !justify-between items-center">
                     <div>
-                        <Select onValueChange={(value) => setBlocknoteId(parseInt(value, 10))}>
+                        <Select
+                            value={selectValue}
+                            onValueChange={(value) => {
+                                setBlocknoteId(parseInt(value, 10));
+                                setSelectValue(value);
+                            }}
+                        >
                             <SelectTrigger className="px-2">
                                 <SelectValue placeholder="Select Blocknote" />
                             </SelectTrigger>
                             <SelectContent sideOffset={5}>
-                                {blockNotes.map((item: BlockNoteTypes) => {
-                                    return (
-                                        <SelectItem value={String(item.id)} key={item.id}>
-                                            <div className="flex flex-row gap-2 items-center justify-start">
-                                                <Avatar className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
-                                                    <AvatarImage
-                                                        className="w-3 h-3"
-                                                        src={
-                                                            item.image
-                                                                ? `https://twemoji.maxcdn.com/v/latest/svg/${item.image}.svg`
-                                                                : "https://github.com/shadcn.png"
-                                                        }
-                                                        alt="@shadcn"
-                                                    />
-                                                    <AvatarFallback className="flex items-center justify-center">
-                                                        N
-                                                    </AvatarFallback>
-                                                </Avatar>
-
-                                                <span className="text-xs">{item.title}</span>
-                                            </div>
-                                        </SelectItem>
-                                    );
-                                })}
+                                {blockNotes.map((item: BlockNoteTypes) => (
+                                    <SelectItem value={String(item.id)} key={item.id}>
+                                        <div className="flex flex-row gap-2 items-center">
+                                            <Avatar className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                                <AvatarImage
+                                                    className="w-3 h-3"
+                                                    src={
+                                                        item.image
+                                                            ? item.image
+                                                            : "https://github.com/shadcn.png"
+                                                    }
+                                                    alt="@shadcn"
+                                                />
+                                                <AvatarFallback className="flex items-center justify-center">
+                                                    N
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <span className="text-xs">{item.title}</span>
+                                        </div>
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                     </div>
