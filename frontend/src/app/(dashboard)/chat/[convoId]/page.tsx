@@ -16,7 +16,11 @@ import remarkGfm from "remark-gfm";
 
 export interface Prompt {
     id: number;
-    convo_id: number | null;
+    convo: {
+        id: number;
+        title: string;
+        archived: boolean;
+    };
     author: string;
     text_query: string;
     file_query: string | null;
@@ -79,7 +83,11 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
 
         const loadingPrompt: Prompt = {
             id: Date.now(),
-            convo_id: convoId,
+            convo: {
+                id: convoId,
+                title: "Campaign overview",
+                archived: false,
+            },
             author: "User",
             text_query: inputText,
             file_query: uploadedFileLink,
@@ -214,7 +222,9 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
             </div>
             <div className="w-full h-full  max-w-2xl xlg:min-w-[500px] flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
-                    <span className="font-mainhead">Campaign overview</span>
+                    <span className="font-mainhead">
+                        {prompts.length === 0 ? "New Chat" : prompts[0].convo.title}
+                    </span>
                     <div className="flex gap-5">
                         <ShareChatDialog prompts={prompts} userData={userData} />
                         <NotesSidebar />

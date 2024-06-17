@@ -17,6 +17,7 @@ interface Credentials {
 }
 
 interface Channel {
+    id: number;
     channel_type: number;
     credentials: Credentials;
     created_at: string; // ISO 8601 date string
@@ -47,14 +48,11 @@ export default function Connect_Channels() {
     console.log(channelsData);
 
     const isChannelEnabled = (channel_type: number) => {
-		for (const channel of channelsData) {
-			if (channel.channel_type === channel_type) {
-				const { key_1, key_2, key_3, key_4, key_5 } = channel.credentials
-				if (key_1 || key_2 || key_3 || key_4 || key_5) {
-					return true;
-				}
-			}
-		}
+        for (const channel of channelsData) {
+            if (channel.channel_type === channel_type) {
+                return true;
+            }
+        }
         return false;
     };
 
@@ -68,36 +66,54 @@ export default function Connect_Channels() {
                 <ConnectChannelCard
                     channel={{ type: 1, key: "google", name: "Google Adwords" }}
                     channelEnabled={isChannelEnabled(1)}
+                    channelData={channelsData.find(
+                        (channel: Channel) => channel.channel_type === 1,
+                    )}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
                 />
                 <ConnectChannelCard
                     channel={{ type: 2, key: "facebook", name: "Meta" }}
                     channelEnabled={isChannelEnabled(2)}
+                    channelData={channelsData.find(
+                        (channel: Channel) => channel.channel_type === 2,
+                    )}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
                 />
                 <ConnectChannelCard
                     channel={{ type: 3, key: "twitter", name: "Twitter" }}
                     channelEnabled={isChannelEnabled(3)}
+                    channelData={channelsData.find(
+                        (channel: Channel) => channel.channel_type === 3,
+                    )}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
                 />
                 <ConnectChannelCard
                     channel={{ type: 4, key: "linkedin", name: "Linkedin" }}
                     channelEnabled={isChannelEnabled(4)}
+                    channelData={channelsData.find(
+                        (channel: Channel) => channel.channel_type === 4,
+                    )}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
                 />
                 <ConnectChannelCard
                     channel={{ type: 5, key: "tiktok", name: "TikTok" }}
                     channelEnabled={isChannelEnabled(5)}
+                    channelData={channelsData.find(
+                        (channel: Channel) => channel.channel_type === 5,
+                    )}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
                 />
                 <ConnectChannelCard
                     channel={{ type: 6, key: "reddit", name: "Reddit" }}
                     channelEnabled={isChannelEnabled(6)}
+                    channelData={channelsData.find(
+                        (channel: Channel) => channel.channel_type === 6,
+                    )}
                     OauthController={OauthController}
                     isChannelLoading={isChannelsLoading}
                 />
@@ -111,12 +127,18 @@ export default function Connect_Channels() {
                     <ConnectChannelCard
                         channel={{ type: 7, key: "shopify", name: "Shopify" }}
                         channelEnabled={isChannelEnabled(7)}
+                        channelData={channelsData.find(
+                            (channel: Channel) => channel.channel_type === 7,
+                        )}
                         OauthController={OauthController}
                         isChannelLoading={isChannelsLoading}
                     />
                     <ConnectChannelCard
                         channel={{ type: 8, key: "facebook", name: "Google Analytics" }}
                         channelEnabled={false}
+                        channelData={channelsData.find(
+                            (channel: Channel) => channel.channel_type === 1,
+                        )}
                         OauthController={OauthController}
                         isChannelLoading={isChannelsLoading}
                     />

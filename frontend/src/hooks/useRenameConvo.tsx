@@ -23,8 +23,9 @@ const useRenameConvo = () => {
 
     return useMutation({
         mutationFn: ({ id, newName }: { id: number; newName: string }) => renameConvo(id, newName),
-        onSuccess: () => {
+        onSuccess: (data, variables) => {
             queryClient.invalidateQueries({ queryKey: ["convos"] });
+            queryClient.invalidateQueries({ queryKey: ["prompts", variables.id] });
         },
         onError: (error) => {
             toastAxiosError(error);

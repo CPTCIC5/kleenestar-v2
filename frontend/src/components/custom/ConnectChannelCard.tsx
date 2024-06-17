@@ -4,12 +4,28 @@ import { Switch } from "../ui/switch";
 import ChannelIcon from "./ChannelIcon";
 import useRemoveChannel from "@/hooks/useRemoveChannel";
 
+interface Credentials {
+    key_1: string;
+    key_2: string;
+    key_3: string;
+    key_4: string;
+    key_5: string;
+}
+
+interface Channel {
+    id: number;
+    channel_type: number;
+    credentials: Credentials;
+    created_at: string; // ISO 8601 date string
+}
+
 interface ConnectChannelCardProps {
     channel: {
         type: number;
         key: string;
         name: string;
     };
+    channelData: Channel;
     channelEnabled: boolean;
     OauthController: (channel: string) => void;
     isChannelLoading: boolean;
@@ -17,6 +33,7 @@ interface ConnectChannelCardProps {
 
 export default function ConnectChannelCard({
     channel,
+    channelData,
     channelEnabled,
     OauthController,
     isChannelLoading,
@@ -36,7 +53,7 @@ export default function ConnectChannelCard({
                 <Switch
                     onClick={() => {
                         if (channelEnabled) {
-                            mutateChannelRemove(channel.type);
+                            mutateChannelRemove(channelData.id);
                         } else {
                             OauthController(channel.key);
                         }

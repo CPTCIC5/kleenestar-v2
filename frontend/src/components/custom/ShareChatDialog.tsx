@@ -29,7 +29,11 @@ interface ShareChatDialogProps {
 
 export interface Prompt {
     id: number;
-    convo_id: number | null;
+    convo: {
+        id: number;
+        title: string;
+        archived: boolean;
+    }
     author: string;
     text_query: string;
     file_query: string | null;
