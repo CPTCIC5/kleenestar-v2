@@ -7,9 +7,13 @@ export function middleware(request: NextRequest) {
     const sessionId = request.cookies.get("sessionid");
     const url = new URL(request.url);
 
+    const headers = {
+			"ngrok-skip-browser-warning": "true",
+		}
+
     if (!loggedIn || loggedIn.value !== "true" || !csrfToken || !sessionId) {
         if (url.pathname !== "/login/") {
-            return NextResponse.redirect(new URL("/login", request.url));
+            return NextResponse.redirect(new URL("/login", request.url), { headers });
         }
     } else {
         if (
