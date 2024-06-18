@@ -36,21 +36,21 @@ interface Channel {
 }
 
 const OauthController = async (key: string) => {
-    try {
-        const response = await axios.get(`/api/oauth/${key}`, {
-            withCredentials: true,
-            headers: {
-				"ngrok-skip-browser-warning": "69420",
-                "Content-Type": "application/json",
-                "X-CSRFToken": Cookies.get("csrfToken"),
-            },
-        });
-        const url = response.data.url;
-        window.open(url, "_parent");
-    } catch (err) {
-        console.log(err);
-    }
-};
+	try {
+		const response = await axios.get(`/api/oauth/${key}`, {
+			withCredentials: true,
+			headers: {
+				"ngrok-skip-browser-warning": "true",
+				"Content-Type": "application/json",
+				"X-CSRFToken": Cookies.get("csrfToken"),
+			},
+		})
+		const url = response.data.url
+		window.open(url, "_parent")
+	} catch (err) {
+		console.log(err)
+	}
+}
 
 export default function Connect_Channels() {
     const [openShopifyModal, setOpenShopifyModal] = useState<boolean>(false);
