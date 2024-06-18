@@ -23,7 +23,7 @@ const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
                     {...props}
                 ></input>
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer text-muted-foreground">
-                    <Icons.solarMagnifierLine className="h-5 w-5" />
+                    <SearchIcon className="h-5 w-5" />
                 </div>
             </div>
         );

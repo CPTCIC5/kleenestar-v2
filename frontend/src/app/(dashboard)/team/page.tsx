@@ -34,6 +34,7 @@ type User = {
     id: string;
     first_name: string;
     last_name: string;
+    email: string;
     profile: {
         avatar: string;
     };
@@ -42,6 +43,8 @@ type User = {
 export default function TeamMembersPage() {
     const { workspaceData } = useWorkspaceData();
     const [emailInput, setEmailInput] = React.useState<string>("");
+
+    console.log(workspaceData, "workspaceData");
 
     const mutation = useSendInviteCode();
 
@@ -109,9 +112,11 @@ export default function TeamMembersPage() {
                                     </Avatar>
 
                                     <div className="flex-1 !mt-0 ">
-                                        <CardTitle className="text-[15px]">
-                                            {user.first_name + " " + user.last_name}
-                                        </CardTitle>
+                                        <span>
+                                            {user.first_name === "" && user.last_name === ""
+                                                ? user.email
+                                                : user.first_name + " " + user.last_name}
+                                        </span>
                                     </div>
 
                                     <Select>

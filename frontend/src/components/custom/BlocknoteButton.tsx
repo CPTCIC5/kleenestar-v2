@@ -26,18 +26,22 @@ export function BlocknoteButton({ blocknote, ...otherProps }: BlocknoteButtonPro
 
     console.log(blocknote, "blocknote");
 
-    // handle the size of button when size is < xlg
-    // add css for the selected currentBlocknoteId
-
     React.useEffect(() => {
-        const blocknoteIdMatch = pathname.match(/^\/chat\/(\d+)\/?$/);
+        const blocknoteIdMatch = pathname.match(/^\/blocknote\/(\d+)\/?$/);
         if (!isBlocknoteRoot && blocknoteIdMatch) {
             setCurrentBlocknoteId(parseInt(blocknoteIdMatch[1]));
         }
     }, [pathname, isBlocknoteRoot]);
 
+    console.log(currentBlocknoteId, blocknote.id, "currentBlocknoteId");
+
     return (
-        <Card {...otherProps} className="rounded-xd bg-muted/40 cursor-pointer">
+        <Card
+            {...otherProps}
+            className={`rounded-xd bg-muted/40 cursor-pointer  ${
+                currentBlocknoteId === blocknote.id ? "bg-muted-foreground/30" : "hover:bg-muted"
+            }`}
+        >
             <CardHeader className="p-3 flex flex-row gap-2 items-center">
                 <div>
                     <Avatar className="w-10 h-10 rounded-full border-2 border-muted flex items-center justify-center">
@@ -64,7 +68,7 @@ export function BlocknoteButton({ blocknote, ...otherProps }: BlocknoteButtonPro
                         {`Last modified: ${convertDateTime(blocknote.created_at)}`}
                     </CardDescription>
                 </div>
-                <BlocknoteButtonDropmenu blocknoteId={blocknote.id} />
+                <BlocknoteButtonDropmenu blocknote={blocknote} />
             </CardHeader>
         </Card>
     );

@@ -2,6 +2,7 @@
 
 import { Icons } from "@/assets/icons";
 import { BlocknoteButton } from "@/components/custom/BlocknoteButton";
+import { BlocknotesSheetSidebar } from "@/components/custom/BlocknotesSheetSidebar";
 import CreateBlocknoteDialog from "@/components/custom/CreateBlocknoteDialog";
 import { SearchBox } from "@/components/custom/SearchBox";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
@@ -51,6 +52,7 @@ export default function BlocknotesLayout({
         <div className="w-full h-screen flex-1  bg-muted/40 max-sm:pt-[72px] p-4 xlg:pl-2 flex items-center justify-center gap-5 flex-col xlg:flex-row">
             <div className="max-w-full xlg:max-w-md w-full h-fit xlg:h-full xlg:flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
+                    <BlocknotesSheetSidebar className="xlg:hidden" />
                     <span className="font-mainhead">Blocknotes</span>
                     <CreateBlocknoteDialog />
                 </div>

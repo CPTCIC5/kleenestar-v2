@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Feedback() {
     const addRef = useRef<HTMLInputElement | null>(null);
-    const [file, setFile] = useState("");
+    const [file, setFile] = useState<string>("");
     const [formData, setFormData] = useState<FormData | null>(null);
     const handleAddImage = () => {
         if (addRef.current) {
@@ -65,7 +65,7 @@ export default function Feedback() {
                         </div>
                     </Card>
                 </div>
-                <FeedbackForm formData={formData as FormData} />
+                <FeedbackForm formData={formData} setFormData={setFormData} setFile={setFile} file={file} />
             </div>
         </div>
     );

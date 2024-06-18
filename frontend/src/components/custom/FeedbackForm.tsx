@@ -15,10 +15,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
-export default function FeedbackForm({ formData }: { formData: FormData }) {
+interface FeedbackFormProps {
+    formData: FormData | null;
+    file: string;
+    setFile: React.Dispatch<React.SetStateAction<string>>;
+    setFormData: React.Dispatch<React.SetStateAction<FormData | null>>;
+}
+
+export default function FeedbackForm({ formData, setFile, file, setFormData }: FeedbackFormProps) {
     const form = useForm<FeedbackFormSchemaTypes>({
         resolver: zodResolver(FeedbackFormSchema),
         mode: "onChange",
+        defaultValues: {
+            subject: "",
+            message: "",
+        },
     });
 
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -64,6 +75,10 @@ export default function FeedbackForm({ formData }: { formData: FormData }) {
         formData.append("emoji", JSON.stringify(data.selectedEmoji));
 
         mutation.mutate(formData);
+        setSelectedEmoji([]);
+        setSelectedOption(null);
+        setFile("");
+        form.reset();
     };
 
     return (

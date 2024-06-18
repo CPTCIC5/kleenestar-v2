@@ -22,12 +22,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { buttonVariants } from "../ui/button";
 import { useDeleteBlockNote } from "@/hooks/useDeleteBlocknotes";
+import EditBlocknoteDialog from "./EditBlocknoteDialog";
 
-interface BlocknoteButtonDropmenuProps {
-    blocknoteId: number;
+interface BlockNoteTypes {
+    id: number;
+    image: string;
+    created_at: string;
+    title: string;
 }
 
-export function BlocknoteButtonDropmenu({ blocknoteId }: BlocknoteButtonDropmenuProps) {
+interface BlocknoteButtonDropmenuProps {
+    blocknote: BlockNoteTypes;
+}
+
+export function BlocknoteButtonDropmenu({ blocknote }: BlocknoteButtonDropmenuProps) {
     const { mutate: deleteBlocknote } = useDeleteBlockNote();
 
     // add a dialog box to edit the selected blocknote
@@ -44,17 +52,14 @@ export function BlocknoteButtonDropmenu({ blocknoteId }: BlocknoteButtonDropmenu
                 align="start"
                 className="w-full max-w-40"
             >
-                <DropdownMenuItem
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}
-                >
-                    <Icons.solarPen2Line className="mr-2 h-4 w-4" />
-                    <span className="">Edit</span>
-                </DropdownMenuItem>
+                <EditBlocknoteDialog blocknote={blocknote} />
+
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        <DropdownMenuItem
+                            className="cursor-pointer"
+                            onSelect={(e) => e.preventDefault()}
+                        >
                             <Icons.solarBinLine className="mr-2 h-4 w-4" />
                             <span className="text-[14px] font-normal text-orange-600">Delete</span>
                         </DropdownMenuItem>
@@ -72,7 +77,7 @@ export function BlocknoteButtonDropmenu({ blocknoteId }: BlocknoteButtonDropmenu
                             <AlertDialogAction
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    deleteBlocknote(blocknoteId);
+                                    deleteBlocknote(blocknote.id);
                                 }}
                                 className="bg-destructive"
                             >

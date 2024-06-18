@@ -2,8 +2,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import { Icons } from "@/assets/icons";
 import Link from "next/link";
+import { useLogout } from "@/hooks/useLogout";
 
 const SidebarSheet = () => {
+    const mutation = useLogout();
+
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -71,6 +74,13 @@ const SidebarSheet = () => {
                         <Icons.solarUserSpeakRoundedLine className="h-6 w-6" />
                         Feedback
                     </Link>
+                    <div
+                        onClick={() => mutation.mutate()}
+                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                    >
+                        <Icons.solarExitLine className="h-5 w-5" />
+                        Sign out
+                    </div>
                 </nav>
             </SheetContent>
         </Sheet>

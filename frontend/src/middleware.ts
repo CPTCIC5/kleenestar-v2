@@ -5,9 +5,23 @@ export function middleware(request: NextRequest) {
     const loggedIn = request.cookies.get("loggedIn");
     const csrfToken = request.cookies.get("csrftoken");
     const sessionId = request.cookies.get("sessionid");
+    const url = new URL(request.url);
 
     if (!loggedIn || loggedIn.value !== "true" || !csrfToken || !sessionId) {
-        return NextResponse.redirect(new URL("/login", request.url));
+        if (url.pathname !== "/login/") {
+            return NextResponse.redirect(new URL("/login", request.url));
+        }
+    } else {
+        if (
+            url.pathname === "/login/" ||
+            url.pathname === "/register/" ||
+            url.pathname === "/get-started/" ||
+            url.pathname === "/" ||
+            url.pathname === "/workspace/" ||
+            url.pathname === "/create-workspace/"
+        ) {
+            return NextResponse.redirect(new URL("/chat", request.url));
+        }
     }
 
     return NextResponse.next();
@@ -25,5 +39,9 @@ export const config = {
         "/team/:path*",
         "/feedback/:path*",
         "/settings/:path*",
+        "/login/:path*",
+        "/register/:path*",
+        "/workspace/:path*",
+        "/get-started/:path*",
     ],
 };

@@ -142,7 +142,7 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
                     />
                 </div>
 
-                <div className="h-[552px] overflow-auto small-scrollbar ">
+                <div className="h-[calc(100vh-267px)] overflow-auto small-scrollbar ">
                     {isConvoLoading ? (
                         <>
                             <div className="space-y-2 opacity-50">
