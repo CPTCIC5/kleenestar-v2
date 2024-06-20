@@ -77,6 +77,9 @@ importers:
       '@splinetool/react-spline':
         specifier: ^3.1.1
         version: 3.1.1(@splinetool/runtime@1.7.2)(next@14.2.3(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@splinetool/runtime':
+        specifier: ^1.7.2
+        version: 1.7.2
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.37.1(react@18.3.1)
