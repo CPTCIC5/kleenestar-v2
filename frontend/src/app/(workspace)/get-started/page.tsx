@@ -12,7 +12,14 @@ const GetStarted: React.FC = () => {
                 fill="hsl(var(--foreground))"
             />
             <div className="h-72 w-full flex justify-center items-center">
-                <Spline scene="https://prod.spline.design/ecypVgD7JeyQUdGF/scene.splinecode" />
+                <Spline
+                    className="dark:hidden"
+                    scene="https://prod.spline.design/ecypVgD7JeyQUdGF/scene.splinecode"
+                />
+                <Spline
+                    className="dark:block hidden"
+                    scene="https://prod.spline.design/yeoLHMuzkpljmaA0/scene.splinecode"
+                />
             </div>
 
             <p className="text-2xl sm:text-3xl xl:text-5xl min-[1240px]:text-6xl 2xl:text-7xl   text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-400 dark:from-neutral-400 to-neutral-700 dark:to-neutral-600 ">
