@@ -88,15 +88,7 @@ export const CreateWorkspaceFormSchema = z.object({
         .string()
         .min(1, "Business name is required")
         .max(100, "Business name should not exceed 100 characters"),
-    Website: z
-        .string()
-        .url({ message: "Invalid URL. Please enter a valid URL." })
-        .refine((value) => value.includes("."), {
-            message: "Website URL should contain a '.' character.",
-        })
-        .refine((value) => value.startsWith("http://") || value.startsWith("https://"), {
-            message: "Website URL should start with 'http://' or 'https://'.",
-        }),
+    Website: z.string().regex(/^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/),
     selectedOption: z
         .string()
         .min(1, "Please select an option")

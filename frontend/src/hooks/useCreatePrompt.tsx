@@ -18,7 +18,7 @@ const createPrompt = async ({
             withCredentials: true,
             headers: {
                 "ngrok-skip-browser-warning": "69420",
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 "X-CSRFToken": Cookies.get("csrftoken"),
             },
         },
