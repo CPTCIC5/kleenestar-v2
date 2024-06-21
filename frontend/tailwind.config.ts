@@ -67,6 +67,7 @@ const config = {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
+                "pop-blue": "hsl(var(--bluish))",
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -103,6 +104,10 @@ const config = {
                 ms: "480px",
                 xl: "750px",
                 xlg: "1100px",
+            },
+            backgroundImage: {
+                "custom-radial-gradient":
+                    "radial-gradient(ellipse, rgba(82, 139, 255,0.5) 0%, hsl(var(--background)) 60%)",
             },
         },
     },

@@ -5,8 +5,7 @@ import { InvitedRegisterForm } from "@/components/custom/InvitedRegisterForm";
 
 const InvitedRegisterPage: React.FC = () => {
     return (
-        <div className="relative w-full h-full flex items-center justify-center flex-1 bg-background p-2">
-            <GridBackground />
+        <div className="w-full h-full flex items-center justify-center flex-1 p-2">
             <Link href="/login">
                 <Button
                     variant="secondary"

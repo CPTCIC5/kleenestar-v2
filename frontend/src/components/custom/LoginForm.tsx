@@ -53,10 +53,12 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     };
 
     return (
-        <Card className="mx-auto max-w-sm z-10 rounded-3xl drop-shadow-xl outline-none border-none">
+        <Card className="mx-auto max-w-sm z-10 rounded-3xl drop-shadow-xl outline-none border-none bg-card/90">
             <CardHeader>
                 <CardTitle className="text-2xl font-mainhead">Login</CardTitle>
-                <CardDescription>Enter your details below to login to your account</CardDescription>
+                <CardDescription className="font-medium">
+                    Enter your details below to login to your account
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -72,6 +74,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                             <Input
                                                 id="email"
                                                 type="email"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -94,7 +97,6 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                     <FormItem>
                                         <div className="flex items-center">
                                             <FormLabel>Password</FormLabel>
-                                            {/* add forgot password page */}
                                             <Link
                                                 href="/forgot-password"
                                                 className="ml-auto inline-block text-sm underline"
@@ -106,6 +108,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                             <PasswordInput
                                                 id="password"
                                                 type="password"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="password"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -124,7 +127,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                     !password
                                 }
                                 type="submit"
-                                className="w-full"
+                                className="w-full h-11 primary-btn-gradient"
                             >
                                 {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

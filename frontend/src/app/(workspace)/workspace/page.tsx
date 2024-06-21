@@ -1,43 +1,46 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { Icons } from "@/assets/icons";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const ChooseStart: React.FC = () => {
     return (
-        <div className="relative animate-fade-in-up pt-[5%] max-xl:pt-10">
-            <div className="animate-fade-in-up max-xl:px-5">
-                <div>
-                    <Icons.logoDark className="w-[50px] h-[50px] mx-auto transition-all hover:scale-110 dark:hidden duration-500" />
-                    <Icons.logoLight className="w-[50px] h-[50px] mx-auto transition-all hidden dark:hover:scale-110 dark:block duration-500" />
-                </div>
-                <div className="text-center font-bold font-mainhead text-[30px] pt-4">
-                    {"Let's get started"}
-                </div>
-                <div className="w-[45%] mx-auto text-center pt-4 max-xl:w-[100%] max-xl:text-sm">
-                    Join a Workspace to collaborate with your team by entering your workspace code
-                    or Create a Workspace to set up your own and begin organizing and analyzing your
-                    marketing data across multiple platforms.
-                </div>
-                <div className="flex items-center justify-center gap-6 pt-10 pb-10 max-xl:pt-4 max-xl:flex-col max-xl:gap-4">
-                    <Link href="/invited-register">
-                        <Card className="h-[250px] w-[250px] transition-all duration-300 hover:shadow-lg  hover:scale-[1.02] max-xl:h-[200px] max-xl:w-[200px] bg-card">
-                            <CardContent className="h-full p-6 flex flex-col items-center justify-between">
-                                <Icons.workspaceYes className="w-[80%] h-[80%]" />
-                                <p className="text-center max-xl:text-sm">I have a workspace</p>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                    <Link href="/register">
-                        <Card className="h-[250px] w-[250px] transition-all duration-300 hover:shadow-lg  hover:scale-[1.02] max-xl:h-[200px] max-xl:w-[200px] bg-card">
-                            <CardContent className="h-full p-6 flex flex-col items-center justify-between">
-                                <Icons.workspaceNo className="w-[80%] h-[80%] " />
-                                <p className="text-center max-xl:text-sm">
-                                    I {"don't"} have a workspace
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </div>
+        <div className="relative w-full animate-fade-in-up px-5 space-y-4 flex flex-col justify-center items-center ">
+            <Spotlight
+                className="-top-40 left-0 md:left-60 md:-top-20 min-[1100px]:left-1/3  min-[1100px]:-top-1/3"
+                fill="hsl(var(--foreground))"
+            />
+            <Icons.logoDark className="w-14 h-14  transition-all hover:scale-110 dark:hidden duration-500" />
+            <Icons.logoLight className="w-14 h-14  transition-all hidden dark:hover:scale-110 dark:block duration-500" />
+            <span className="w-full text-center font-bold font-mainhead text-4xl">
+                Let&apos;s get started
+            </span>
+            <span className="max-w-lg xl:max-w-2xl w-full text-center text-sm sm:text-base text-muted-foreground font-medium">
+                Join a Workspace to collaborate with your team by entering your workspace code or
+                Create a Workspace to set up your own and begin organizing and analyzing your
+                marketing data across multiple platforms.
+            </span>
+            <div className="flex items-center justify-center flex-col sm:flex-row gap-5 xl:gap-6">
+                <Link href="/invited-register">
+                    <Card className="rounded-3xl h-52 w-52 sm:h-64 sm:w-64 xl:h-80 xl:w-80  transition-all duration-300 hover:shadow-md hover:shadow-pop-blue hover:scale-105 bg-card/40 hover:bg-card/60">
+                        <CardContent className="h-full space-y-5  flex flex-col items-center justify-between  p-5  md:p-10">
+                            <Icons.workspaceYes className="w-full h-full" />
+                            <p className="text-center font-medium text-sm sm:text-base">
+                                I have a workspace
+                            </p>
+                        </CardContent>
+                    </Card>
+                </Link>
+                <Link href="/register">
+                    <Card className="rounded-3xl h-52 w-52 sm:h-64 sm:w-64 xl:h-80 xl:w-80 transition-all duration-300  hover:shadow-md hover:shadow-pop-blue hover:scale-105 bg-card/40 hover:bg-card/60">
+                        <CardContent className="h-full space-y-5  flex flex-col items-center justify-between  p-5  md:p-10">
+                            <Icons.workspaceNo className="w-full h-full" />
+                            <p className="text-center font-medium text-sm sm:text-base">
+                                I don&apos;t have a workspace
+                            </p>
+                        </CardContent>
+                    </Card>
+                </Link>
             </div>
         </div>
     );

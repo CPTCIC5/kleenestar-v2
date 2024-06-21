@@ -74,6 +74,7 @@
         --color-danger-emphasis: #cf222e;
         --color-done-fg: #8250df;
         --color-done-emphasis: #8250df;
+        --bluish: 212 92% 45%;
     }
 
     .dark {
@@ -146,6 +147,7 @@
         --color-danger-emphasis: #da3633;
         --color-done-fg: #a371f7;
         --color-done-emphasis: #8957e5;
+        --bluish: 212 92% 45%;
     }
 }
 

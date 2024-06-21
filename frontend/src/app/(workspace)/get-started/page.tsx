@@ -6,7 +6,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 
 const GetStarted: React.FC = () => {
     return (
-        <div className="relative h-full flex flex-col items-center animate-fade-in-up pt-[10%] max-xl:pt-[10%] z-10">
+        <div className="relative  flex flex-col items-center animate-fade-in-up">
             <Spotlight
                 className="-top-40 left-0 md:left-60 md:-top-20"
                 fill="hsl(var(--foreground))"
@@ -26,7 +26,7 @@ const GetStarted: React.FC = () => {
                 Welcome to Kleenestar
             </p>
             <div className="px-9 my-12 text-center">
-                <p className="xl:max-w-2xl max-w-md w-full text-muted-foreground">
+                <p className="xl:max-w-2xl max-w-md w-full text-muted-foreground font-medium">
                     Kleenestar collects every event from your marketing effort and provides
                     real-time decision-making insights and recommendations in natural language.
                 </p>

@@ -56,10 +56,10 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
     };
 
     return (
-        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px] bg-card">
+        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[69px] bg-card/90">
             <CardHeader>
                 <CardTitle className="text-2xl font-mainhead ">Register</CardTitle>
-                <CardDescription>
+                <CardDescription className="font-medium">
                     Enter your details below to register to your account
                 </CardDescription>
             </CardHeader>
@@ -77,6 +77,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                             <Input
                                                 id="email"
                                                 type="email"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -103,6 +104,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
@@ -127,6 +129,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                             />
@@ -167,7 +170,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                     !confirmPassword
                                 }
                                 type="submit"
-                                className="w-full"
+                                className="w-full h-11 primary-btn-gradient"
                             >
                                 {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

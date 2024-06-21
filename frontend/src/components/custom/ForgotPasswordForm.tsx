@@ -51,10 +51,12 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
     };
 
     return (
-        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[15px]">
+        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[15px] bg-card/90">
             <CardHeader>
                 <CardTitle className="text-2xl font-mainhead ">Forgot Password</CardTitle>
-                <CardDescription>Enter your details below to get a reset link</CardDescription>
+                <CardDescription className="font-medium">
+                    Enter your details below to get a reset link
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -70,6 +72,7 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                                             <Input
                                                 id="email"
                                                 type="email"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -92,10 +95,10 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
                                     !email
                                 }
                                 type="submit"
-                                className="w-full mt-[12px]"
+                                className="w-full mt-3 h-11 primary-btn-gradient"
                             >
                                 {mutation.isPending && (
-                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin disabled:bg-green-200" />
+                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin " />
                                 )}
                                 Send Reset Link
                             </Button>

@@ -82,7 +82,9 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
         <Card className={cn(className)}>
             <CardHeader>
                 <CardTitle className="text-xl font-mainhead ">Create a new workspace</CardTitle>
-                <CardDescription>Enter your details below to create a workspace</CardDescription>
+                <CardDescription className="font-medium">
+                    Enter your details below to create a workspace
+                </CardDescription>
             </CardHeader>
 
             <CardContent>
@@ -99,6 +101,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             <Input
                                                 id="business_name"
                                                 type="text"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="Your business name"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -118,6 +121,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             <Input
                                                 id="Website"
                                                 type="text"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="Your website url"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -139,7 +143,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             value={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger>
+                                                <SelectTrigger className="h-11 focus:ring-pop-blue">
                                                     <SelectValue placeholder="Select your Industry" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -174,7 +178,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                     !selectedOption
                                 }
                                 type="submit"
-                                className="w-full"
+                                className="w-full h-11 primary-btn-gradient"
                             >
                                 {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

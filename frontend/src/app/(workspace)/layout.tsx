@@ -10,7 +10,8 @@ export default function WelcomeLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className=" max-h-full h-screen">
+        <div className="relative max-h-full h-screen flex items-center justify-center ">
+            <div className="absolute bg-custom-radial-gradient blur-3xl z-[-1] w-full h-full scale-100 animate-fade-in-up"></div>
             <Link
                 href="/login"
                 className={cn(

@@ -57,14 +57,14 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
     };
 
     return (
-        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[60px]  ">
+        <Card className="mx-auto max-w-sm outline-none z-10 rounded-3xl drop-shadow-xl border-none mt-[69px] bg-card/90 ">
             <CardHeader>
                 <CardTitle className="text-2xl font-mainhead ">Register</CardTitle>
-                <CardDescription>
+                <CardDescription className="font-medium">
                     Enter your details below to register to your account
                 </CardDescription>
             </CardHeader>
-            <CardContent className="pb-3 max-h-[454px] overflow-auto small-scrollbar">
+            <CardContent className="pb-3">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="mb-4">
                         <div className="grid gap-4">
@@ -78,6 +78,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                             <Input
                                                 id="email"
                                                 type="email"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -104,6 +105,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
@@ -128,6 +130,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                             />
@@ -147,6 +150,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                             <Input
                                                 id="inviteCode"
                                                 type="text"
+                                                className="h-11 focus-visible:ring-pop-blue"
                                                 placeholder="workspace invite code"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -189,7 +193,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                     !inviteCode
                                 }
                                 type="submit"
-                                className="w-full"
+                                className="w-full h-11 primary-btn-gradient"
                             >
                                 {mutation.isPending && (
                                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
