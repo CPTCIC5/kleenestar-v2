@@ -77,7 +77,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                             <Input
                                                 id="email"
                                                 type="email"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -104,7 +104,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
@@ -129,7 +129,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                             />

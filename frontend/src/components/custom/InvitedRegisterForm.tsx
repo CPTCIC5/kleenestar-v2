@@ -78,7 +78,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                             <Input
                                                 id="email"
                                                 type="email"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -105,7 +105,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                                 id="password"
                                                 type="password"
                                                 placeholder="password"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
@@ -130,7 +130,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                                 id="confirmPassword"
                                                 type="password"
                                                 placeholder="password"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 disabled={mutation.isPending}
                                                 {...field}
                                             />
@@ -150,7 +150,7 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
                                             <Input
                                                 id="inviteCode"
                                                 type="text"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="workspace invite code"
                                                 disabled={mutation.isPending}
                                                 {...field}

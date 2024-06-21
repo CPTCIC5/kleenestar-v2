@@ -74,7 +74,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                             <Input
                                                 id="email"
                                                 type="email"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="mail@example.com"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -108,7 +108,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                                             <PasswordInput
                                                 id="password"
                                                 type="password"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="password"
                                                 disabled={mutation.isPending}
                                                 {...field}

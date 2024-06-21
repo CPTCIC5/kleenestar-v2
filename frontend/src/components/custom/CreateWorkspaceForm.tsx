@@ -101,7 +101,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             <Input
                                                 id="business_name"
                                                 type="text"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="Your business name"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -121,7 +121,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             <Input
                                                 id="Website"
                                                 type="text"
-                                                className="h-11 focus-visible:ring-pop-blue"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="Your website url"
                                                 disabled={mutation.isPending}
                                                 {...field}
@@ -143,7 +143,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             value={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger className="h-11 focus:ring-pop-blue">
+                                                <SelectTrigger className="h-11 focus:ring-pop-blue focus-visible:ring-2">
                                                     <SelectValue placeholder="Select your Industry" />
                                                 </SelectTrigger>
                                             </FormControl>
