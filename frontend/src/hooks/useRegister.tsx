@@ -7,6 +7,7 @@ import { RegisterFormSchemaTypes } from "@/lib/types/types";
 import toastAxiosError from "@/lib/services/toastAxiosError";
 
 export function useRegister() {
+    console.log(process.env.NEXT_PUBLIC_BASE_URL);
     const router = useRouter();
 
     const mutation = useMutation({

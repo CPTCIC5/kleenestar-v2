@@ -7,10 +7,6 @@ export function middleware(request: NextRequest) {
     const sessionId = request.cookies.get("sessionid");
     const url = new URL(request.url);
 
-    const headers = {
-        "ngrok-skip-browser-warning": "true",
-    };
-
     if (!loggedIn || loggedIn.value !== "true" || !csrfToken || !sessionId) {
         console.log("Not logged in");
         console.log(url.pathname);
@@ -24,7 +20,7 @@ export function middleware(request: NextRequest) {
             url.pathname.startsWith("/team/") ||
             url.pathname.startsWith("/feedback/")
         ) {
-            return NextResponse.redirect(new URL("/login", request.url), { headers });
+            return NextResponse.redirect(new URL("/login", request.url));
         }
     } else {
         console.log("Logged in");
