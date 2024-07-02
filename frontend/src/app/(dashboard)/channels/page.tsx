@@ -137,6 +137,15 @@ export default function Connect_Channels() {
 						OauthController={OauthController}
 						isChannelLoading={isChannelsLoading}
 					/>
+					<ConnectChannelCard
+						channel={{ type: 10, key: "instagram/", name: "Instagram" }}
+						channelEnabled={isChannelEnabled(10)}
+						channelData={channelsData.find(
+							(channel: Channel) => channel.channel_type === 10
+						)}
+						OauthController={OauthController}
+						isChannelLoading={isChannelsLoading}
+					/>
 				</div>
 				<div className="!mt-12 space-y-6">
 					<div className="gap-2 flex items-center">
@@ -157,17 +166,43 @@ export default function Connect_Channels() {
 							isChannelLoading={isChannelsLoading}
 						/>
 						<ConnectChannelCard
-							channel={{ type: 8, key: "google/", name: "Google Analytics" }}
-							channelEnabled={isChannelEnabled(1)}
+							channel={{
+								type: 8,
+								key: "google-analytics/",
+								name: "Google Analytics",
+							}}
+							channelEnabled={isChannelEnabled(8)}
 							channelData={channelsData.find(
-								(channel: Channel) => channel.channel_type === 7
+								(channel: Channel) => channel.channel_type === 8
 							)}
 							OauthController={OauthController}
 							isChannelLoading={isChannelsLoading}
 						/>
 					</div>
 				</div>
-
+				<div className="!mt-12 space-y-6">
+					<div className="gap-2 flex items-center">
+						<CardTitle className="font-mainhead">
+							Connect email analytics
+						</CardTitle>
+						<Icons.solarQuestionCircleLine className="h-4 w-4" />
+					</div>
+					<div className="flex flex-wrap gap-x-7 gap-6 max-md:justify-center w-full">
+						<ConnectChannelCard
+							channel={{
+								type: 9,
+								key: "mailchimp/",
+								name: "Mailchimp",
+							}}
+							channelEnabled={isChannelEnabled(9)}
+							channelData={channelsData.find(
+								(channel: Channel) => channel.channel_type === 9
+							)}
+							OauthController={OauthController}
+							isChannelLoading={isChannelsLoading}
+						/>
+					</div>
+				</div>
 				{openShopifyModal && (
 					<Dialog
 						open={openShopifyModal}
@@ -185,13 +220,13 @@ export default function Connect_Channels() {
 							<Input
 								id="shopifyShopName"
 								placeholder="shop name"
-                                name="shop name"
-                                value={shopifyShop}
-                                onChange={(e) => setShopifyShop(e.target.value)}
+								name="shop name"
+								value={shopifyShop}
+								onChange={(e) => setShopifyShop(e.target.value)}
 							/>
 							<DialogFooter className="flex items-center justify-end">
 								<Button
-                                    disabled={shopifyShop.length === 0}
+									disabled={shopifyShop.length === 0}
 									onClick={handleShopifyOauth}
 									type="submit">
 									Proceed
