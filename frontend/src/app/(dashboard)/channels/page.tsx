@@ -37,7 +37,7 @@ interface Channel {
 
 const OauthController = async (key: string) => {
 	try {
-		const response = await axios.get(`/api/oauth/${key}`, {
+		const response = await axios.get(`/api/oauth/${key}subspace_id=3`, {
 			withCredentials: true,
 			headers: {
 				"ngrok-skip-browser-warning": "true",
@@ -63,7 +63,7 @@ export default function Connect_Channels() {
     console.log(channelsData);
 
     const handleShopifyOauth = () => {
-        OauthController(`shopify/?shop=${shopifyShop}`);
+        OauthController(`shopify?shop=${shopifyShop}&`);
         setOpenShopifyModal(false)
     }
 
@@ -84,7 +84,7 @@ export default function Connect_Channels() {
 				</div>
 				<div className="flex flex-wrap gap-x-7 gap-6 max-md:justify-center w-full">
 					<ConnectChannelCard
-						channel={{ type: 1, key: "google/", name: "Google Adwords" }}
+						channel={{ type: 1, key: "google/?", name: "Google Adwords" }}
 						channelEnabled={isChannelEnabled(1)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 1
@@ -93,7 +93,7 @@ export default function Connect_Channels() {
 						isChannelLoading={isChannelsLoading}
 					/>
 					<ConnectChannelCard
-						channel={{ type: 2, key: "facebook/", name: "Meta" }}
+						channel={{ type: 2, key: "facebook/?", name: "Meta" }}
 						channelEnabled={isChannelEnabled(2)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 2
@@ -102,7 +102,7 @@ export default function Connect_Channels() {
 						isChannelLoading={isChannelsLoading}
 					/>
 					<ConnectChannelCard
-						channel={{ type: 3, key: "twitter/", name: "Twitter" }}
+						channel={{ type: 3, key: "twitter/?", name: "Twitter" }}
 						channelEnabled={isChannelEnabled(3)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 3
@@ -111,7 +111,7 @@ export default function Connect_Channels() {
 						isChannelLoading={isChannelsLoading}
 					/>
 					<ConnectChannelCard
-						channel={{ type: 4, key: "linkedin/", name: "Linkedin" }}
+						channel={{ type: 4, key: "linkedin/?", name: "Linkedin" }}
 						channelEnabled={isChannelEnabled(4)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 4
@@ -120,7 +120,7 @@ export default function Connect_Channels() {
 						isChannelLoading={isChannelsLoading}
 					/>
 					<ConnectChannelCard
-						channel={{ type: 5, key: "tiktok/", name: "TikTok" }}
+						channel={{ type: 5, key: "tiktok/?", name: "TikTok" }}
 						channelEnabled={isChannelEnabled(5)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 5
@@ -129,7 +129,7 @@ export default function Connect_Channels() {
 						isChannelLoading={isChannelsLoading}
 					/>
 					<ConnectChannelCard
-						channel={{ type: 6, key: "reddit/", name: "Reddit" }}
+						channel={{ type: 6, key: "reddit/?", name: "Reddit" }}
 						channelEnabled={isChannelEnabled(6)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 6
@@ -138,7 +138,7 @@ export default function Connect_Channels() {
 						isChannelLoading={isChannelsLoading}
 					/>
 					<ConnectChannelCard
-						channel={{ type: 10, key: "instagram/", name: "Instagram" }}
+						channel={{ type: 10, key: "instagram/?", name: "Instagram" }}
 						channelEnabled={isChannelEnabled(10)}
 						channelData={channelsData.find(
 							(channel: Channel) => channel.channel_type === 10
@@ -168,7 +168,7 @@ export default function Connect_Channels() {
 						<ConnectChannelCard
 							channel={{
 								type: 8,
-								key: "google-analytics/",
+								key: "google-analytics/?",
 								name: "Google Analytics",
 							}}
 							channelEnabled={isChannelEnabled(8)}
@@ -191,7 +191,7 @@ export default function Connect_Channels() {
 						<ConnectChannelCard
 							channel={{
 								type: 9,
-								key: "mailchimp/",
+								key: "mailchimp/?",
 								name: "Mailchimp",
 							}}
 							channelEnabled={isChannelEnabled(9)}
