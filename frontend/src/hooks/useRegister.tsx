@@ -14,7 +14,7 @@ export function useRegister() {
         mutationFn: async (data: RegisterFormSchemaTypes) => {
             const newEmail = data.email.toLowerCase();
             return await axios.post(
-                `https://kleenestar.om-prabhat.in/api/auth/signup/`,
+                `/api/auth/signup/`,
                 {
                     email: newEmail,
                     password: data.password,

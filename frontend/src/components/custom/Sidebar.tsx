@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
     const pathname = usePathname();
+    console.log("Pathname: ", pathname);
 
     // add user image as setting icon
     const { userData, isUserSuccess } = useUserData();
@@ -50,7 +51,11 @@ export default function Sidebar() {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/chat"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className={cn(
+                                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                                    pathname.startsWith("/chat/") &&
+                                        "text-background bg-pop-blue/80 hover:text-background rounded-xl",
+                                )}
                             >
                                 <Icons.solarChatRoundLine className="h-6 w-6" />
                                 <span className="sr-only">Chat</span>
@@ -62,16 +67,20 @@ export default function Sidebar() {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/blocknote"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className={cn(
+                                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                                    pathname.startsWith("/blocknote/") &&
+                                        "text-background bg-pop-blue/80 hover:text-background rounded-xl",
+                                )}
                             >
-                                <Icons.solarClipboardLine className="h-6 w-6" />
+                                <Icons.solarBookmarkFolderLine className="h-6 w-6" />
                                 <span className="sr-only">Blocknotes</span>
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent side="right">Blocknotes</TooltipContent>
                     </Tooltip>
                     <span className="text-[7px] text-muted-foreground">SOURCE</span>
-                    <Tooltip>
+                    {/* <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
                                 href="/knowledge"
@@ -82,12 +91,16 @@ export default function Sidebar() {
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent side="right">Knowledge</TooltipContent>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
                                 href="/channels"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className={cn(
+                                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                                    pathname === "/channels/" &&
+                                        "text-background bg-pop-blue/80 hover:text-background rounded-xl",
+                                )}
                             >
                                 <Icons.solarBoltCircleLine className="h-6 w-6" />
                                 <span className="sr-only">Connect channels</span>
@@ -100,7 +113,11 @@ export default function Sidebar() {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/billing"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className={cn(
+                                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                                    pathname === "/billing/" &&
+                                        "text-background bg-pop-blue/80 hover:text-background rounded-xl",
+                                )}
                             >
                                 <Icons.solarAirbudsCaseChargeLine className="h-6 w-6" />
                                 <span className="sr-only">Plans and billing</span>
@@ -112,7 +129,11 @@ export default function Sidebar() {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/team"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className={cn(
+                                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                                    pathname === "/team/" &&
+                                        "text-background bg-pop-blue/80 hover:text-background rounded-xl",
+                                )}
                             >
                                 <Icons.solarUserGroupRoundedLine className="h-6 w-6" />
                                 <span className="sr-only">Team members</span>
@@ -124,7 +145,11 @@ export default function Sidebar() {
                         <TooltipTrigger asChild>
                             <Link
                                 href="/feedback"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                className={cn(
+                                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                                    pathname === "/feedback/" &&
+                                        "text-background bg-pop-blue/80 hover:text-background rounded-xl",
+                                )}
                             >
                                 <Icons.solarUserSpeakRoundedLine className="h-6 w-6" />
                                 <span className="sr-only">Support and feedback</span>

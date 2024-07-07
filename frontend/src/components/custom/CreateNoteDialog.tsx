@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -13,7 +14,6 @@ import { Icons } from "@/assets/icons";
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
-import { useAdditionalFeedback } from "@/hooks/useAdditionalFeedback";
 import { Card, CardContent } from "../ui/card";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -83,7 +83,7 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
                         "h-fit p-1 cursor-pointer",
                     )}
                 >
-                    <Icons.solarClipboardLine className="w-4 h-4" />
+                    <Icons.solarBookmarkLine className="w-4 h-4" />
                 </div>
             </DialogTrigger>
             <DialogContent
@@ -204,9 +204,14 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
                             </SelectContent>
                         </Select>
                     </div>
-                    <Button onClick={onSubmit} type="submit" className="px-4 py-5 rounded-xl">
-                        Save note
-                    </Button>
+                    <DialogClose
+                        onClick={onSubmit}
+                        type="submit"
+                        className="px-4 py-5 rounded-xl"
+                        asChild
+                    >
+                        <Button>Save note</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

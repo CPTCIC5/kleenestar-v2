@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import {
+    AddClientDialogSchema,
     CreateWorkspaceFormSchema,
     FeedbackFormSchema,
     ForgotPasswordFormSchema,
@@ -24,3 +26,4 @@ export type SettingsWorkspaceFormSchemaTypes = z.infer<typeof SettingsWorkspaceF
 export type SettingsSecurityFormSchemaTypes = z.infer<typeof SettingsSecurityFormSchema>;
 export type FeedbackFormSchemaTypes = z.infer<typeof FeedbackFormSchema>;
 export type MakeNoteFormSchemaTypes = z.infer<typeof MakeNoteFormSchema>;
+export type AddClientDialogSchemaTypes = z.infer<typeof AddClientDialogSchema>;

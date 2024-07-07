@@ -66,7 +66,7 @@ export function BlocknotesSheetSidebar({ className }: { className?: string }) {
                         className,
                     )}
                 >
-                    <Icons.solarClipboardLine className="h-7 w-7 bg-transparent" />
+                    <Icons.solarBookmarkFolderLine className="h-7 w-7 bg-transparent" />
                     <span className="sr-only">Close</span>
                 </div>
             </SheetTrigger>

@@ -22,7 +22,7 @@ const ChooseStart: React.FC = () => {
             </span>
             <div className="flex items-center justify-center flex-col sm:flex-row gap-5 xl:gap-6">
                 <Link href="/invited-register">
-                    <Card className="rounded-3xl h-52 w-52 sm:h-64 sm:w-64 xl:h-80 xl:w-80  transition-all duration-300 hover:shadow-md hover:shadow-pop-blue hover:scale-105 bg-card/40 hover:bg-card/60">
+                    <Card className="rounded-3xl h-52 w-52 sm:h-64 sm:w-64 xl:h-80 xl:w-80  transition-all duration-300 hover:scale-105 bg-card/40 hover:bg-card/60">
                         <CardContent className="h-full space-y-5  flex flex-col items-center justify-between  p-5  md:p-10">
                             <Icons.workspaceYes className="w-full h-full" />
                             <p className="text-center font-medium text-sm sm:text-base">
@@ -32,7 +32,7 @@ const ChooseStart: React.FC = () => {
                     </Card>
                 </Link>
                 <Link href="/register">
-                    <Card className="rounded-3xl h-52 w-52 sm:h-64 sm:w-64 xl:h-80 xl:w-80 transition-all duration-300  hover:shadow-md hover:shadow-pop-blue hover:scale-105 bg-card/40 hover:bg-card/60">
+                    <Card className="rounded-3xl h-52 w-52 sm:h-64 sm:w-64 xl:h-80 xl:w-80 transition-all duration-300  hover:scale-105 bg-card/40 hover:bg-card/60">
                         <CardContent className="h-full space-y-5  flex flex-col items-center justify-between  p-5  md:p-10">
                             <Icons.workspaceNo className="w-full h-full" />
                             <p className="text-center font-medium text-sm sm:text-base">

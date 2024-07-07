@@ -91,7 +91,7 @@ export const CreateWorkspaceFormSchema = z.object({
     Website: z.string().regex(/^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/),
     selectedOption: z
         .string()
-        .min(1, "Please select an option")
+        .min(1, "Industry is required")
         .refine(
             (value) =>
                 [
@@ -105,7 +105,7 @@ export const CreateWorkspaceFormSchema = z.object({
                     "Automotive",
                 ].includes(value),
             {
-                message: "Invalid option selected. Please select a valid option.",
+                message: "Choose a valid industry",
             },
         ),
 });
@@ -175,4 +175,35 @@ export const MakeNoteFormSchema = z.object({
     note: z.string().min(1, { message: "Note is required" }).max(500, {
         message: "A Note cannot exceed 500 characters",
     }),
+});
+
+export const AddClientDialogSchema = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    industry: z
+        .string()
+        .min(1, "Industry is required")
+        .refine(
+            (value) =>
+                [
+                    "Sport",
+                    "Retail",
+                    "Hospitality",
+                    "Media",
+                    "Technology",
+                    "Finance",
+                    "Beauty",
+                    "Automotive",
+                ].includes(value),
+            {
+                message: "Choose a valid industry",
+            },
+        ),
+    country: z
+        .object({
+            value: z.string().min(1, { message: "Country is required" }),
+            label: z.string().min(1, { message: "Country is required" }),
+        })
+        .refine((country) => country && country.value && country.label, {
+            message: "Country is required",
+        }),
 });

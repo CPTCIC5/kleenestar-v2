@@ -17,7 +17,7 @@ export default function NotesSidebar() {
                         "h-fit p-1 cursor-pointer",
                     )}
                 >
-                    <Icons.solarClipboardLine className="w-6 h-6" />
+                    <Icons.solarBookmarkFolderLine className="w-6 h-6" />
                 </div>
             </SheetTrigger>
             <SheetContent

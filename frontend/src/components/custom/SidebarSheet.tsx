@@ -36,16 +36,16 @@ const SidebarSheet = () => {
                         href="/blocknote"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
-                        <Icons.solarClipboardLine className="h-6 w-6" />
+                        <Icons.solarBookmarkFolderLine className="h-6 w-6" />
                         Blocknotes
                     </Link>
-                    <Link
+                    {/* <Link
                         href="/knowledge"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
                         <Icons.solarBook2Line className="h-6 w-6" />
                         Knowledge
-                    </Link>
+                    </Link> */}
                     <Link
                         href="/channels"
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"

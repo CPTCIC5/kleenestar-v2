@@ -295,6 +295,64 @@ export const Icons = {
             </g>
         </svg>
     ),
+    solarSortZeroOneLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-arrow-down-0-1"
+        >
+            <path d="m3 16 4 4 4-4" />
+            <path d="M7 20V4" />
+            <rect x="15" y="4" width="4" height="6" ry="2" />
+            <path d="M17 20v-6h-2" />
+            <path d="M15 20h4" />
+        </svg>
+    ),
+    solarBookmarkFolderLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                <path
+                    d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12"
+                    opacity=".5"
+                />
+                <path d="M14 6h-4c-2.8 0-4.2 0-5.27.545A5 5 0 0 0 2.545 8.73C2 9.8 2 11.2 2 14c0 2.8 0 4.2.545 5.27a5 5 0 0 0 2.185 2.185C5.8 22 7.2 22 10 22h4c2.8 0 4.2 0 5.27-.545a5 5 0 0 0 2.185-2.185C22 18.2 22 16.8 22 14c0-2.8 0-4.2-.545-5.27a5 5 0 0 0-2.185-2.185C18.2 6 16.8 6 14 6Z" />
+                <path
+                    d="M17 6v4.808c0 .975 0 1.462-.13 1.753a1.5 1.5 0 0 1-1.724.848c-.31-.075-.695-.372-1.468-.967c-.436-.336-.654-.504-.881-.602a2 2 0 0 0-1.594 0c-.227.098-.445.266-.881.602c-.773.595-1.159.892-1.468.967a1.5 1.5 0 0 1-1.725-.848C7 12.27 7 11.783 7 10.808V6"
+                    opacity=".5"
+                />
+            </g>
+        </svg>
+    ),
+    solarBookmarkLine: (props: IconProps) => (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 24 24"
+        >
+            <path
+                fill="currentColor"
+                d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098"
+                opacity=".5"
+            />
+            <path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z" />
+        </svg>
+    ),
     solarFileUploadLine: (props: IconProps) => (
         <svg
             {...props}

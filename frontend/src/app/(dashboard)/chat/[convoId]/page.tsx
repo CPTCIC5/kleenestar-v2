@@ -29,6 +29,30 @@ export interface Prompt {
     created_at: string;
 }
 
+const allowedFileTypes = [
+    "text/x-c",
+    "text/x-csharp",
+    "text/x-c++",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/html",
+    "text/x-java",
+    "application/json",
+    "text/markdown",
+    "application/pdf",
+    "text/x-php",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "text/x-python",
+    "text/x-script.python",
+    "text/x-ruby",
+    "text/x-tex",
+    "text/plain",
+    "text/css",
+    "text/javascript",
+    "application/x-sh",
+    "application/typescript",
+];
+
 import { useState, useEffect, useRef } from "react";
 import { useCreatePrompt } from "@/hooks/useCreatePrompt";
 import Image from "next/image";
@@ -42,6 +66,7 @@ import { ChatSidebar } from "@/components/custom/ChatSidebar";
 import AdditionalFeedbackDialog from "@/components/custom/AdditionalFeedbackDialog";
 import CreateNoteDialog from "@/components/custom/CreateNoteDialog";
 import ShareChatDialog from "@/components/custom/ShareChatDialog";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     const convoId = Number(params.convoId);
@@ -57,7 +82,6 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
         isLoading: isChannelsLoading,
         isSuccess: isChannelsSuccess,
     } = useChannelsData();
-    console.log(channelsData);
 
     const { data: fetchedPrompts, isLoading, isSuccess } = useFetchPrompts(convoId);
     const { mutateAsync: createPrompt } = useCreatePrompt();
@@ -106,7 +130,9 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
         // ]);
 
         try {
+            console.log("sent :", convoId, inputText, uploadedFile);
             await createPrompt({ convoId, text: inputText, file: uploadedFile });
+            handleRemoveFile();
             await queryClient.invalidateQueries({ queryKey: ["prompts", convoId] });
         } catch (error) {
             console.error("Error sending message:", error);
@@ -122,15 +148,28 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleUploadFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            setUploadedFile(event.target.files[0]);
-            setUploadedFileLink(URL.createObjectURL(event.target.files[0]));
+        console.log("file change");
+        const file = event.target.files?.[0];
+
+        if (file) {
+            if (!allowedFileTypes.includes(file.type)) {
+                toast.warning("Wrong file format !!");
+                event.target.value = "";
+            } else {
+                console.log("files : ", file);
+                console.log("file url : ", URL.createObjectURL(file));
+                setUploadedFile(file);
+                setUploadedFileLink(URL.createObjectURL(file));
+            }
         }
     };
 
     const handleRemoveFile = () => {
         setUploadedFile(null);
         setUploadedFileLink(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     const handleUploadClick = () => {
@@ -175,9 +214,57 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
     };
 
     return (
-        <div className="w-full h-full pt-4 px-2  sm:p-4 xlg:pl-2 flex items-center justify-center gap-5">
-            <div className="w-full h-full  hidden xlg:flex flex-col gap-4">
-                <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
+        <div className="w-full h-full pt-4 px-2  sm:p-4 xlg:pl-2 flex flex-col gap-4">
+            <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
+                <div className="space-x-4 flex items-center">
+                    <ChatSidebar />
+                    <span className="font-mainhead">
+                        {prompts.length === 0 ? "New Chat" : prompts[0].convo.title}
+                    </span>
+                </div>
+
+                {/* <div className="flex items-center justify-end gap-5">
+                    <div className="flex gap-5 items-center justify-start">
+                        {isChannelsLoading ? (
+                            <div className="flex justify-start items-center gap-5">
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                                <Skeleton className="rounded-full w-7 h-7" />
+                            </div>
+                        ) : (
+                            <div className="flex justify-start items-center gap-5">
+                                {channelsData?.map((channel: { channel_type: number }) => {
+                                    return (
+                                        <ChannelIcon
+                                            key={channel.channel_type}
+                                            channelType={channel.channel_type}
+                                            className="w-7 h-7"
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+
+                    <div
+                        onClick={() => router.push("/channels")}
+                        className="w-[38px] h-[38px] bg-primary rounded-full flex items-center justify-center cursor-pointer"
+                    >
+                        <Icons.solarBoltCircleLine className="w-6 h-6 text-background" />
+                    </div>
+                </div> */}
+                <div className="flex gap-2">
+                    <ShareChatDialog prompts={prompts} userData={userData} />
+                    <NotesSidebar />
+                </div>
+            </div>
+            <div className="flex h-full w-full items-center justify-center gap-5 overflow-hidden">
+                <ResizablePanelGroup direction="horizontal" className="w-full rounded-lg border">
+                    <ResizablePanel className="w-full ">
+                        <div className="w-full h-full  hidden xlg:flex flex-col gap-4">
+                            {/* <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
                     <ChatSidebar className="max-xlg:hidden" />
                     <div className="flex items-center justify-end gap-5">
                         <div className="flex gap-5 items-center justify-start">
@@ -211,17 +298,20 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                             <Icons.solarBoltCircleLine className="w-6 h-6 text-background" />
                         </div>
                     </div>
-                </div>
-                <Card className="w-full h-full bg-inherit">
-                    <CardHeader className="flex justify-center items-center w-full h-full">
-                        <span className="font-mainhead text-muted-foreground text-5xl text-center">
-                            Statistics comming soon
-                        </span>
-                    </CardHeader>
-                </Card>
-            </div>
-            <div className="w-full h-full  max-w-2xl xlg:min-w-[500px] flex flex-col gap-4">
-                <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
+                </div> */}
+                            <Card className="w-full h-full bg-inherit rounded-r-none">
+                                <CardHeader className="flex justify-center items-center w-full h-full">
+                                    <span className="font-mainhead text-muted-foreground text-5xl text-center">
+                                        Statistics comming soon
+                                    </span>
+                                </CardHeader>
+                            </Card>
+                        </div>
+                    </ResizablePanel>
+                    <ResizableHandle withHandle />
+                    <ResizablePanel className="w-full">
+                        <div className="w-full h-full xlg:min-w-[500px] flex flex-col gap-4">
+                            {/* <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
                     <ChatSidebar className="xlg:hidden" />
                     <span className="font-mainhead">
                         {prompts.length === 0 ? "New Chat" : prompts[0].convo.title}
@@ -230,93 +320,154 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                         <ShareChatDialog prompts={prompts} userData={userData} />
                         <NotesSidebar />
                     </div>
-                </div>
-                <Card className="h-full w-full bg-inherit overflow-hidden ">
-                    <CardHeader className="w-full h-full p-4 ">
-                        <section
-                            ref={chatContainerRef}
-                            className="w-full h-full overflow-auto scrollbar-thin"
-                        >
-                            {prompts?.length === 0 ? (
-                                <NewChatDisplay />
-                            ) : (
-                                <div className="w-full flex flex-col justify-center gap-[25px]">
-                                    {prompts?.map((prompt: Prompt, index: number) => {
-                                        return (
-                                            <div
-                                                key={prompt.id}
-                                                className="flex flex-col gap-[25px]"
-                                            >
-                                                <div className="flex items-start gap-4">
-                                                    <Avatar className="w-9 h-9 rounded-full border-2 border-muted">
-                                                        <AvatarImage
-                                                            className="rounded-full"
-                                                            src={userData?.profile?.avatar}
-                                                            alt="@shadcn"
-                                                        />
-                                                        <AvatarFallback className="flex items-center justify-center">
-                                                            {userData?.first_name
-                                                                ?.charAt(0)
-                                                                .toUpperCase()}
-                                                        </AvatarFallback>
-                                                    </Avatar>
-                                                    <div
-                                                        className={cn(
-                                                            "markdown-body",
-                                                            "!font-inter !bg-transparent",
-                                                        )}
-                                                    >
-                                                        <Markdown remarkPlugins={[remarkGfm]}>
-                                                            {prompt?.text_query}
-                                                        </Markdown>
-                                                    </div>
-                                                </div>
+                </div> */}
+                            <Card className="h-full w-full bg-inherit overflow-hidden rounded-l-none ">
+                                <CardHeader className="w-full h-full p-4 ">
+                                    <section
+                                        ref={chatContainerRef}
+                                        className="w-full h-full overflow-auto scrollbar-thin"
+                                    >
+                                        {prompts?.length === 0 ? (
+                                            <NewChatDisplay />
+                                        ) : (
+                                            <div className="w-full flex flex-col justify-center gap-[25px]">
+                                                {prompts?.map((prompt: Prompt, index: number) => {
+                                                    const file = prompt?.file_query;
+                                                    const fileType = file?.split(".").pop();
+                                                    const imageTypes = [
+                                                        "jpg",
+                                                        "jpeg",
+                                                        "png",
+                                                        "gif",
+                                                        "bmp",
+                                                        "webp",
+                                                    ];
 
-                                                <div className="markdown-body w-full p-6 rounded-2xl  ">
-                                                    {prompt?.response_text === "..." ? (
-                                                        <div className="flex  gap-4 items-center">
-                                                            <Icons.logoDark className="w-9 h-9  dark:hidden " />
-                                                            <Icons.logoLight className="w-9 h-9 hidden dark:block " />
-                                                            <PulsatingDots />
-                                                        </div>
-                                                    ) : (
-                                                        <div>
-                                                            <div className="w-full overflow-auto scrollbar-hide">
-                                                                <Markdown
-                                                                    remarkPlugins={[remarkGfm]}
+                                                    const isImage =
+                                                        fileType &&
+                                                        imageTypes.includes(fileType.toLowerCase());
+
+                                                    return (
+                                                        <div
+                                                            key={prompt.id}
+                                                            className="flex flex-col gap-[25px]"
+                                                        >
+                                                            <div className="flex items-start gap-4">
+                                                                <Avatar className="w-9 h-9 rounded-full border-2 border-muted">
+                                                                    <AvatarImage
+                                                                        className="rounded-full"
+                                                                        src={
+                                                                            userData?.profile
+                                                                                ?.avatar
+                                                                        }
+                                                                        alt="@shadcn"
+                                                                    />
+                                                                    <AvatarFallback className="flex items-center justify-center">
+                                                                        {userData?.first_name
+                                                                            ?.charAt(0)
+                                                                            .toUpperCase()}
+                                                                    </AvatarFallback>
+                                                                </Avatar>
+                                                                <div
+                                                                    className={cn(
+                                                                        "markdown-body",
+                                                                        "!font-inter !bg-transparent",
+                                                                    )}
                                                                 >
-                                                                    {prompt?.response_text}
-                                                                </Markdown>
+                                                                    <Markdown
+                                                                        remarkPlugins={[remarkGfm]}
+                                                                    >
+                                                                        {prompt?.text_query}
+                                                                    </Markdown>
+                                                                    {/* {file ? (
+                                                            isImage ? (
+                                                                <div className="relative w-full h-[200px]">
+                                                                    <Image
+                                                                        src={file}
+                                                                        alt="uploaded file"
+                                                                        layout="fill"
+                                                                        objectFit="contain"
+                                                                        className="object-cover w-full h-full rounded-lg"
+                                                                    />
+                                                                </div>
+                                                            ) : (
+                                                                <div className="flex items-center gap-2">
+                                                                    <Icons.solarAddCircleLine className="w-5 h-5" />
+                                                                    <span className="text-muted-foreground">
+                                                                        {file}
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        ) : null} */}
+                                                                </div>
                                                             </div>
-                                                            <div className="flex gap-3 justify-start items-center">
-                                                                <CreateNoteDialog
-                                                                    prompt_id={prompt?.id}
-                                                                    response_text={
-                                                                        prompt?.response_text
-                                                                    }
-                                                                />
 
-                                                                <AdditionalFeedbackDialog
-                                                                    prompt_id={prompt?.id}
-                                                                />
+                                                            <div className="markdown-body w-full p-6 rounded-2xl  ">
+                                                                {prompt?.response_text === "..." ? (
+                                                                    <div className="flex  gap-4 items-center">
+                                                                        <Icons.logoDark className="w-9 h-9  dark:hidden " />
+                                                                        <Icons.logoLight className="w-9 h-9 hidden dark:block " />
+                                                                        <PulsatingDots />
+                                                                    </div>
+                                                                ) : (
+                                                                    <div>
+                                                                        {prompt?.response_image ? (
+                                                                            <div className="relative w-full h-[200px]">
+                                                                                <Image
+                                                                                    src={
+                                                                                        prompt?.response_image
+                                                                                    }
+                                                                                    alt="uploaded file"
+                                                                                    layout="fill"
+                                                                                    objectFit="contain"
+                                                                                    className="object-cover w-full h-full rounded-lg"
+                                                                                />
+                                                                            </div>
+                                                                        ) : null}
+                                                                        <div className="w-full overflow-auto scrollbar-hide">
+                                                                            <Markdown
+                                                                                remarkPlugins={[
+                                                                                    remarkGfm,
+                                                                                ]}
+                                                                            >
+                                                                                {
+                                                                                    prompt?.response_text
+                                                                                }
+                                                                            </Markdown>
+                                                                        </div>
+                                                                        <div className="flex gap-3 justify-start items-center">
+                                                                            <CreateNoteDialog
+                                                                                prompt_id={
+                                                                                    prompt?.id
+                                                                                }
+                                                                                response_text={
+                                                                                    prompt?.response_text
+                                                                                }
+                                                                            />
+
+                                                                            <AdditionalFeedbackDialog
+                                                                                prompt_id={
+                                                                                    prompt?.id
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         </div>
-                                                    )}
-                                                </div>
+                                                    );
+                                                })}
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </section>
-                        <section className="w-full flex items-center justify-center">
-                            <div className="w-full text-base m-auto">
-                                <div className="mx-auto flex flex-1 gap-3 text-base md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
-                                    <div className="w-full">
-                                        <div className="relative flex h-full max-w-full flex-1 flex-col">
-                                            <div className="flex w-full items-center">
-                                                <div className="overflow-hidden flex flex-col w-full flex-grow relative border border-border bg-background text-primary rounded-2xl  border-token-border-medium [&:has(textarea:focus)]:border-muted-foreground/50 [&:has(textarea:focus)]:shadow-[0_2px_6px_rgba(0,0,0,.05)]">
-                                                    {uploadedFileLink && (
+                                        )}
+                                    </section>
+                                    <section className="w-full flex items-center justify-center">
+                                        <div className="w-full text-base m-auto">
+                                            <div className="mx-auto flex flex-1 gap-3 text-base md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
+                                                <div className="w-full">
+                                                    <div className="relative flex h-full max-w-full flex-1 flex-col">
+                                                        <div className="flex w-full items-center">
+                                                            <div className="overflow-hidden flex flex-col w-full flex-grow relative border border-border bg-background text-primary rounded-2xl  border-token-border-medium [&:has(textarea:focus)]:border-muted-foreground/50 [&:has(textarea:focus)]:shadow-[0_2px_6px_rgba(0,0,0,.05)]">
+                                                                {/* {uploadedFileLink && (
                                                         <div className="px-2 md:px-4 pt-2.5 w-full h-full overflow-hidden">
                                                             <div className="relative w-14 h-14">
                                                                 <Image
@@ -339,61 +490,70 @@ function ChatDisplayPage({ params }: { params: { convoId: string } }) {
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                    )}
+                                                    )} */}
 
-                                                    <textarea
-                                                        id="prompt-textarea"
-                                                        tabIndex={0}
-                                                        dir="auto"
-                                                        rows={1}
-                                                        placeholder="Ask Kleenestar"
-                                                        className="m-0 w-full resize-none border-0 h-fit bg-transparent dark:bg-transparent focus-visible:border-none focus-visible:outline-none py-3.5 pr-10 md:py-3.5 md:pr-12 max-h-[25dvh]  pl-10 md:pl-[55px] overflow-auto scrollbar-none"
-                                                        value={text}
-                                                        onChange={(e) => setText(e.target.value)}
-                                                        onKeyPress={handleKeyPress}
-                                                        ref={textareaRef}
-                                                    ></textarea>
-                                                    <div className="absolute bottom-2.5 left-2 md:bottom-2.5 md:left-4">
-                                                        <div className="flex flex-col">
-                                                            <input
-                                                                type="file"
-                                                                tabIndex={-1}
-                                                                ref={fileInputRef}
-                                                                className="hidden"
-                                                                onChange={handleUploadFileChange}
-                                                                accept="image/*"
-                                                            />
-                                                            <Button
-                                                                onClick={handleUploadClick}
-                                                                variant="ghost"
-                                                                type="button"
-                                                                aria-haspopup="menu"
-                                                                aria-expanded="false"
-                                                                data-state="closed"
-                                                                className="inline-flex items-center justify-center gap-1 rounded-lg text-sm  cursor-pointer m-0 h-8 w-8 p-0"
-                                                            >
-                                                                <Icons.solarGallerySendLine className="h-6 w-6" />
-                                                            </Button>
+                                                                <textarea
+                                                                    id="prompt-textarea"
+                                                                    tabIndex={0}
+                                                                    dir="auto"
+                                                                    rows={1}
+                                                                    placeholder="Ask Kleenestar"
+                                                                    className="m-0 w-full resize-none border-0 h-fit bg-transparent dark:bg-transparent focus-visible:border-none focus-visible:outline-none py-3.5 pr-10 md:py-3.5 md:pr-12 max-h-[25dvh]  pl-10 md:pl-[55px] overflow-auto scrollbar-none"
+                                                                    value={text}
+                                                                    onChange={(e) =>
+                                                                        setText(e.target.value)
+                                                                    }
+                                                                    onKeyPress={handleKeyPress}
+                                                                    ref={textareaRef}
+                                                                ></textarea>
+                                                                <div className="absolute bottom-2.5 left-2 md:bottom-2.5 md:left-4">
+                                                                    <div className="flex flex-col">
+                                                                        <input
+                                                                            type="file"
+                                                                            tabIndex={-1}
+                                                                            ref={fileInputRef}
+                                                                            className="hidden"
+                                                                            onChange={
+                                                                                handleUploadFileChange
+                                                                            }
+                                                                            accept=".c,.cs,.cpp,.doc,.docx,.html,.java,.json,.md,.pdf,.php,.pptx,.py,.rb,.tex,.txt,.css,.js,.sh,.ts"
+                                                                        />
+                                                                        <Button
+                                                                            onClick={
+                                                                                handleUploadClick
+                                                                            }
+                                                                            variant="ghost"
+                                                                            type="button"
+                                                                            aria-haspopup="menu"
+                                                                            aria-expanded="false"
+                                                                            data-state="closed"
+                                                                            className="inline-flex items-center justify-center gap-1 rounded-lg text-sm  cursor-pointer m-0 h-8 w-8 p-0"
+                                                                        >
+                                                                            <Icons.solarFileUploadLine className="h-6 w-6" />
+                                                                        </Button>
+                                                                    </div>
+                                                                </div>
+                                                                <Button
+                                                                    onClick={sendMessage}
+                                                                    variant="secondary"
+                                                                    className="absolute bottom-2.5 right-2 md:bottom-2.5 md:right-3 h-8 w-8 bg-muted"
+                                                                >
+                                                                    <span data-state="closed">
+                                                                        <Icons.solarArrowRightLine className="h-6 w-6" />
+                                                                    </span>
+                                                                </Button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <Button
-                                                        onClick={sendMessage}
-                                                        variant="secondary"
-                                                        className="absolute bottom-2.5 right-2 md:bottom-2.5 md:right-3 h-8 w-8 bg-muted"
-                                                    >
-                                                        <span data-state="closed">
-                                                            <Icons.solarArrowRightLine className="h-6 w-6" />
-                                                        </span>
-                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </CardHeader>
-                </Card>
+                                    </section>
+                                </CardHeader>
+                            </Card>
+                        </div>
+                    </ResizablePanel>
+                </ResizablePanelGroup>
             </div>
         </div>
     );

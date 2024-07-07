@@ -10,7 +10,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import CreateBlocknoteEdit from "@/components/custom/CreateBlocknoteEdit";
 import { Input } from "@/components/ui/input";
 import { blocknotes, notes } from "@/constants/constants";
 import { cn } from "@/lib/utils";
@@ -126,13 +125,13 @@ function NotePage({ params }: { params: { blocknoteId: string } }) {
                                     {note?.note_text}
                                 </div>
 
-                                <div>
+                                {/* <div>
                                     <Image
                                         src={landscapeImg}
                                         alt="img"
                                         className="rounded-2xl max-h-[300px] "
                                     />
-                                </div>
+                                </div> */}
 
                                 <div className="h-[30rem] border border-muted rounded-xl overflow-auto scrollbar-thin p-2 markdown-body !text-sm ">
                                     <Markdown remarkPlugins={[remarkGfm]}>
