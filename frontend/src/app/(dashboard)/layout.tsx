@@ -22,13 +22,13 @@ export default async function DashboardLayout({
     });
 
     return (
-        <>
-            <div className="flex min-h-screen bg-muted/40 w-full flex-col ">
-                <HydrationBoundary state={dehydrate(queryClient)}>
-                    <Sidebar />
-                    <div className="w-full h-full  sm:pl-[55.2px]">{children}</div>
-                </HydrationBoundary>
-            </div>
-        </>
+        <div className="min-h-screen h-full bg-muted/40 w-full">
+            <HydrationBoundary state={dehydrate(queryClient)}>
+                <Sidebar />
+                <div className="w-full min-h-screen h-full pt-14 sm:pl-[4.5rem] sm:pt-0">
+                    {children}
+                </div>
+            </HydrationBoundary>
+        </div>
     );
 }

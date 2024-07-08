@@ -81,10 +81,10 @@ export default function Sidebar() {
                                     className={cn(
                                         "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-9 md:w-9",
                                         active &&
-                                            "text-background bg-gradient-to-l from-pop-blue/70 to-pop-blue/90 hover:text-background rounded-xl",
+                                            "text-background primary-btn-gradient hover:text-background rounded-xl",
                                     )}
                                 >
-                                    <Icon className="h-7 w-7" />
+                                    <Icon className="h-6 w-6" />
                                     <span className="sr-only">{label}</span>
                                 </Link>
                             </TooltipTrigger>
@@ -104,7 +104,7 @@ export default function Sidebar() {
                                     "rounded-full p-0 z-50 ring-1 ring-muted-foreground/30 focus-visible:ring-1 focus-visible:ring-muted-foreground/30",
                                 )}
                             >
-                                <Avatar className="w-[35px] h-[35px] rounded-full ">
+                                <Avatar className="w-9 h-9 rounded-full ">
                                     <AvatarImage
                                         className="rounded-full border-2 border-muted"
                                         src={userData?.profile?.avatar}
@@ -132,7 +132,7 @@ export default function Sidebar() {
                             "rounded-full p-0 z-50 ring-1 ring-muted-foreground/30 focus-visible:ring-1 focus-visible:ring-muted-foreground/30",
                         )}
                     >
-                        <Avatar className="w-[35px] h-[35px] rounded-full ">
+                        <Avatar className="w-9 h-9 rounded-full ">
                             <AvatarImage
                                 className="rounded-full border-2 border-muted"
                                 src={userData?.profile?.avatar}
