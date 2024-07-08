@@ -4,13 +4,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-export default function WelcomeLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+const WelcomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <div className="relative max-h-full h-screen flex items-center justify-center ">
+        <div className="relative min-h-screen h-full flex items-center justify-center">
             <div className="absolute bg-custom-radial-gradient blur-3xl z-[-1] w-full h-full scale-100 animate-fade-in-up"></div>
             <Link
                 href="/login"
@@ -21,9 +17,10 @@ export default function WelcomeLayout({
             >
                 Login
             </Link>
-
             <GridBackground />
             {children}
         </div>
     );
-}
+};
+
+export default WelcomeLayout;

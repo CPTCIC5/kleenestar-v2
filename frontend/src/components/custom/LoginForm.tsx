@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormSchema } from "@/lib/zod/schemas/schema";
 import { LoginFormSchemaTypes } from "../../lib/types/types";
 import { useLogin } from "@/hooks/useLogin";
-
 import {
     Card,
     CardContent,
@@ -30,9 +29,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/custom/PasswordInput";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function LoginForm({ className, ...props }: LoginFormProps) {
+export const LoginForm: React.FC = () => {
     const form = useForm<LoginFormSchemaTypes>({
         resolver: zodResolver(LoginFormSchema),
         mode: "onChange",
@@ -161,4 +158,4 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             </CardFooter>
         </Card>
     );
-}
+};

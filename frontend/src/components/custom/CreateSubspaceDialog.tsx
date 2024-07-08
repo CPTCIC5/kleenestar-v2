@@ -2,6 +2,7 @@
 
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -18,9 +19,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useWorkspaceData } from "@/hooks/useWorkspaceData";
-import { useCreateWorkspace } from "@/hooks/useCreateWorkspace";
-import { AddClientDialogSchemaTypes } from "@/lib/types/types";
-import { AddClientDialogSchema } from "@/lib/zod/schemas/schema";
 
 import {
     Form,
@@ -41,18 +39,21 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { AutocompleteDropdown, type Option } from "./AutocompleteDropdown";
 import countries from "@/constants/countries.json";
+import { CreateSubspaceFormSchemaTypes } from "@/lib/types/types";
+import { CreateSubspaceFormSchema } from "@/lib/zod/schemas/schema";
+import { useCreateSubspace } from "@/hooks/useCreateSubspace";
 
-interface AddClientDialogProps {}
+export const CreateSubspaceDialog: React.FC = () => {
+    const { workspaceData, isWorkspaceSuccess, isWorkspaceLoading } = useWorkspaceData();
 
-const AddClientDialog: React.FC<AddClientDialogProps> = () => {
     const router = useRouter();
     const countryOptions: Option[] = countries.map((country) => ({
         value: country.name,
         label: country.name,
     }));
 
-    const form = useForm<AddClientDialogSchemaTypes>({
-        resolver: zodResolver(AddClientDialogSchema),
+    const form = useForm<CreateSubspaceFormSchemaTypes>({
+        resolver: zodResolver(CreateSubspaceFormSchema),
         mode: "onChange",
         defaultValues: {
             name: "",
@@ -65,11 +66,14 @@ const AddClientDialog: React.FC<AddClientDialogProps> = () => {
     const name = watch("name");
     const country = watch("country");
     const industry = watch("industry");
+    const mutation = useCreateSubspace();
 
-    const mutation = useCreateWorkspace();
-
-    const onSubmit = (data: AddClientDialogSchemaTypes) => {
-        console.log(data);
+    const onSubmit = (data: CreateSubspaceFormSchemaTypes) => {
+        if (!workspaceData) {
+            toast.error("Workspace not found!");
+            return;
+        }
+        mutation.mutate({ workspace_id: workspaceData.id, data });
         form.reset({
             name: "",
             industry: "",
@@ -186,9 +190,37 @@ const AddClientDialog: React.FC<AddClientDialogProps> = () => {
                             />
                         </div>
                         <DialogFooter className="mt-4">
-                            <Button type="submit" className="px-6 py-5">
-                                Add client
-                            </Button>
+                            <DialogClose
+                                disabled={
+                                    Object.keys(form.formState.errors).length > 0 ||
+                                    mutation.isPending ||
+                                    !workspaceData ||
+                                    !country.value ||
+                                    !country.label ||
+                                    !industry ||
+                                    !name
+                                }
+                                className="disabled:cursor-not-allowed"
+                            >
+                                <Button
+                                    disabled={
+                                        Object.keys(form.formState.errors).length > 0 ||
+                                        mutation.isPending ||
+                                        !workspaceData ||
+                                        !country.value ||
+                                        !country.label ||
+                                        !industry ||
+                                        !name
+                                    }
+                                    type="submit"
+                                    className="px-6 py-5"
+                                >
+                                    {mutation.isPending && (
+                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                    )}
+                                    Add client
+                                </Button>
+                            </DialogClose>
                         </DialogFooter>
                     </form>
                 </Form>
@@ -196,5 +228,3 @@ const AddClientDialog: React.FC<AddClientDialogProps> = () => {
         </Dialog>
     );
 };
-
-export default AddClientDialog;

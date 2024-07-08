@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InvitedRegisterFormSchema } from "@/lib/zod/schemas/schema";
 import { InvitedRegisterFormSchemaTypes } from "../../lib/types/types";
 import { useRegisterWithInvite } from "@/hooks/useRegisterWithInvite";
-
 import {
     Card,
     CardContent,
@@ -31,9 +30,7 @@ import { PasswordInput } from "@/components/custom/PasswordInput";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-interface InvitedRegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function InvitedRegisterForm({ className, ...props }: InvitedRegisterFormProps) {
+export const InvitedRegisterForm = () => {
     const form = useForm<InvitedRegisterFormSchemaTypes>({
         resolver: zodResolver(InvitedRegisterFormSchema),
         mode: "onChange",
@@ -227,4 +224,4 @@ export function InvitedRegisterForm({ className, ...props }: InvitedRegisterForm
             </CardFooter>
         </Card>
     );
-}
+};

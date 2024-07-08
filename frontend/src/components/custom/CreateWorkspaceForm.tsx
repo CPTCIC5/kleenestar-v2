@@ -6,11 +6,9 @@ import { Icons } from "@/assets/icons";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 import { useCreateWorkspace } from "@/hooks/useCreateWorkspace";
 import { CreateWorkspaceFormSchemaTypes } from "@/lib/types/types";
 import { CreateWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
-
 import {
     Form,
     FormControl,
@@ -26,42 +24,26 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
-import RippleLoader from "../ui/ripple-loader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import ClassicLoader from "../ui/classic-loader";
 
-interface WorkspaceFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export default function CreateWorkspace({ className, ...props }: WorkspaceFormProps) {
+export const CreateWorkspaceForm = () => {
     const router = useRouter();
-    const { workspaceData, isWorkspaceLoading, isWorkspaceSuccess } = useWorkspaceData();
-
-    React.useEffect(() => {
-        if (isWorkspaceSuccess) {
-            if (workspaceData) {
-                toast.success("Workspace already exists!");
-                router.push("/chat");
-            }
-        }
-    }, [isWorkspaceSuccess]);
-
     const form = useForm<CreateWorkspaceFormSchemaTypes>({
         resolver: zodResolver(CreateWorkspaceFormSchema),
         mode: "onChange",
         defaultValues: {
             businessName: "",
-            Website: "",
-            selectedOption: "",
+            website: "",
+            industry: "",
         },
     });
 
     const { watch } = form;
     const businessName = watch("businessName");
-    const Website = watch("Website");
-    const selectedOption = watch("selectedOption");
+    const website = watch("website");
+    const industry = watch("industry");
 
     const mutation = useCreateWorkspace();
 
@@ -70,16 +52,8 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
         form.reset();
     };
 
-    if (isWorkspaceLoading) {
-        return (
-            <div className="flex items-center justify-center p-4">
-                <ClassicLoader />
-            </div>
-        );
-    }
-
     return (
-        <Card className={cn(className)}>
+        <Card className="bg-card/90 rounded-3xl">
             <CardHeader>
                 <CardTitle className="text-xl font-mainhead ">Create a new workspace</CardTitle>
                 <CardDescription className="font-medium">
@@ -113,7 +87,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                             />
                             <FormField
                                 control={form.control}
-                                name="Website"
+                                name="website"
                                 render={({ field }) => (
                                     <FormItem className="">
                                         <FormLabel>Website URL</FormLabel>
@@ -133,7 +107,7 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                             />
                             <FormField
                                 control={form.control}
-                                name="selectedOption"
+                                name="industry"
                                 render={({ field }) => (
                                     <FormItem className="">
                                         <FormLabel>Industry</FormLabel>
@@ -143,7 +117,14 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                             value={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger className="h-11 focus:ring-pop-blue focus-visible:ring-2">
+                                                <SelectTrigger
+                                                    className={cn(
+                                                        "h-11 focus:ring-pop-blue !focus-visible:ring-2 ",
+                                                        field.value
+                                                            ? null
+                                                            : "text-muted-foreground",
+                                                    )}
+                                                >
                                                     <SelectValue placeholder="Select your Industry" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -174,8 +155,8 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
                                     Object.keys(form.formState.errors).length > 0 ||
                                     mutation.isPending ||
                                     !businessName ||
-                                    !Website ||
-                                    !selectedOption
+                                    !website ||
+                                    !industry
                                 }
                                 type="submit"
                                 className="w-full h-11 primary-btn-gradient"
@@ -191,4 +172,4 @@ export default function CreateWorkspace({ className, ...props }: WorkspaceFormPr
             </CardContent>
         </Card>
     );
-}
+};

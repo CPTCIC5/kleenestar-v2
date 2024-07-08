@@ -1,35 +1,32 @@
 "use client";
-
-import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SearchBox } from "@/components/custom/SearchBox";
+import React, { useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Icons } from "@/assets/icons";
+import { useLogout } from "@/hooks/useLogout";
+import { useSubspaceData } from "@/hooks/useSubspaceData";
+import { useWorkspaceData } from "@/hooks/useWorkspaceData";
+import { SearchBox } from "@/components/custom/SearchBox";
+import { cn } from "@/lib/utils";
+import useDebounce from "@/hooks/useDebounce";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { CreateSubspaceDialog } from "@/components/custom/CreateSubspaceDialog";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useEffect, useState } from "react";
-import { ClientDatabase } from "@/constants/constants";
-import { cn } from "@/lib/utils";
-import useDebounce from "@/hooks/useDebounce";
-import AddClientDialog from "@/components/custom/AddClientDialog";
+import ClassicLoader from "@/components/ui/classic-loader";
 
 interface Client {
     id: number;
@@ -38,34 +35,52 @@ interface Client {
     country: string;
 }
 
-const ChooseSubspacePage: React.FC = () => {
+const SelectSubspacePage: React.FC = () => {
     const rowsPerPage = 10;
     const [startIndex, setStartIndex] = useState(0);
-    const [endIndex, setEndIndex] = useState(rowsPerPage);
-    const [clientData, setClientData] = useState(ClientDatabase || []);
-
+    const [clientData, setClientData] = useState<Client[]>([]);
+    const { workspaceData, isWorkspaceSuccess } = useWorkspaceData();
+    const {
+        data: subspaceData,
+        isSuccess: isSubspaceSuccess,
+        isLoading: isSubspaceLoading,
+    } = useSubspaceData();
+    const mutation = useLogout();
+    const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
     const debounceValue = useDebounce(searchQuery, 1000);
 
-    const handleSearch = () => {
-        const filteredClientData = clientData?.filter((client: Client) =>
-            client.name.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
-        setClientData(filteredClientData || []);
-    };
+    useEffect(() => {
+        if (isWorkspaceSuccess && isSubspaceSuccess) {
+            setClientData(subspaceData || []);
+        }
+    }, [isWorkspaceSuccess, isSubspaceSuccess, subspaceData]);
 
     useEffect(() => {
+        const handleSearch = () => {
+            const filteredClientData = subspaceData?.filter((client: Client) =>
+                client.name.toLowerCase().includes(debounceValue.toLowerCase()),
+            );
+            setClientData(filteredClientData || []);
+        };
+
         handleSearch();
-    }, [debounceValue]);
+    }, [debounceValue, subspaceData]);
 
     const sortClientsById = () => {
         const sortedData = [...clientData].sort((a, b) => a.id - b.id);
         setClientData(sortedData);
     };
 
+    const paginatedData = useMemo(
+        () => clientData.slice(startIndex, startIndex + rowsPerPage),
+        [clientData, startIndex, rowsPerPage],
+    );
+
     return (
-        <div className=" w-full h-full flex items-center justify-center flex-1 p-2">
+        <div className="w-full h-full flex items-center justify-center flex-1 p-2 mt-[69px]">
             <Button
+                onClick={() => mutation.mutate()}
                 variant="secondary"
                 className="absolute right-4 top-[34px] md:right-8 max-xs:top-[30px]"
             >
@@ -76,14 +91,17 @@ const ChooseSubspacePage: React.FC = () => {
                 <CardHeader className="flex-row justify-between items-center gap-4">
                     <div>
                         <CardTitle className="text-2xl font-mainhead">
-                            Harsh Yadav’s Clients
+                            <span className="text-pop-blue">
+                                {workspaceData ? workspaceData.business_name : "Workspace"}
+                            </span>
+                            ’s Clients
                         </CardTitle>
-                        <CardDescription className="font-medium">
+                        <CardDescription className="font-medium hidden xs:block">
                             Pick a client from the list below and jump right into their workspace
                             for more insights!
                         </CardDescription>
                     </div>
-                    <AddClientDialog />
+                    <CreateSubspaceDialog />
                 </CardHeader>
                 <CardContent className="space-y-3">
                     <div className="flex items-center justify-between gap-4">
@@ -104,48 +122,48 @@ const ChooseSubspacePage: React.FC = () => {
                         </Button>
                     </div>
                     <div className="border border-border rounded-xl h-[582px]">
-                        {clientData.length > 0 ? (
+                        {paginatedData.length > 0 ? (
                             <Table>
                                 <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="pl-2 w-[100px] text-center py-4">
+                                    <TableRow className="bg-muted">
+                                        <TableHead className="pl-2 w-[100px] text-center py-4  rounded-tl-xl">
                                             Id
                                         </TableHead>
-                                        <TableHead className=" text-center py-4">Name</TableHead>
-                                        <TableHead className=" text-center py-4">
-                                            Industry
-                                        </TableHead>
-                                        <TableHead className="pr-2  text-center py-4">
+                                        <TableHead className="text-center py-4">Name</TableHead>
+                                        <TableHead className="text-center py-4">Industry</TableHead>
+                                        <TableHead className="pr-2 text-center py-4  rounded-tr-xl">
                                             Country
                                         </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {clientData
-                                        .slice(startIndex, endIndex)
-                                        .map((client: Client) => (
-                                            <TableRow
-                                                key={client.id}
-                                                className="hover:bg-pop-blue/20 cursor-pointer active:bg-pop-blue/40"
-                                            >
-                                                <TableCell className="pl-2 font-medium text-center py-4">
-                                                    {client.id}
-                                                </TableCell>
-                                                <TableCell className=" text-center py-4">
-                                                    {client.name}
-                                                </TableCell>
-                                                <TableCell className=" text-center py-4">
-                                                    {client.industry}
-                                                </TableCell>
-                                                <TableCell className="pr-2  text-center py-4">
-                                                    {client.country}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
+                                    {paginatedData.map((client: Client) => (
+                                        <TableRow
+                                            key={client.id}
+                                            className="hover:bg-pop-blue/20 cursor-pointer active:bg-pop-blue/40"
+                                        >
+                                            <TableCell className="pl-2 font-medium text-center py-4">
+                                                {client.id}
+                                            </TableCell>
+                                            <TableCell className="text-center py-4">
+                                                {client.name}
+                                            </TableCell>
+                                            <TableCell className="text-center py-4">
+                                                {client.industry}
+                                            </TableCell>
+                                            <TableCell className="pr-2 text-center py-4">
+                                                {client.country}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
                                 </TableBody>
                             </Table>
+                        ) : isSubspaceLoading ? (
+                            <div className="w-full h-full flex justify-center items-center p-4">
+                                <ClassicLoader />
+                            </div>
                         ) : (
-                            <div className="w-full h-full flex justify-center items-center">
+                            <div className="w-full h-full flex justify-center items-center p-4">
                                 <CardDescription className="text-center">
                                     There are no clients to show. Add a client using the button
                                     above to get started.
@@ -154,13 +172,14 @@ const ChooseSubspacePage: React.FC = () => {
                         )}
                     </div>
 
-                    <div className="flex items-center justify-between w-full px-2">
+                    <div className="flex items-center flex-col gap-3 xs:flex-row justify-between w-full px-2">
                         <CardDescription>
                             Showing{" "}
                             <span className="text-pop-blue font-bold">
-                                {startIndex}-{endIndex}
+                                {startIndex + 1}-
+                                {Math.min(startIndex + rowsPerPage, clientData.length)}
                             </span>{" "}
-                            of 25 Clients
+                            of {clientData.length} Clients
                         </CardDescription>
 
                         <Pagination className="mx-0 w-fit">
@@ -177,7 +196,6 @@ const ChooseSubspacePage: React.FC = () => {
                                         onClick={() => {
                                             if (startIndex > 0) {
                                                 setStartIndex(startIndex - rowsPerPage);
-                                                setEndIndex(endIndex - rowsPerPage);
                                             }
                                         }}
                                     />
@@ -186,15 +204,14 @@ const ChooseSubspacePage: React.FC = () => {
                                     <PaginationNext
                                         className={cn(
                                             buttonVariants({ variant: "outline" }),
-                                            endIndex >= clientData.length
+                                            startIndex + rowsPerPage >= clientData.length
                                                 ? "pointer-events-none opacity-50"
                                                 : undefined,
                                             "w-28 cursor-pointer",
                                         )}
                                         onClick={() => {
-                                            if (endIndex < clientData.length) {
+                                            if (startIndex + rowsPerPage < clientData.length) {
                                                 setStartIndex(startIndex + rowsPerPage);
-                                                setEndIndex(endIndex + rowsPerPage);
                                             }
                                         }}
                                     />
@@ -208,4 +225,4 @@ const ChooseSubspacePage: React.FC = () => {
     );
 };
 
-export default ChooseSubspacePage;
+export default SelectSubspacePage;

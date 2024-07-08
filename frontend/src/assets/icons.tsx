@@ -304,10 +304,10 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-arrow-down-0-1"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-arrow-down-0-1"
         >
             <path d="m3 16 4 4 4-4" />
             <path d="M7 20V4" />
@@ -324,7 +324,7 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path
                     d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12"
                     opacity=".5"
@@ -368,15 +368,15 @@ export const Icons = {
                 />
                 <path
                     stroke="currentColor"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     d="M13 2.5V5c0 2.357 0 3.536.732 4.268C14.464 10 15.643 10 18 10h4"
                     opacity=".5"
                 />
                 <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
                     d="M8.5 18.5v-5m0 0l-2 1.875m2-1.875l2 1.875"
                     opacity=".5"
                 />
@@ -391,9 +391,9 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     d="M22 10.5V12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2h1.5"
                     opacity=".5"
                 />
@@ -415,9 +415,9 @@ export const Icons = {
         >
             <defs>
                 <mask id="IconifyId190103a2477fa216e17">
-                    <g fill="none" stroke-width="1.5">
+                    <g fill="none" strokeWidth="1.5">
                         <circle cx="11.5" cy="11.5" r="9.5" stroke="gray" />
-                        <path stroke="#fff" stroke-linecap="round" d="m20 20l2 2" />
+                        <path stroke="#fff" strokeLinecap="round" d="m20 20l2 2" />
                     </g>
                 </mask>
             </defs>
@@ -432,9 +432,9 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="12" cy="12" r="10" opacity=".5" />
-                <path stroke-linecap="round" d="M15 12h-3m0 0H9m3 0V9m0 3v3" />
+                <path strokeLinecap="round" d="M15 12h-3m0 0H9m3 0V9m0 3v3" />
             </g>
         </svg>
     ),
@@ -465,7 +465,7 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M2 12.026c0 5.146 3.867 9.387 8.847 9.96c.735.085 1.447-.228 1.97-.753a1.68 1.68 0 0 0 0-2.372c-.523-.525-.95-1.307-.555-1.934c1.576-2.508 9.738 3.251 9.738-4.9C22 6.488 17.523 2 12 2S2 6.489 2 12.026Z" />
                 <circle cx="17.5" cy="11.5" r="1.5" opacity=".5" />
                 <circle cx="6.5" cy="11.5" r="1.5" opacity=".5" />
@@ -484,7 +484,7 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5">
                 <path d="M20 7H4" />
                 <path d="M20 12H4" opacity=".5" />
                 <path d="M20 17H4" />
@@ -505,13 +505,13 @@ export const Icons = {
                     cy="12"
                     r="10"
                     stroke="currentColor"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     opacity=".5"
                 />
                 <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-width="1.5"
+                    strokeLinecap="round"
+                    strokeWidth="1.5"
                     d="M10.125 8.875a1.875 1.875 0 1 1 2.828 1.615c-.475.281-.953.708-.953 1.26V13"
                 />
                 <circle cx="12" cy="16" r="1" fill="currentColor" />
@@ -553,9 +553,9 @@ export const Icons = {
                 />
                 <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
                     d="m14 6l6 6l-6 6"
                 />
             </g>
@@ -588,15 +588,15 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path
                     d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12"
                     opacity=".5"
                 />
                 <path d="M2 14c0-2.8 0-4.2.545-5.27A5 5 0 0 1 4.73 6.545C5.8 6 7.2 6 10 6h4c2.8 0 4.2 0 5.27.545a5 5 0 0 1 2.185 2.185C22 9.8 22 11.2 22 14c0 2.8 0 4.2-.545 5.27a5 5 0 0 1-2.185 2.185C18.2 22 16.8 22 14 22h-4c-2.8 0-4.2 0-5.27-.545a5 5 0 0 1-2.185-2.185C2 18.2 2 16.8 2 14Z" />
                 <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M12 17v-6m0 0l2.5 2.5M12 11l-2.5 2.5"
                 />
             </g>
@@ -610,8 +610,8 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" d="M4 22h16" opacity=".5" />
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" d="M4 22h16" opacity=".5" />
                 <path d="m14.63 2.921l-.742.742l-6.817 6.817c-.462.462-.693.692-.891.947a5.24 5.24 0 0 0-.599.969c-.139.291-.242.601-.449 1.22l-.875 2.626l-.213.641a.848.848 0 0 0 1.073 1.073l.641-.213l2.625-.875c.62-.207.93-.31 1.221-.45a5.19 5.19 0 0 0 .969-.598c.255-.199.485-.43.947-.891l6.817-6.817l.742-.742a3.146 3.146 0 0 0-4.45-4.449Z" />
                 <path
                     d="M13.888 3.664S13.98 5.24 15.37 6.63c1.39 1.39 2.966 1.483 2.966 1.483m-12.579 9.63l-1.5-1.5"
@@ -628,7 +628,7 @@ export const Icons = {
             height="128"
             viewBox="0 0 24 24"
         >
-            <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="5" cy="12" r="2" />
                 <circle cx="12" cy="12" r="2" opacity=".5" />
                 <circle cx="19" cy="12" r="2" />
@@ -645,10 +645,10 @@ export const Icons = {
         >
             <g fill="none" stroke="currentColor">
                 <path
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     d="M3.845 7.922a2.883 2.883 0 1 1 4.077-4.077l12.234 12.233a2.884 2.884 0 0 1-4.078 4.078z"
                 />
-                <path stroke-linecap="round" stroke-width="1.5" d="m6 10l4-4" opacity=".5" />
+                <path strokeLinecap="round" strokeWidth="1.5" d="m6 10l4-4" opacity=".5" />
                 <path d="M16.1 2.307a.483.483 0 0 1 .9 0l.43 1.095a.482.482 0 0 0 .272.274l1.091.432a.486.486 0 0 1 0 .903l-1.09.432a.485.485 0 0 0-.273.273L17 6.81a.483.483 0 0 1-.9 0l-.43-1.095a.485.485 0 0 0-.273-.273l-1.09-.432a.486.486 0 0 1 0-.903l1.09-.432a.485.485 0 0 0 .273-.274z" />
                 <path
                     d="M19.967 9.13a.483.483 0 0 1 .9 0l.156.399c.05.125.148.224.273.273l.398.158a.486.486 0 0 1 0 .902l-.398.158a.485.485 0 0 0-.273.273l-.156.4a.483.483 0 0 1-.9 0l-.157-.4a.485.485 0 0 0-.272-.273l-.398-.158a.486.486 0 0 1 0-.902l.398-.158a.485.485 0 0 0 .272-.273zM5.133 15.307a.483.483 0 0 1 .9 0l.157.4a.48.48 0 0 0 .272.273l.398.157a.486.486 0 0 1 0 .903l-.398.158a.484.484 0 0 0-.272.273l-.157.4a.483.483 0 0 1-.9 0l-.157-.4a.484.484 0 0 0-.272-.273l-.398-.158a.486.486 0 0 1 0-.903l.398-.157a.484.484 0 0 0 .272-.274z"
@@ -1286,6 +1286,7 @@ export const Icons = {
     ),
     left_arrow: (props: IconProps) => (
         <svg
+            {...props}
             width="30"
             height="30"
             viewBox="0 0 15 15"
@@ -1302,6 +1303,7 @@ export const Icons = {
     ),
     astonished: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1329,6 +1331,7 @@ export const Icons = {
     ),
     cry: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1365,6 +1368,7 @@ export const Icons = {
     ),
     unamused: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1401,6 +1405,7 @@ export const Icons = {
     ),
     smirking: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1465,6 +1470,7 @@ export const Icons = {
     ),
     happy: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1513,6 +1519,7 @@ export const Icons = {
     ),
     vomiting: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1613,6 +1620,7 @@ export const Icons = {
     ),
     in_love: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1698,9 +1706,9 @@ export const Icons = {
             />
         </svg>
     ),
-
     smiling: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1785,6 +1793,7 @@ export const Icons = {
     ),
     more_happy: (props: IconProps) => (
         <svg
+            {...props}
             height="50px"
             width="800px"
             version="1.1"
@@ -1844,6 +1853,7 @@ export const Icons = {
     ),
     person: (props: IconProps) => (
         <svg
+            {...props}
             width="25"
             height="25"
             viewBox="0 0 15 15"
@@ -1858,9 +1868,9 @@ export const Icons = {
             ></path>
         </svg>
     ),
-
     feedback: (props: IconProps) => (
         <svg
+            {...props}
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
@@ -1878,6 +1888,7 @@ export const Icons = {
     ),
     clipboard: (props: IconProps) => (
         <svg
+            {...props}
             width="20"
             height="20"
             viewBox="0 0 15 15"
@@ -1894,6 +1905,7 @@ export const Icons = {
     ),
     down_chevron: (props: IconProps) => (
         <svg
+            {...props}
             width="20"
             height="20"
             viewBox="0 0 15 15"
@@ -1910,6 +1922,7 @@ export const Icons = {
     ),
     send: (props: IconProps) => (
         <svg
+            {...props}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -1927,6 +1940,7 @@ export const Icons = {
     ),
     drag_out: (props: IconProps) => (
         <svg
+            {...props}
             xmlns="http://www.w3.org/2000/svg"
             width="18"
             height="18"
@@ -1944,6 +1958,7 @@ export const Icons = {
     ),
     plan: (props: IconProps) => (
         <svg
+            {...props}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -1963,6 +1978,7 @@ export const Icons = {
     ),
     circle_plus: (props: IconProps) => (
         <svg
+            {...props}
             width="20"
             height="20"
             viewBox="0 0 15 15"
@@ -1979,6 +1995,7 @@ export const Icons = {
     ),
     bin: (props: IconProps) => (
         <svg
+            {...props}
             {...props}
             xmlns="http://www.w3.org/2000/svg"
             width="24"

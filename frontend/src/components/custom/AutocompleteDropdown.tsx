@@ -1,16 +1,9 @@
-import { type CountryProps } from "@/lib/types/interfaces";
-import countries from "@/constants/countries.json";
-
 import { CommandGroup, CommandItem, CommandList, CommandInput } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
-import { useState, useRef, useCallback, type KeyboardEvent } from "react";
-
+import { useState, useRef, useCallback, type KeyboardEvent, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ScrollBar } from "../ui/scroll-area";
-import { Input } from "../ui/input";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 
 export type Option = Record<"value" | "label", string> & Record<string, string>;
@@ -35,10 +28,17 @@ export const AutocompleteDropdown = ({
     isLoading = false,
 }: AutocompleteDropdownProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
-
     const [isOpen, setOpen] = useState(false);
     const [selected, setSelected] = useState<Option>(value as Option);
     const [inputValue, setInputValue] = useState<string>(value?.label || "");
+
+    useEffect(() => {
+        if (value?.label === "") {
+            setInputValue("");
+        } else if (value?.label) {
+            setInputValue(value.label);
+        }
+    }, [value]);
 
     const handleKeyDown = useCallback(
         (event: KeyboardEvent<HTMLDivElement>) => {
@@ -46,12 +46,10 @@ export const AutocompleteDropdown = ({
             if (!input) {
                 return;
             }
-
             // Keep the options displayed when the user is typing
             if (!isOpen) {
                 setOpen(true);
             }
-
             // This is not a default behaviour of the <input /> field
             if (event.key === "Enter" && input.value !== "") {
                 const optionToSelect = options.find((option) => option.label === input.value);
@@ -76,10 +74,8 @@ export const AutocompleteDropdown = ({
     const handleSelectOption = useCallback(
         (selectedOption: Option) => {
             setInputValue(selectedOption.label);
-
             setSelected(selectedOption);
             onValueChange?.(selectedOption);
-
             // This is a hack to prevent the input from being focused after the user selects an option
             // We can call this hack: "The next tick"
             setTimeout(() => {
@@ -94,7 +90,7 @@ export const AutocompleteDropdown = ({
             <div className="relative">
                 <CommandInput
                     ref={inputRef}
-                    value={value?.label === inputValue ? inputValue : ""}
+                    value={inputValue}
                     onValueChange={isLoading ? undefined : setInputValue}
                     onBlur={handleBlur}
                     onFocus={() => setOpen(true)}

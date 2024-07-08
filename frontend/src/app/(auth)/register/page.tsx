@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RegisterForm } from "@/components/custom/RegisterForm";
-import GridBackground from "@/components/ui/background-grid";
 
 const RegisterPage: React.FC = () => {
     return (

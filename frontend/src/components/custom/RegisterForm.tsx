@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormSchema } from "@/lib/zod/schemas/schema";
 import { RegisterFormSchemaTypes } from "../../lib/types/types";
 import { useRegister } from "@/hooks/useRegister";
-
 import {
     Card,
     CardContent,
@@ -31,9 +30,7 @@ import { PasswordInput } from "@/components/custom/PasswordInput";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function RegisterForm({ className, ...props }: RegisterFormProps) {
+export const RegisterForm: React.FC = () => {
     const form = useForm<RegisterFormSchemaTypes>({
         resolver: zodResolver(RegisterFormSchema),
         mode: "onChange",
@@ -86,7 +83,8 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                         <FormMessage className="flex gap-[5px] items-center text-[10px]">
                                             <InfoCircledIcon className="h-[10px] w-[10px] text-foreground" />
                                             <span className="text-[10px] text-foreground">
-                                                enter the email address you used to login / register
+                                                enter the email address you want to use for your
+                                                account
                                             </span>
                                         </FormMessage>
                                     </FormItem>
@@ -204,4 +202,4 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             </CardFooter>
         </Card>
     );
-}
+};

@@ -1,15 +1,7 @@
 import { validTimezones } from "@/constants/constants";
 import { z } from "zod";
 
-export const ForgotPasswordFormSchema = z.object({
-    email: z
-        .string()
-        .email()
-        .refine((value) => value.includes("@") && value.includes("."), {
-            message: "Enter a valid email",
-        }),
-});
-
+// verified
 export const LoginFormSchema = z.object({
     email: z
         .string()
@@ -24,26 +16,26 @@ export const RegisterFormSchema = z
     .object({
         email: z
             .string()
-            .email()
+            .email({ message: "Enter a valid email" })
             .refine((value) => value.includes("@") && value.includes("."), {
                 message: "Enter a valid email",
             }),
         password: z
             .string()
-            .min(8, "Min. 8 characters")
+            .min(8, { message: "Min. 8 characters" })
             .refine((value) => /[a-z]/.test(value), {
-                message: "Password need a lowercase",
+                message: "Password needs a lowercase",
             })
             .refine((value) => /[A-Z]/.test(value), {
-                message: "Password need a  uppercase",
+                message: "Password needs an uppercase",
             })
             .refine((value) => /\d/.test(value), {
-                message: "Password need a  number",
+                message: "Password needs a number",
             })
             .refine((value) => /\W|_/.test(value), {
-                message: "Password need a  special character",
+                message: "Password needs a special character",
             }),
-        confirmPassword: z.string().min(1, "Password is required"),
+        confirmPassword: z.string().min(1, { message: "Password is required" }),
         newsletter: z.boolean().default(false).optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
@@ -63,16 +55,16 @@ export const InvitedRegisterFormSchema = z
             .string()
             .min(8, "Min. 8 characters")
             .refine((value) => /[a-z]/.test(value), {
-                message: "Password need a lowercase",
+                message: "Password needs a lowercase letter",
             })
             .refine((value) => /[A-Z]/.test(value), {
-                message: "Password need a  uppercase",
+                message: "Password needs an uppercase letter",
             })
             .refine((value) => /\d/.test(value), {
-                message: "Password need a  number",
+                message: "Password needs a number",
             })
             .refine((value) => /\W|_/.test(value), {
-                message: "Password need a  special character",
+                message: "Password needs a special character",
             }),
         confirmPassword: z.string().min(1, "Password is required"),
         newsletter: z.boolean().default(false).optional(),
@@ -83,13 +75,24 @@ export const InvitedRegisterFormSchema = z
         path: ["confirmPassword"],
     });
 
+export const ForgotPasswordFormSchema = z.object({
+    email: z
+        .string()
+        .email()
+        .refine((value) => value.includes("@") && value.includes("."), {
+            message: "Enter a valid email",
+        }),
+});
+
 export const CreateWorkspaceFormSchema = z.object({
     businessName: z
         .string()
         .min(1, "Business name is required")
         .max(100, "Business name should not exceed 100 characters"),
-    Website: z.string().regex(/^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/),
-    selectedOption: z
+    website: z.string().regex(/^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/, {
+        message: "Enter a valid URL (http/https required)",
+    }),
+    industry: z
         .string()
         .min(1, "Industry is required")
         .refine(
@@ -109,6 +112,8 @@ export const CreateWorkspaceFormSchema = z.object({
             },
         ),
 });
+
+//unverified
 
 export const SettingsProfileFormSchema = z.object({
     firstName: z.string().min(1, {
@@ -177,7 +182,7 @@ export const MakeNoteFormSchema = z.object({
     }),
 });
 
-export const AddClientDialogSchema = z.object({
+export const CreateSubspaceFormSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     industry: z
         .string()

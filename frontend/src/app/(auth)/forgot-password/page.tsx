@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ForgotPasswordForm } from "@/components/custom/ForgotPasswordForm";
-import GridBackground from "@/components/ui/background-grid";
 
 const ForgotPasswordPage: React.FC = () => {
     return (

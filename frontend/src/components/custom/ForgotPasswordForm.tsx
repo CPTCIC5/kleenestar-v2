@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ForgotPasswordFormSchema } from "@/lib/zod/schemas/schema";
 import { ForgotPasswordFormSchemaTypes } from "@/lib/types/types";
 import { useForgotPassword } from "@/hooks/useForgotPassword";
-
 import {
     Card,
     CardContent,
@@ -29,9 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
-interface ForgotPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormProps) {
+export const ForgotPasswordForm: React.FC = () => {
     const form = useForm<ForgotPasswordFormSchemaTypes>({
         resolver: zodResolver(ForgotPasswordFormSchema),
         mode: "onChange",
@@ -129,4 +126,4 @@ export function ForgotPasswordForm({ className, ...props }: ForgotPasswordFormPr
             </CardFooter>
         </Card>
     );
-}
+};
