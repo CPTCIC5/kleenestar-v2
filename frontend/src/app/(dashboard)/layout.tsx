@@ -1,8 +1,7 @@
-import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import Sidebar from "@/components/custom/Sidebar";
 import { getUserData } from "@/lib/services/getUserData";
 import { getWorkspaceData } from "@/lib/services/getWorkspaceData";
-
-import Sidebar from "@/components/custom/Sidebar";
+import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 export default async function DashboardLayout({
     children,

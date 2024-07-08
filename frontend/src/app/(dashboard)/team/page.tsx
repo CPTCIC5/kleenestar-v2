@@ -29,6 +29,10 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 import { useSendInviteCode } from "@/hooks/useSendInviteCode";
+import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Icons } from "@/assets/icons";
+import { capitalizeFirstLetter } from "../../../lib/utils";
 
 type User = {
     id: string;
@@ -53,122 +57,85 @@ export default function TeamMembersPage() {
     };
 
     return (
-        <div className="w-full h-full flex items-center justify-center p-3">
-            <div className="max-w-[672.02px] w-full h-full">
-                <div className="w-full mt-[99.5px] max-sm:mt-[60px] flex items-center space-x-2">
-                    <span className="font-mainhead text-[18px]">Team members</span>
-                    <InfoCircledIcon className="h-[16px] w-[16px]" />
+        <div className="w-full h-full flex justify-center p-3">
+            <div className="max-w-2xl w-full h-full">
+                <div>
+                    <div className="w-full flex items-center space-x-2 font-mainhead text-xl">
+                        <span>Team members</span>
+                        <InfoCircledIcon className="h-4 w-4" />
+                    </div>
+                    <CardDescription>Invite your team members to collaborate.</CardDescription>
                 </div>
 
-                <div className="w-full mt-5">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-center px-[18px] py-[9px] space-x-2">
+                <div className="w-full space-y-5 my-5">
+                    <Card className="rounded-3xl">
+                        <CardHeader className="flex flex-row items-center justify-center px-4 py-2 space-x-2">
                             <Input
                                 type="email"
                                 value={emailInput}
+                                disabled={mutation.isPending}
                                 onChange={(e) => setEmailInput(e.target.value)}
-                                placeholder="Add email separate by comma…"
-                                className="w-full border-none bg-muted focus-visible:ring-0"
+                                placeholder="Enter email address of the user you want to invite"
+                                className="w-full border-none bg-muted h-9 focus-visible:ring-pop-blue focus-visible:ring-2"
                             />
                             <Button
                                 variant={"outline"}
+                                disabled={mutation.isPending || emailInput === ""}
                                 onClick={onSubmit}
-                                className="py-[9px] px-[18px] flex gap-[11px] items-center justify-center !mt-0 group"
+                                className="flex gap-1 items-center justify-center !mt-0 group primary-btn-gradient"
                             >
-                                <div
-                                    className={cn(
-                                        buttonVariants({ variant: "outline" }),
-                                        "h-5 w-5 p-[4px] flex items-center justify-center group-hover:bg-accent group-hover:text-accent-foreground",
-                                    )}
-                                >
-                                    <Share1Icon />
-                                </div>
-                                <span className="text-[13px]">Send Invite</span>
+                                <Share1Icon className="h-3 w-3 bg-transparent" />
+                                <span>Invite</span>
                             </Button>
                         </CardHeader>
                     </Card>
                 </div>
-                <div className="w-full mt-[31.38px] mb-[20.5px]">
-                    <CardTitle className="text-[14px]">Invited users</CardTitle>
-                </div>
-                <div className="w-full space-y-2">
+
+                <Label className="text-muted-foreground ">Team members</Label>
+
+                <div className="w-full space-y-2 mt-3">
                     {workspaceData?.users.map((user: User) => {
                         return (
-                            <Card key={user.id}>
-                                <CardHeader className="flex flex-row items-center justify-center p-[15px] space-x-2">
-                                    <Avatar className="w-[30px] h-[30px]  rounded-full ">
-                                        <AvatarImage
-                                            className="rounded-full border-2 border-muted"
-                                            src={
-                                                user?.profile?.avatar
-                                                    ? user.profile.avatar
-                                                    : "https://github.com/shadcn.png"
-                                            }
-                                            alt="@shadcn"
-                                        />
-                                        <AvatarFallback className="flex items-center justify-center">
-                                            N
-                                        </AvatarFallback>
-                                    </Avatar>
+                            <div
+                                key={user.id}
+                                className="flex flex-row items-center justify-center py-3 space-x-2"
+                            >
+                                <Avatar className="w-9 h-9 rounded-full border-2 border-muted ">
+                                    <AvatarImage
+                                        className="rounded-full "
+                                        src={user?.profile?.avatar}
+                                        alt="@shadcn"
+                                    />
+                                    <AvatarFallback className="flex items-center justify-center">
+                                        {user?.first_name?.charAt(0).toUpperCase() || "K"}
+                                    </AvatarFallback>
+                                </Avatar>
 
-                                    <div className="flex-1 !mt-0 ">
-                                        <span>
-                                            {user.first_name === "" && user.last_name === ""
-                                                ? user.email
-                                                : user.first_name + " " + user.last_name}
-                                        </span>
-                                    </div>
+                                <span className=" flex-1 !mt-0 ml-2 text-sm overflow-ellipsis">
+                                    {user.first_name === "" && user.last_name === ""
+                                        ? capitalizeFirstLetter(user.email)
+                                        : user.first_name + " " + user.last_name}
+                                </span>
 
-                                    <Select>
-                                        <SelectTrigger disabled={true} className="w-[7rem] !mt-0">
-                                            <SelectValue placeholder={"member"} />
-                                        </SelectTrigger>
+                                <Select>
+                                    <SelectTrigger className="w-24 !mt-0 max-xs:hidden">
+                                        <SelectValue placeholder={"member"} />
+                                    </SelectTrigger>
+                                    <SelectContent className="min-w-24">
+                                        <SelectItem value="editor">editor</SelectItem>
+                                        <SelectItem value="member">member</SelectItem>
+                                    </SelectContent>
+                                </Select>
 
-                                        <SelectContent>
-                                            <SelectItem value="editor">editor</SelectItem>
-                                            <SelectItem value="member">member</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger className="!mt-0 ml-2">
-                                            <Button
-                                                variant={"ghost"}
-                                                className=" h-fit p-2  rounded-full focus-visible:ring-0 ring-0 outline-none border-none"
-                                            >
-                                                <DotsHorizontalIcon className={`h-4 w-4`} />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent
-                                            sideOffset={-10}
-                                            align={"start"}
-                                            alignOffset={25}
-                                            className="w-full min-w-[50px]"
-                                        >
-                                            <Button
-                                                variant="ghost"
-                                                disabled={true}
-                                                className="flex justify-start gap-2 w-full"
-                                            >
-                                                <PauseIcon className="h-4 w-4" />
-                                                <span className="text-[14px] font-normal">
-                                                    Suspend
-                                                </span>
-                                            </Button>
-                                            <Button
-                                                variant="ghost"
-                                                disabled={true}
-                                                className="flex justify-start gap-2 w-full"
-                                            >
-                                                <TrashIcon className="h-4 w-4" />
-                                                <span className="text-[14px] font-normal">
-                                                    Delete
-                                                </span>
-                                            </Button>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </CardHeader>
-                            </Card>
+                                <div className="space-x-1 min-w-20">
+                                    <Button variant="outline" size="icon">
+                                        <Icons.solarSuspendLine className="h-4 w-4" />
+                                    </Button>
+                                    <Button variant="outline" size="icon">
+                                        <Icons.solarBinLine className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </div>
                         );
                     })}
                 </div>
