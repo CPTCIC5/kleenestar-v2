@@ -1,6 +1,6 @@
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { getUserData } from "@/app/actions/getUserData";
-import { getWorkspaceData } from "@/app/actions/getWorkspaceData";
+import { getUserData } from "@/lib/services/getUserData";
+import { getWorkspaceData } from "@/lib/services/getWorkspaceData";
 
 import Sidebar from "@/components/custom/Sidebar";
 

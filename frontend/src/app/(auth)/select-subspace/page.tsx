@@ -139,6 +139,7 @@ const SelectSubspacePage: React.FC = () => {
                                 <TableBody>
                                     {paginatedData.map((client: Client) => (
                                         <TableRow
+                                            onClick={() => router.push(`/chat/${client.id}/`)}
                                             key={client.id}
                                             className="hover:bg-pop-blue/20 cursor-pointer active:bg-pop-blue/40"
                                         >

@@ -3,9 +3,52 @@ import { Button } from "../ui/button";
 import { Icons } from "@/assets/icons";
 import Link from "next/link";
 import { useLogout } from "@/hooks/useLogout";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const SidebarSheet = () => {
+    const pathname = usePathname();
     const mutation = useLogout();
+
+    const navItems = [
+        { href: "/", icon: Icons.logoDark, label: "Kleenestar", darkIcon: Icons.logoLight },
+        {
+            href: "/chat",
+            icon: Icons.solarChatRoundLine,
+            label: "Chat",
+            active: pathname.startsWith("/chat/"),
+        },
+        {
+            href: "/blocknote",
+            icon: Icons.solarBookmarkFolderLine,
+            label: "Blocknotes",
+            active: pathname.startsWith("/blocknote/"),
+        },
+        {
+            href: "/channels",
+            icon: Icons.solarBoltCircleLine,
+            label: "Connect channels",
+            active: pathname === "/channels/",
+        },
+        {
+            href: "/billing",
+            icon: Icons.solarAirbudsCaseChargeLine,
+            label: "Plans and billing",
+            active: pathname === "/billing/",
+        },
+        {
+            href: "/team",
+            icon: Icons.solarUserGroupRoundedLine,
+            label: "Team members",
+            active: pathname === "/team/",
+        },
+        {
+            href: "/feedback",
+            icon: Icons.solarUserSpeakRoundedLine,
+            label: "Feedback",
+            active: pathname === "/feedback/",
+        },
+    ];
 
     return (
         <Sheet>
@@ -17,66 +60,37 @@ const SidebarSheet = () => {
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
                 <nav className="grid gap-6 text-lg font-medium">
-                    <Link
-                        href="/"
-                        className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground md:text-base"
-                    >
-                        <Icons.logoDark className="transition-all group-hover:scale-110 dark:hidden" />
-                        <Icons.logoLight className="transition-all hidden dark:group-hover:scale-110 dark:block" />
-                        <span className="sr-only">Kleenestar</span>
-                    </Link>
-                    <Link
-                        href="/chat"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarChatRoundLine className="h-6 w-6" />
-                        Chat
-                    </Link>
-                    <Link
-                        href="/blocknote"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarBookmarkFolderLine className="h-6 w-6" />
-                        Blocknotes
-                    </Link>
-                    {/* <Link
-                        href="/knowledge"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarBook2Line className="h-6 w-6" />
-                        Knowledge
-                    </Link> */}
-                    <Link
-                        href="/channels"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarBoltCircleLine className="h-6 w-6" />
-                        Connect channels
-                    </Link>
-                    <Link
-                        href="/billing"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarAirbudsCaseChargeLine className="h-6 w-6" />
-                        Plans and billing
-                    </Link>
-                    <Link
-                        href="/team"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarUserGroupRoundedLine className="h-6 w-6" />
-                        Team members
-                    </Link>
-                    <Link
-                        href="/feedback"
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                    >
-                        <Icons.solarUserSpeakRoundedLine className="h-6 w-6" />
-                        Feedback
-                    </Link>
+                    {navItems.map(({ href, icon: Icon, label, darkIcon: DarkIcon, active }) => (
+                        <Link
+                            key={href}
+                            href={href}
+                            className={cn(
+                                `flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground ${
+                                    label === "Kleenestar" &&
+                                    "group h-14 w-14 shrink-0 rounded-full"
+                                }`,
+                                active
+                                    ? "text-pop-blue/80 hover:text-pop-blue"
+                                    : "text-muted-foreground hover:text-foreground",
+                            )}
+                        >
+                            <Icon
+                                className={` ${
+                                    label === "Kleenestar"
+                                        ? "transition-all group-hover:scale-110 dark:hidden h-14 w-14"
+                                        : "h-6 w-6"
+                                }`}
+                            />
+                            {DarkIcon && (
+                                <DarkIcon className="transition-all hidden dark:group-hover:scale-110 dark:block h-14 w-14" />
+                            )}
+                            <span className="sr-only">{label}</span>
+                            {label !== "Kleenestar" && label}
+                        </Link>
+                    ))}
                     <div
                         onClick={() => mutation.mutate()}
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground cursor-pointer"
                     >
                         <Icons.solarExitLine className="h-5 w-5" />
                         Sign out
