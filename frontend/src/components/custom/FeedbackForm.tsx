@@ -89,7 +89,7 @@ export default function FeedbackForm({ formData, setFile, file, setFormData }: F
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <Card>
+                <Card className="shadow-none ">
                     <CardHeader className="space-y-5">
                         <div className="space-y-2">
                             <Label>How urgent is it?</Label>

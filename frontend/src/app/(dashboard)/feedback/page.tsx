@@ -34,10 +34,10 @@ export default function Feedback() {
             <div className="max-w-2xl w-full space-y-3">
                 <div className="flex items-center gap-2">
                     <p className="text-xl font-mainhead">Support and feedback</p>
-                    <QuestionMarkCircledIcon className="h-4 w-4" />
+                    <Icons.solarQuestionCircleLine className="h-4 w-4" />
                 </div>
                 <div className="pt-2">
-                    <Card className="h-14 flex items-center w-full">
+                    <Card className="h-14 flex items-center w-full shadow-none">
                         <div className="flex justify-between gap-5 w-full px-5 max-xl:px-2">
                             <div className="flex gap-2 items-center">
                                 <Label className="font-mainhead">Attachment:</Label>
