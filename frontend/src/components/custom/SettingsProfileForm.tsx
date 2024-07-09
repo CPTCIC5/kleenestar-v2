@@ -1,8 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRef, useState, ChangeEvent } from "react";
-
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { useRef, useState, ChangeEvent, useEffect } from "react";
 import {
     Form,
     FormControl,
@@ -12,19 +11,18 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-
 import { Separator } from "../ui/separator";
 import { Button } from "@/components/ui/button";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useForm, set } from "react-hook-form";
 import { Input } from "../ui/input";
 import { SettingsProfileFormSchema } from "@/lib/zod/schemas/schema";
 import { SettingsProfileFormSchemaTypes } from "@/lib/types/types";
-import React from "react";
 import { useUserData } from "@/hooks/useUserData";
 import { useEditUserProfile } from "@/hooks/useEditUserProfile";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { Label } from "../ui/label";
+import { useLogout } from "@/hooks/useLogout";
 
 export function SettingsProfileForm() {
     const { userData } = useUserData();
@@ -38,9 +36,8 @@ export function SettingsProfileForm() {
         },
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (userData) {
-            console.log(userData?.profile?.avatar);
             form.reset({
                 firstName: userData.first_name,
                 lastName: userData.last_name,
@@ -51,23 +48,26 @@ export function SettingsProfileForm() {
 
     const addRef = useRef<HTMLInputElement | null>(null);
     const [file, setFile] = useState<File | null>(null);
+    const [fileUrl, setFileUrl] = useState<string | null>(null);
+
     const handleAddImage = () => {
-        if (addRef.current) {
-            addRef.current.click();
-        }
+        addRef.current?.click();
     };
-    const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+
+    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file) {
-            return;
-        } else {
-            setFile(file);
+        console.log(file);
+        setFile(file ?? null);
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setFileUrl(url);
         }
     };
 
-    const mutation = useEditUserProfile(userData?.id);
+    const logoutMutation = useLogout();
+    const editUserProfileMutation = useEditUserProfile(userData?.id);
 
-    const onSubmit = async (data: SettingsProfileFormSchemaTypes) => {
+    const onSubmit = (data: SettingsProfileFormSchemaTypes) => {
         const formData = new FormData();
         formData.append("first_name", data.firstName);
         formData.append("last_name", data.lastName);
@@ -75,35 +75,27 @@ export function SettingsProfileForm() {
             formData.append("avatar", file);
         }
 
-        mutation.mutate(formData);
+        editUserProfileMutation.mutate(formData);
     };
 
     return (
         <Card className="relative">
-            <Button
-                className="absolute bottom-6 left-6 max-sm:px-2"
-                disabled={true}
-                variant={"secondary"}
-            >
-                Delete workspace
-            </Button>
-            <CardHeader className="pt-3 pb-5">
+            <CardHeader className="py-5">
                 <CardDescription>This is how others will see you on the workspace.</CardDescription>
                 <Separator />
             </CardHeader>
-
             <CardContent>
-                {/* image and image upload section */}
+                {/* Image and image upload section */}
                 <div className="space-y-3 mb-5">
-                    <CardTitle>Image</CardTitle>
+                    <Label>Image</Label>
                     <div>
                         <Avatar
                             onClick={handleAddImage}
-                            className="w-[50px] h-[50px] rounded-full  "
+                            className="w-14 h-14 rounded-full border-2 border-muted cursor-pointer"
                         >
                             <AvatarImage
-                                className="rounded-full border-2 border-muted cursor-pointer"
-                                src={userData?.profile?.avatar}
+                                className="rounded-full"
+                                src={fileUrl ? fileUrl : userData?.profile?.avatar}
                                 alt="@shadcn"
                             />
                             <AvatarFallback className="flex items-center justify-center">
@@ -114,6 +106,7 @@ export function SettingsProfileForm() {
                             ref={addRef}
                             type="file"
                             className="hidden"
+                            disabled={editUserProfileMutation.isPending}
                             name="avatar"
                             onChange={handleImageUpload}
                         />
@@ -133,6 +126,8 @@ export function SettingsProfileForm() {
                                                 <Input
                                                     type="text"
                                                     placeholder="First Name"
+                                                    className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
+                                                    disabled={editUserProfileMutation.isPending}
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -150,6 +145,8 @@ export function SettingsProfileForm() {
                                                 <Input
                                                     type="text"
                                                     placeholder="Last Name"
+                                                    className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
+                                                    disabled={editUserProfileMutation.isPending}
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -158,15 +155,14 @@ export function SettingsProfileForm() {
                                     )}
                                 />
                             </div>
-                            <CardDescription>
+                            <span className="text-[0.8rem] text-muted-foreground">
                                 This is the name that will be displayed on your workspace.
-                            </CardDescription>
+                            </span>
                         </div>
 
                         <FormField
                             control={form.control}
                             name="email"
-                            disabled={true}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
@@ -174,6 +170,8 @@ export function SettingsProfileForm() {
                                         <Input
                                             type="email"
                                             placeholder="mail@gmail.com"
+                                            className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
+                                            disabled={true}
                                             defaultValue={userData?.email}
                                             {...field}
                                         />
@@ -186,12 +184,23 @@ export function SettingsProfileForm() {
                             )}
                         />
                         <div className="flex justify-end">
-                            <Button type="submit" className="max-sm:px-2">
+                            <Button
+                                type="submit"
+                                className="max-sm:px-2 primary-btn-gradient"
+                                disabled={editUserProfileMutation.isPending}
+                            >
                                 Update profile
                             </Button>
                         </div>
                     </form>
                 </Form>
+                <Button
+                    className="absolute bottom-6 left-6 max-sm:px-2"
+                    variant="destructive"
+                    onClick={() => logoutMutation.mutate()}
+                >
+                    Sign out
+                </Button>
             </CardContent>
         </Card>
     );

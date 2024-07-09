@@ -67,6 +67,96 @@ const data: Payment[] = [
         status: "failed",
         email: "carmella@hotmail.com",
     },
+    {
+        id: "9z2h6r3a",
+        amount: 899,
+        status: "pending",
+        email: "mike@hotmail.com",
+    },
+    {
+        id: "p1x4v6m9",
+        amount: 200,
+        status: "pending",
+        email: "rohan@hotmail.com",
+    },
+    {
+        id: "5kma53ae",
+        amount: 874,
+        status: "success",
+        email: "goggin@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "alex@hotmail.com",
+    },
+    {
+        id: "sf2h6r3a",
+        amount: 843,
+        status: "pending",
+        email: "andrew@hotmail.com",
+    },
+    {
+        id: "fds4v6m9",
+        amount: 342,
+        status: "pending",
+        email: "willy@hotmail.com",
+    },
+    {
+        id: "gfdgsgw293",
+        amount: 543,
+        status: "success",
+        email: "james@hotmail.com",
+    },
+    {
+        id: "esv5ny8lo9",
+        amount: 755,
+        status: "failed",
+        email: "fela@hotmail.com",
+    },
+    {
+        id: "9mbep045du",
+        amount: 932,
+        status: "pending",
+        email: "rog@hotmail.com",
+    },
+    {
+        id: "bc78ktasdk",
+        amount: 284,
+        status: "pending",
+        email: "phillix@hotmail.com",
+    },
+    {
+        id: "95n6c32n5b",
+        amount: 232,
+        status: "success",
+        email: "romero@hotmail.com",
+    },
+    {
+        id: "c8b7vfrje6w",
+        amount: 348,
+        status: "failed",
+        email: "jiria@hotmail.com",
+    },
+    {
+        id: "38w7bnvcwr",
+        amount: 923,
+        status: "pending",
+        email: "lora@hotmail.com",
+    },
+    {
+        id: "du76cbxju7",
+        amount: 123,
+        status: "pending",
+        email: "shawn@hotmail.com",
+    },
+    {
+        id: "7dexbt6bwe",
+        amount: 937,
+        status: "success",
+        email: "riri@gmail.com",
+    },
 ];
 
 export type Payment = {
@@ -197,7 +287,7 @@ export function BillingPageTable() {
                     onChange={(event) =>
                         table.getColumn("email")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm h-9"
+                    className="max-w-sm h-9 focus-visible:ring-pop-blue focus-visible:ring-2"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SettingsSecurityFormSchemaTypes } from "@/lib/types/types";
 import { SettingsSecurityFormSchema } from "@/lib/zod/schemas/schema";
 import { useChangePassword } from "@/hooks/useChangePassword";
-
 import {
     Form,
     FormControl,
@@ -20,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "../ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { useLogout } from "@/hooks/useLogout";
 
 export function SettingsSecurityForm() {
     const form = useForm<SettingsSecurityFormSchemaTypes>({
@@ -32,7 +32,11 @@ export function SettingsSecurityForm() {
         },
     });
 
-    const mutation = useChangePassword();
+    const logoutMutation = useLogout();
+    const changePasswordMutation = useChangePassword();
+
+    const { watch } = form;
+    const { current_password, new_password, confirm_new_password } = watch();
 
     const onSubmit = async (data: SettingsSecurityFormSchemaTypes) => {
         if (data.new_password !== data.confirm_new_password) {
@@ -52,26 +56,18 @@ export function SettingsSecurityForm() {
             return;
         }
 
-        mutation.mutate(data);
+        changePasswordMutation.mutate(data);
         form.reset();
     };
 
     return (
         <Card className="relative">
-            <Button
-                className="absolute bottom-6 left-6 max-sm:px-2"
-                disabled={true}
-                variant={"secondary"}
-            >
-                Delete workspace
-            </Button>
-            <CardHeader className="pt-3 pb-5">
+            <CardHeader className="py-5">
                 <CardDescription>Update your security settings.</CardDescription>
                 <Separator />
             </CardHeader>
 
             <CardContent>
-                {/* image and image upload section */}
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
                         <FormField
@@ -84,11 +80,13 @@ export function SettingsSecurityForm() {
                                         <Input
                                             type="password"
                                             placeholder="Current password"
+                                            className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
+                                            disabled={changePasswordMutation.isPending}
                                             {...field}
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Change your password will log you out of all devices and
+                                        Changing your password will log you out of all devices and
                                         sessions.
                                     </FormDescription>
                                     <FormMessage />
@@ -107,6 +105,8 @@ export function SettingsSecurityForm() {
                                             <Input
                                                 type="password"
                                                 placeholder="New password"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
+                                                disabled={changePasswordMutation.isPending}
                                                 {...field}
                                                 onChange={(e) => {
                                                     field.onChange(e); // Update the password field
@@ -114,7 +114,6 @@ export function SettingsSecurityForm() {
                                                 }}
                                             />
                                         </FormControl>
-
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -129,10 +128,11 @@ export function SettingsSecurityForm() {
                                             <Input
                                                 type="password"
                                                 placeholder="Confirm password"
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
+                                                disabled={changePasswordMutation.isPending}
                                                 {...field}
                                             />
                                         </FormControl>
-
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -147,12 +147,13 @@ export function SettingsSecurityForm() {
                                         <div className="space-y-0.5">
                                             <FormLabel>Google Authenticator</FormLabel>
                                             <FormDescription>
-                                                Use the Google Authenticator app to generate one
-                                                time security codes.
+                                                Use the Google Authenticator app to generate
+                                                one-time security codes.
                                             </FormDescription>
                                         </div>
                                         <FormControl>
                                             <Switch
+                                                className="!mt-0"
                                                 disabled={true}
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
@@ -175,6 +176,7 @@ export function SettingsSecurityForm() {
                                         </div>
                                         <FormControl>
                                             <Switch
+                                                className="!mt-0"
                                                 disabled={true}
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
@@ -186,12 +188,29 @@ export function SettingsSecurityForm() {
                         </div>
 
                         <div className="flex justify-end">
-                            <Button type="submit" className="max-sm:px-2">
+                            <Button
+                                type="submit"
+                                className="max-sm:px-2 primary-btn-gradient"
+                                disabled={
+                                    Object.keys(form.formState.errors).length > 0 ||
+                                    changePasswordMutation.isPending ||
+                                    !current_password ||
+                                    !new_password ||
+                                    !confirm_new_password
+                                }
+                            >
                                 Update security
                             </Button>
                         </div>
                     </form>
                 </Form>
+                <Button
+                    className="absolute bottom-6 left-6 max-sm:px-2"
+                    variant="destructive"
+                    onClick={() => logoutMutation.mutate()}
+                >
+                    Sign out
+                </Button>
             </CardContent>
         </Card>
     );

@@ -30,7 +30,7 @@ export default function BillingsPage() {
                             variant="outline"
                             className="h-11 flex items-center justify-center gap-2 primary-btn-gradient"
                         >
-                            <Icons.solarCardLine className="h-3 w-3 bg-transparent" />
+                            <Icons.solarCardLine className="h-4 w-4 bg-transparent" />
                             <span>Upgrade plan</span>
                         </Button>
                     </CardHeader>

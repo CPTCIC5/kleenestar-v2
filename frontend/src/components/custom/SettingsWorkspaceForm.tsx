@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useWorkspaceData } from "@/hooks/useWorkspaceData";
 import { SettingsWorkspaceFormSchema } from "@/lib/zod/schemas/schema";
 import { SettingsWorkspaceFormSchemaTypes } from "../../lib/types/types";
+import { useLogout } from "@/hooks/useLogout";
 
 import {
     Form,
@@ -25,30 +26,81 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 export function WorkspaceNotificationForm() {
     const { workspaceData } = useWorkspaceData();
+    const logoutMutation = useLogout();
 
     const form = useForm<SettingsWorkspaceFormSchemaTypes>({
         resolver: zodResolver(SettingsWorkspaceFormSchema),
     });
 
-    async function onSubmit(data: SettingsWorkspaceFormSchemaTypes) {}
+    const onSubmit = async (data: SettingsWorkspaceFormSchemaTypes) => {
+        // Handle form submission
+    };
+
+    const timezones = [
+        {
+            group: "North America",
+            items: [
+                { value: "est", label: "Eastern Standard Time (EST)" },
+                { value: "cst", label: "Central Standard Time (CST)" },
+                { value: "mst", label: "Mountain Standard Time (MST)" },
+                { value: "pst", label: "Pacific Standard Time (PST)" },
+                { value: "akst", label: "Alaska Standard Time (AKST)" },
+                { value: "hst", label: "Hawaii Standard Time (HST)" },
+            ],
+        },
+        {
+            group: "Europe & Africa",
+            items: [
+                { value: "gmt", label: "Greenwich Mean Time (GMT)" },
+                { value: "cet", label: "Central European Time (CET)" },
+                { value: "eet", label: "Eastern European Time (EET)" },
+                { value: "west", label: "Western European Summer Time (WEST)" },
+                { value: "cat", label: "Central Africa Time (CAT)" },
+                { value: "eat", label: "East Africa Time (EAT)" },
+            ],
+        },
+        {
+            group: "Asia",
+            items: [
+                { value: "msk", label: "Moscow Time (MSK)" },
+                { value: "ist", label: "India Standard Time (IST)" },
+                { value: "cst_china", label: "China Standard Time (CST)" },
+                { value: "jst", label: "Japan Standard Time (JST)" },
+                { value: "kst", label: "Korea Standard Time (KST)" },
+                { value: "ist_indonesia", label: "Indonesia Central Standard Time (WITA)" },
+            ],
+        },
+        {
+            group: "Australia & Pacific",
+            items: [
+                { value: "awst", label: "Australian Western Standard Time (AWST)" },
+                { value: "acst", label: "Australian Central Standard Time (ACST)" },
+                { value: "aest", label: "Australian Eastern Standard Time (AEST)" },
+                { value: "nzst", label: "New Zealand Standard Time (NZST)" },
+                { value: "fjt", label: "Fiji Time (FJT)" },
+            ],
+        },
+        {
+            group: "South America",
+            items: [
+                { value: "art", label: "Argentina Time (ART)" },
+                { value: "bot", label: "Bolivia Time (BOT)" },
+                { value: "brt", label: "Brasilia Time (BRT)" },
+                { value: "clt", label: "Chile Standard Time (CLT)" },
+            ],
+        },
+    ];
 
     return (
         <Card className="relative">
-            <Button
-                className="absolute bottom-6 left-6 max-sm:px-2"
-                disabled={true}
-                variant={"secondary"}
-            >
-                Delete workspace
-            </Button>
-            <CardHeader className="pt-3 pb-5">
+            <CardHeader className="p-5">
                 <CardDescription>
                     Update your workspace settings. Set your preferred language and timezone.
                 </CardDescription>
@@ -67,17 +119,18 @@ export function WorkspaceNotificationForm() {
                                         <FormControl>
                                             <Input
                                                 type="text"
-                                                disabled={true}
+                                                disabled={true} // Update with mutation.isPending if needed
                                                 defaultValue={workspaceData?.business_name}
+                                                className="h-11 focus-visible:ring-pop-blue focus-visible:ring-2"
                                                 placeholder="name"
                                                 {...field}
                                             />
                                         </FormControl>
                                         <FormMessage />
-                                        <CardDescription>
+                                        <FormDescription>
                                             This is the name that will be displayed on your
                                             workspace.
-                                        </CardDescription>
+                                        </FormDescription>
                                     </FormItem>
                                 )}
                             />
@@ -90,111 +143,29 @@ export function WorkspaceNotificationForm() {
                                 <FormItem>
                                     <FormLabel>Timezone</FormLabel>
                                     <Select
-                                        disabled={true}
+                                        disabled={true} // Update with mutation.isPending if needed
                                         onValueChange={field.onChange}
                                         defaultValue={"ist"}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="max-w-[280px] w-full">
+                                            <SelectTrigger className="max-w-[280px] w-full h-11 focus:ring-pop-blue focus:ring-2">
                                                 <SelectValue placeholder="Select a timezone" />
                                             </SelectTrigger>
                                         </FormControl>
-
                                         <SelectContent>
-                                            <SelectGroup>
-                                                <SelectLabel>North America</SelectLabel>
-                                                <SelectItem value="est">
-                                                    Eastern Standard Time (EST)
-                                                </SelectItem>
-                                                <SelectItem value="cst">
-                                                    Central Standard Time (CST)
-                                                </SelectItem>
-                                                <SelectItem value="mst">
-                                                    Mountain Standard Time (MST)
-                                                </SelectItem>
-                                                <SelectItem value="pst">
-                                                    Pacific Standard Time (PST)
-                                                </SelectItem>
-                                                <SelectItem value="akst">
-                                                    Alaska Standard Time (AKST)
-                                                </SelectItem>
-                                                <SelectItem value="hst">
-                                                    Hawaii Standard Time (HST)
-                                                </SelectItem>
-                                            </SelectGroup>
-                                            <SelectGroup>
-                                                <SelectLabel>Europe & Africa</SelectLabel>
-                                                <SelectItem value="gmt">
-                                                    Greenwich Mean Time (GMT)
-                                                </SelectItem>
-                                                <SelectItem value="cet">
-                                                    Central European Time (CET)
-                                                </SelectItem>
-                                                <SelectItem value="eet">
-                                                    Eastern European Time (EET)
-                                                </SelectItem>
-                                                <SelectItem value="west">
-                                                    Western European Summer Time (WEST)
-                                                </SelectItem>
-                                                <SelectItem value="cat">
-                                                    Central Africa Time (CAT)
-                                                </SelectItem>
-                                                <SelectItem value="eat">
-                                                    East Africa Time (EAT)
-                                                </SelectItem>
-                                            </SelectGroup>
-                                            <SelectGroup>
-                                                <SelectLabel>Asia</SelectLabel>
-                                                <SelectItem value="msk">
-                                                    Moscow Time (MSK)
-                                                </SelectItem>
-                                                <SelectItem value="ist">
-                                                    India Standard Time (IST)
-                                                </SelectItem>
-                                                <SelectItem value="cst_china">
-                                                    China Standard Time (CST)
-                                                </SelectItem>
-                                                <SelectItem value="jst">
-                                                    Japan Standard Time (JST)
-                                                </SelectItem>
-                                                <SelectItem value="kst">
-                                                    Korea Standard Time (KST)
-                                                </SelectItem>
-                                                <SelectItem value="ist_indonesia">
-                                                    Indonesia Central Standard Time (WITA)
-                                                </SelectItem>
-                                            </SelectGroup>
-                                            <SelectGroup>
-                                                <SelectLabel>Australia & Pacific</SelectLabel>
-                                                <SelectItem value="awst">
-                                                    Australian Western Standard Time (AWST)
-                                                </SelectItem>
-                                                <SelectItem value="acst">
-                                                    Australian Central Standard Time (ACST)
-                                                </SelectItem>
-                                                <SelectItem value="aest">
-                                                    Australian Eastern Standard Time (AEST)
-                                                </SelectItem>
-                                                <SelectItem value="nzst">
-                                                    New Zealand Standard Time (NZST)
-                                                </SelectItem>
-                                                <SelectItem value="fjt">Fiji Time (FJT)</SelectItem>
-                                            </SelectGroup>
-                                            <SelectGroup>
-                                                <SelectLabel>South America</SelectLabel>
-                                                <SelectItem value="art">
-                                                    Argentina Time (ART)
-                                                </SelectItem>
-                                                <SelectItem value="bot">
-                                                    Bolivia Time (BOT)
-                                                </SelectItem>
-                                                <SelectItem value="brt">
-                                                    Brasilia Time (BRT)
-                                                </SelectItem>
-                                                <SelectItem value="clt">
-                                                    Chile Standard Time (CLT)
-                                                </SelectItem>
-                                            </SelectGroup>
+                                            {timezones.map((group) => (
+                                                <SelectGroup key={group.group}>
+                                                    <SelectLabel>{group.group}</SelectLabel>
+                                                    {group.items.map((item) => (
+                                                        <SelectItem
+                                                            key={item.value}
+                                                            value={item.value}
+                                                        >
+                                                            {item.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectGroup>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormDescription>
@@ -205,12 +176,23 @@ export function WorkspaceNotificationForm() {
                             )}
                         />
                         <div className="flex justify-end">
-                            <Button type="submit" disabled={true} className="max-sm:px-2">
+                            <Button
+                                type="submit"
+                                className="max-sm:px-2 primary-btn-gradient"
+                                disabled={true} // Add mutation.isPending if needed
+                            >
                                 Update workspace
                             </Button>
                         </div>
                     </form>
                 </Form>
+                <Button
+                    className="absolute bottom-6 left-6 max-sm:px-2"
+                    variant="destructive"
+                    onClick={() => logoutMutation.mutate()}
+                >
+                    Sign out
+                </Button>
             </CardContent>
         </Card>
     );

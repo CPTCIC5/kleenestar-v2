@@ -7,36 +7,60 @@ import { WorkspaceNotificationForm } from "@/components/custom/SettingsWorkspace
 
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CardDescription } from "@/components/ui/card";
 
 export default function SettingsPage() {
     return (
-        <div className="w-full flex items-start justify-center flex-1  max-sm:pt-[65px] p-3 pt-[69px]">
-            <div className="max-w-[662px] w-full flex flex-col">
-                <div className="flex gap-2 items-center mb-[16px]">
-                    <span className="font-mainhead font-bold text-[18px]">Settings</span>
-                    <InfoCircledIcon className="h-[15px] w-[15px]" />
+        <div className="w-full flex items-start justify-center flex-1  p-3 ">
+            <div className="max-w-2xl w-full flex flex-col space-y-6">
+                <div>
+                    <div className="w-full flex items-center space-x-2 font-mainhead text-xl">
+                        <span>Settings</span>
+                        <InfoCircledIcon className="h-4 w-4" />
+                    </div>
+                    <CardDescription>Manage your account settings.</CardDescription>
                 </div>
-                <Tabs defaultValue="profile" className="max-w-[662px] w-full">
-                    <div className="w-full flex bg-muted rounded-lg max-ms:flex-col">
-                        <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="profile">Account</TabsTrigger>
-                            <TabsTrigger value="workspace">Workspace</TabsTrigger>
+                <Tabs defaultValue="profile" className="w-full">
+                    <div className="w-full flex bg-muted rounded-sm max-ms:flex-col h-full">
+                        <TabsList className="grid w-full grid-cols-2 h-12">
+                            <TabsTrigger className="rounded-sm py-2" value="profile">
+                                Account
+                            </TabsTrigger>
+                            <TabsTrigger className="rounded-sm py-2" value="workspace">
+                                Workspace
+                            </TabsTrigger>
                         </TabsList>
-                        <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-                            <TabsTrigger value="security">Security</TabsTrigger>
+                        <TabsList className="grid w-full grid-cols-2 h-12">
+                            <TabsTrigger className="rounded-sm py-2" value="notifications">
+                                Notifications
+                            </TabsTrigger>
+                            <TabsTrigger className="rounded-sm py-2" value="security">
+                                Security
+                            </TabsTrigger>
                         </TabsList>
                     </div>
-                    <TabsContent value="profile">
+                    <TabsContent
+                        value="profile"
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                    >
                         <SettingsProfileForm />
                     </TabsContent>
-                    <TabsContent value="workspace">
+                    <TabsContent
+                        value="workspace"
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                    >
                         <WorkspaceNotificationForm />
                     </TabsContent>
-                    <TabsContent value="notifications">
+                    <TabsContent
+                        value="notifications"
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                    >
                         <SettingsNotificationForm />
                     </TabsContent>
-                    <TabsContent value="security">
+                    <TabsContent
+                        value="security"
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                    >
                         <SettingsSecurityForm />
                     </TabsContent>
                 </Tabs>
