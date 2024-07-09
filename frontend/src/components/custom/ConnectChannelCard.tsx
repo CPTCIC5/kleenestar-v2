@@ -46,9 +46,12 @@ export default function ConnectChannelCard({
 
     return (
         <React.Fragment>
-            <Card className="w-80 h-14 px-5 items-center justify-between flex">
+            <Card className="h-14 px-5 items-center justify-between flex w-full sm:max-w-96 md:w-80">
                 <div className="flex gap-4 items-center">
-                    <ChannelIcon channelType={channel.type} className="w-9 h-9" />
+                    <ChannelIcon
+                        channelType={channel.type}
+                        className="w-9 h-9 dark:fill-foreground"
+                    />
                     <span className="font-medium">{channel.name}</span>
                 </div>
 

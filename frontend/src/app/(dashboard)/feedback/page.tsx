@@ -1,12 +1,12 @@
 "use client";
 
 import { Icons } from "@/assets/icons";
-import { Card } from "@/components/ui/card";
+import { Card, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useRef, ChangeEvent, useState } from "react";
 import FeedbackForm from "@/components/custom/FeedbackForm";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { InfoCircledIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
 export default function Feedback() {
     const addRef = useRef<HTMLInputElement | null>(null);
@@ -32,9 +32,14 @@ export default function Feedback() {
     return (
         <div className="flex justify-center p-3">
             <div className="max-w-2xl w-full space-y-3">
-                <div className="flex items-center gap-2">
-                    <p className="text-xl font-mainhead">Support and feedback</p>
-                    <Icons.solarQuestionCircleLine className="h-4 w-4" />
+                <div>
+                    <div className="w-full flex items-center space-x-2 font-mainhead text-xl">
+                        <span>Support and feedback</span>
+                        <InfoCircledIcon className="h-4 w-4" />
+                    </div>
+                    <CardDescription>
+                        fill out the form below to get in touch with our support team.
+                    </CardDescription>
                 </div>
                 <div className="pt-2">
                     <Card className="h-14 flex items-center w-full shadow-none">

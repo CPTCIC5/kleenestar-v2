@@ -16,6 +16,8 @@ const CHANNEL_ICONS: { [key: number]: React.ComponentType<any> } = {
     6: Icons.logoReddit,
     7: Icons.logoShopify,
     8: Icons.logoGoogleAnalytics,
+    9: Icons.logoMailchimp,
+    10: Icons.logoInstagram,
 };
 
 const ChannelIcon: React.FC<ChannelIconProps> = (props) => {
@@ -25,10 +27,6 @@ const ChannelIcon: React.FC<ChannelIconProps> = (props) => {
 
     // Determine which version of the icon to render based on theme
     const getIcon = () => {
-        if (channelType === 3) {
-            // For Twitter icon
-            return theme.theme === "dark" ? Icons.logoTwitterWhite : Icons.logoTwitter;
-        }
         return IconComponent;
     };
 
