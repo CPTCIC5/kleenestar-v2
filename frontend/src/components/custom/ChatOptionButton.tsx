@@ -37,17 +37,21 @@ interface ChatOptionButtonProps {
 
 export function ChatOptionButton({ chat, ...otherProps }: ChatOptionButtonProps) {
     const pathname = usePathname();
-    const isChatRoot = pathname === "/chat/";
+    const subspaceId = Number(pathname.split("/")[2]);
+    const channelId = Number(pathname.split("/")[3]);
+    const isChatRoot = pathname === `/chat/${subspaceId}/`;
     const [currentConvoId, setCurrentConvoId] = React.useState<number | null>(null);
 
     React.useEffect(() => {
-        const chatIdMatch = pathname.match(/^\/chat\/(\d+)\/?$/);
+        const chatIdMatch = pathname.match(/^\/chat\/(\d+)\/(\d+)\/?$/);
+        console.log("chatIdMatch", chatIdMatch);
+        console.log("pathname", pathname, isChatRoot, subspaceId, channelId);
         if (!isChatRoot && chatIdMatch) {
-            setCurrentConvoId(parseInt(chatIdMatch[1]));
+            setCurrentConvoId(parseInt(chatIdMatch[2]));
         }
     }, [pathname, isChatRoot]);
 
-    const { mutate: deleteConvo } = useDeleteConvo();
+    const { mutate: deleteConvo } = useDeleteConvo(subspaceId);
     const { mutate: renameConvo } = useRenameConvo();
     const [rename, setRename] = React.useState<number | null>(null);
     const [toggleOptions, setToggleOptions] = React.useState<number | null>(null);

@@ -49,10 +49,10 @@ const AdditionalFeedbackDialog: React.FC<AdditionalFeedbackDialogProps> = ({ pro
                         buttonVariants({
                             variant: "outline",
                         }),
-                        "h-fit p-1 cursor-pointer",
+                        "h-fit p-1 cursor-pointer rounded-sm",
                     )}
                 >
-                    <Icons.solarDislikeLine className="w-4 h-4" />
+                    <Icons.solarDislikeLine className="w-5 h-5" />
                 </div>
             </DialogTrigger>
             <DialogContent

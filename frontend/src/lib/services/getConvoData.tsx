@@ -1,9 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export async function fetchConvos() {
+export async function fetchConvos(subspaceId: number) {
     try {
-        const response = await axios.get(`/api/channels/convos/`, {
+        const response = await axios.get(`/api/channels/convos/?subspace=${subspaceId}`, {
             withCredentials: true,
             headers: {
                 "ngrok-skip-browser-warning": "69420",

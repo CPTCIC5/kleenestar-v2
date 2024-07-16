@@ -80,10 +80,10 @@ const CreateNoteDialog = ({ prompt_id, response_text }: MakeNotesProps) => {
                         buttonVariants({
                             variant: "outline",
                         }),
-                        "h-fit p-1 cursor-pointer",
+                        "h-fit p-1 cursor-pointer rounded-sm",
                     )}
                 >
-                    <Icons.solarBookmarkLine className="w-4 h-4" />
+                    <Icons.solarBookmarkLine className="w-5 h-5" />
                 </div>
             </DialogTrigger>
             <DialogContent

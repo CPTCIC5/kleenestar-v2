@@ -1,9 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Cookies from "js-cookie";
 
 const fetchPrompts = async (convoId: number) => {
-    const { data } = await axios.get(`/api/channels/convos/${convoId}/prompts/`, {
+    const response = await axios.get(`/api/channels/convos/${convoId}/prompts/`, {
         withCredentials: true,
         headers: {
             "ngrok-skip-browser-warning": "69420",
@@ -11,7 +11,7 @@ const fetchPrompts = async (convoId: number) => {
             "X-CSRFToken": Cookies.get("csrftoken"),
         },
     });
-    return data.results;
+    return response.data.results;
 };
 
 export const useFetchPrompts = (convoId: number) => {

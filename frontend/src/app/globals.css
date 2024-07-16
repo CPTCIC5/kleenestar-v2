@@ -74,7 +74,7 @@
         --color-danger-emphasis: #cf222e;
         --color-done-fg: #8250df;
         --color-done-emphasis: #8250df;
-        --bluish: 212 92% 45%;
+        --bluish: 226 100% 65%;
     }
 
     .dark {
@@ -261,9 +261,9 @@
 }
 
 .primary-btn-gradient {
-    background: linear-gradient(rgb(82, 139, 255) 0%, rgb(36, 107, 253) 100%);
+    background: linear-gradient(rgb(83, 123, 255) 0%, rgb(43, 87, 246) 100%);
 }
 
 .primary-btn-gradient:hover {
-    background: linear-gradient(rgb(82, 139, 255) 0%, rgb(0, 78, 235) 100%);
+    background: linear-gradient(rgb(83, 123, 255) 0%, rgb(68, 111, 252) 100%);
 }

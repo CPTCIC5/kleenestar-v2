@@ -1,15 +1,12 @@
-"use client";
-
 import ClassicLoader from "@/components/ui/classic-loader";
-import RippleLoader from "@/components/ui/ripple-loader";
 import React from "react";
 
-function ChatPageNew() {
+const RootChatPage: React.FC = () => {
     return (
         <div className="h-full w-full flex items-center justify-center ">
             <ClassicLoader />
         </div>
     );
-}
+};
 
-export default ChatPageNew;
+export default RootChatPage;

@@ -31,27 +31,19 @@ interface Convo {
     archived: boolean;
 }
 
-interface InputPrompt {
+interface Prompt {
     id: number;
-    convo_id: number;
+    convo: {
+        id: number;
+        title: string;
+        archived: boolean;
+    };
     author: string;
     text_query: string;
-    file_query: string;
+    file_query: string | null;
     response_text: string;
     response_image: string;
     created_at: string;
-}
-
-interface ChatStoreState {
-    convos: Convo[];
-    inputPrompts: InputPrompt[];
-    addConvos: (newConvos: Convo[]) => void;
-    deleteConvo: (id: number) => void;
-    renameConvo: (id: number, newName: string) => void;
-    archiveConvo: (id: number) => void;
-    unarchiveConvo: (id: number) => void;
-    updateInputPrompts: (newInputPrompts: InputPrompt[]) => void;
-    setInputPrompts: (newInputPrompts: InputPrompt[]) => void;
 }
 
 interface KnowledgeDataTypes {
@@ -112,8 +104,7 @@ export type {
     Profile,
     UserStoreState,
     Convo,
-    InputPrompt,
-    ChatStoreState,
+    Prompt,
     KnowledgeDataTypes,
     CountryProps,
     Timezone,

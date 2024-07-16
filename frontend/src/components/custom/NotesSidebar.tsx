@@ -5,19 +5,19 @@ import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 
-export default function NotesSidebar() {
+export default function NotesSidebar({ className }: { className?: string }) {
     return (
         <Sheet>
             <SheetTrigger asChild>
                 <div
                     className={cn(
-                        buttonVariants({
-                            variant: "ghost",
-                        }),
-                        "h-fit p-1 cursor-pointer",
+                        buttonVariants({ variant: "secondary" }),
+                        `h-fit p-1.5 cursor-pointer `,
+                        className,
                     )}
                 >
-                    <Icons.solarBookmarkFolderLine className="w-6 h-6" />
+                    <Icons.solarBookmarkFolderLine className="w-6 h-6 text-background" />
+                    <span className="sr-only">Close</span>
                 </div>
             </SheetTrigger>
             <SheetContent

@@ -16,7 +16,7 @@ const deleteConvo = async (id: number) => {
     });
 };
 
-const useDeleteConvo = () => {
+const useDeleteConvo = (subspaceId: number) => {
     const queryClient = useQueryClient();
     const router = useRouter();
 
@@ -24,16 +24,17 @@ const useDeleteConvo = () => {
         mutationFn: (id: number) => deleteConvo(id),
 
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["convos"] });
+            await queryClient.invalidateQueries({ queryKey: ["convos", subspaceId] });
         },
         onSettled: async (data, error) => {
             try {
-                const convos: Convo[] = (await queryClient.getQueryData(["convos"])) || [];
+                const convos: Convo[] =
+                    (await queryClient.getQueryData(["convos", subspaceId])) || [];
                 if (convos.length > 0) {
                     const nextConvoId = convos[0].id;
-                    router.push(`/chat/${nextConvoId}`);
+                    router.push(`/chat/${subspaceId}/${nextConvoId}`);
                 } else {
-                    router.push(`/chat`);
+                    router.push(`/chat/${subspaceId}`);
                 }
             } catch (error) {
                 console.error("Error handling mutation result:", error);

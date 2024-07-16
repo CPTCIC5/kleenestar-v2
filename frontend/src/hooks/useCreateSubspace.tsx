@@ -40,7 +40,6 @@ export function useCreateSubspace() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["subspaceData"] });
             toast.success("Subspace created successfully!");
-            router.push("/chat");
         },
         onError: (error) => {
             toastAxiosError(error);

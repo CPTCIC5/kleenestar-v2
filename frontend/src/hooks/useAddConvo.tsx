@@ -7,7 +7,7 @@ import toastAxiosError from "@/lib/services/toastAxiosError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export const useAddConvo = () => {
+export const useAddConvo = (subspaceId: number) => {
     const queryClient = useQueryClient();
     const router = useRouter();
 
@@ -15,7 +15,7 @@ export const useAddConvo = () => {
         mutationFn: async () => {
             return await axios.post(
                 `/api/channels/convos/`,
-                {},
+                { subspace: subspaceId },
                 {
                     withCredentials: true,
                     headers: {
@@ -27,16 +27,17 @@ export const useAddConvo = () => {
             );
         },
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["convos"] });
+            await queryClient.invalidateQueries({ queryKey: ["convos", subspaceId] });
         },
         onSettled: async (data, error) => {
             try {
-                const convos: Convo[] = (await queryClient.getQueryData(["convos"])) || [];
+                const convos: Convo[] =
+                    (await queryClient.getQueryData(["convos", subspaceId])) || [];
                 if (convos.length > 0) {
                     const nextConvoId = convos[0].id;
-                    router.push(`/chat/${nextConvoId}`);
+                    router.push(`/chat/${subspaceId}/${nextConvoId}`);
                 } else {
-                    router.push(`/chat`);
+                    router.push(`/chat/${subspaceId}`);
                 }
             } catch (error) {
                 console.error("Error handling mutation result:", error);
@@ -49,7 +50,7 @@ export const useAddConvo = () => {
 
     const addChat = async () => {
         try {
-            const convos: Convo[] = queryClient.getQueryData(["convos"]) || [];
+            const convos: Convo[] = queryClient.getQueryData(["convos", subspaceId]) || [];
             const lastConvoId = convos.length > 0 ? convos[0].id : null;
 
             if (lastConvoId) {

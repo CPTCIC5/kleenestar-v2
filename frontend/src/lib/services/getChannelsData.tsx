@@ -1,9 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export async function getChannelsData() {
+export async function getChannelsData(subspaceId: number) {
     try {
-        const response = await axios.get(`/api/channels/`, {
+        const response = await axios.get(`/api/channels/?subspace=${subspaceId}`, {
             withCredentials: true,
             headers: {
                 "ngrok-skip-browser-warning": "69420",
@@ -13,6 +13,7 @@ export async function getChannelsData() {
         });
         return response.data;
     } catch (error) {
-        throw error;
+        console.error("Error fetching channels data:", error);
+        throw new Error("Failed to fetch channels data");
     }
 }

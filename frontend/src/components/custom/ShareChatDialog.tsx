@@ -33,7 +33,7 @@ export interface Prompt {
         id: number;
         title: string;
         archived: boolean;
-    }
+    };
     author: string;
     text_query: string;
     file_query: string | null;
@@ -47,9 +47,9 @@ const ShareChatDialog = ({ prompts, userData }: ShareChatDialogProps) => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button
-                    variant={"ghost"}
+                    variant={"secondary"}
                     disabled={prompts.length === 0}
-                    className="h-fit p-1 cursor-pointer"
+                    className="h-fit p-1.5 cursor-pointer"
                 >
                     <Icons.solarArchiveUpLine className="w-6 h-6" />
                 </Button>

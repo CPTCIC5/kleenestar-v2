@@ -20,9 +20,10 @@ import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from 
 
 interface ChatSidebarProps {
     className?: string;
+    subspaceId: number;
 }
 
-export function ChatSidebar({ className }: ChatSidebarProps) {
+export function ChatSidebar({ className, subspaceId }: ChatSidebarProps) {
     const router = useRouter();
 
     const {
@@ -30,9 +31,9 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
         isLoading: isConvoLoading,
         isSuccess: isConvoSuccess,
         error: convoError,
-    } = useFetchConvos();
+    } = useFetchConvos(subspaceId);
     const { workspaceData, isWorkspaceSuccess } = useWorkspaceData();
-    const { addChat: addConvo, isPending: isAddingConvo } = useAddConvo();
+    const { addChat: addConvo, isPending: isAddingConvo } = useAddConvo(subspaceId);
 
     const [todayConvos, setTodayConvos] = React.useState<Convo[]>([]);
     const [previousConvos, setPreviousConvos] = React.useState<Convo[]>([]);
@@ -87,7 +88,7 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
     }, [debounceValue]);
 
     const handleConvoClick = (convoId: number) => {
-        router.push(`/chat/${convoId}`);
+        router.push(`/chat/${subspaceId}/${convoId}/`);
     };
 
     return (
@@ -96,11 +97,11 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
                 <div
                     className={cn(
                         buttonVariants({ variant: "secondary" }),
-                        `h-fit p-1 cursor-pointer hover:bg-muted-foreground/10`,
+                        `h-fit p-1 cursor-pointer `,
                         className,
                     )}
                 >
-                    <Icons.solarHambugerMenuLine className="h-7 w-7 bg-transparent" />
+                    <Icons.solarHambugerMenuLine className="h-7 w-7 bg-transparent text-background" />
                     <span className="sr-only">Close</span>
                 </div>
             </SheetTrigger>
@@ -108,7 +109,7 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
             <SheetContent
                 side={"left"}
                 className={cn(
-                    "rounded-xl max-sm:rounded-l-none sm:w-96 max-w-96  sm:h-[calc(100%-2rem)] sm:left-16 sm:top-4 ",
+                    "rounded-xl max-sm:rounded-l-none sm:w-96 max-w-96  sm:h-[calc(100%-2rem)] sm:left-4 sm:top-4 ",
                 )}
                 overlayClassName="bg-black/50 backdrop-blur-sm"
             >
