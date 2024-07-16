@@ -4,7 +4,6 @@ import { CardDescription, CardTitle } from "@/components/ui/card";
 
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Icons } from "@/assets/icons";
 import { useChannelsData } from "@/hooks/useChannelsData";
 import ConnectChannelCard from "@/components/custom/ConnectChannelCard";
 import React, { useState } from "react";
@@ -16,7 +15,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
@@ -53,7 +51,9 @@ const OauthController = async (key: string) => {
     }
 };
 
-export default function Connect_Channels() {
+export default function Connect_Channels({ params }: { params: { subspaceId: string } }) {
+    const subspaceId = parseInt(params.subspaceId); // This is subspaceId  that you can use in your API calls
+
     const [openShopifyModal, setOpenShopifyModal] = useState<boolean>(false);
     const [shopifyShop, setShopifyShop] = useState<string>("");
     const {
