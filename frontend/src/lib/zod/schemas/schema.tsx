@@ -190,12 +190,12 @@ export const CreateSubspaceFormSchema = z.object({
         .refine(
             (value) =>
                 [
-                    "Sport",
                     "Retail",
                     "Hospitality",
                     "Media",
                     "Technology",
                     "Finance",
+                    "Sport",
                     "Beauty",
                     "Automotive",
                 ].includes(value),
@@ -203,12 +203,4 @@ export const CreateSubspaceFormSchema = z.object({
                 message: "Choose a valid industry",
             },
         ),
-    country: z
-        .object({
-            value: z.string().min(1, { message: "Country is required" }),
-            label: z.string().min(1, { message: "Country is required" }),
-        })
-        .refine((country) => country && country.value && country.label, {
-            message: "Country is required",
-        }),
 });

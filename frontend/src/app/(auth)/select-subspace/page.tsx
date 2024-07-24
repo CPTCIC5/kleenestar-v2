@@ -32,7 +32,6 @@ interface Client {
     id: number;
     name: string;
     industry: string;
-    country: string;
 }
 
 const SelectSubspacePage: React.FC = () => {
@@ -49,6 +48,8 @@ const SelectSubspacePage: React.FC = () => {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
     const debounceValue = useDebounce(searchQuery, 1000);
+
+    console.log("triggered");
 
     useEffect(() => {
         if (isWorkspaceSuccess && isSubspaceSuccess) {
@@ -126,13 +127,14 @@ const SelectSubspacePage: React.FC = () => {
                             <Table>
                                 <TableHeader>
                                     <TableRow className="bg-muted">
-                                        <TableHead className="pl-2 w-[100px] text-center py-4  rounded-tl-xl">
+                                        <TableHead className="pl-4 sm:pl-8  text-center  py-4  rounded-tl-xl">
                                             Id
                                         </TableHead>
-                                        <TableHead className="text-center py-4">Name</TableHead>
-                                        <TableHead className="text-center py-4">Industry</TableHead>
-                                        <TableHead className="pr-2 text-center py-4  rounded-tr-xl">
-                                            Country
+                                        <TableHead className="text-center w-full py-4">
+                                            Name
+                                        </TableHead>
+                                        <TableHead className="text-center  pr-4 sm:pr-8  py-4">
+                                            Industry
                                         </TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -143,17 +145,14 @@ const SelectSubspacePage: React.FC = () => {
                                             key={client.id}
                                             className="hover:bg-pop-blue/20 cursor-pointer active:bg-pop-blue/40"
                                         >
-                                            <TableCell className="pl-2 font-medium text-center py-4">
+                                            <TableCell className="pl-4 sm:pl-8  font-medium  text-center py-4">
                                                 {client.id}
                                             </TableCell>
-                                            <TableCell className="text-center py-4">
+                                            <TableCell className="text-center w-full py-4">
                                                 {client.name}
                                             </TableCell>
-                                            <TableCell className="text-center py-4">
+                                            <TableCell className="text-center  py-4 pr-4 sm:pr-8 ">
                                                 {client.industry}
-                                            </TableCell>
-                                            <TableCell className="pr-2 text-center py-4">
-                                                {client.country}
                                             </TableCell>
                                         </TableRow>
                                     ))}

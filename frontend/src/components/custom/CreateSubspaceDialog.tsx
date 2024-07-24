@@ -58,13 +58,11 @@ export const CreateSubspaceDialog: React.FC = () => {
         defaultValues: {
             name: "",
             industry: "",
-            country: { value: "", label: "" },
         },
     });
 
     const { watch } = form;
     const name = watch("name");
-    const country = watch("country");
     const industry = watch("industry");
     const mutation = useCreateSubspace();
 
@@ -77,7 +75,6 @@ export const CreateSubspaceDialog: React.FC = () => {
         form.reset({
             name: "",
             industry: "",
-            country: { value: "", label: "" },
         });
     };
 
@@ -168,26 +165,6 @@ export const CreateSubspaceDialog: React.FC = () => {
                                     </FormItem>
                                 )}
                             />
-
-                            <FormField
-                                control={form.control}
-                                name="country"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormLabel>Country</FormLabel>
-                                        <FormControl>
-                                            <AutocompleteDropdown
-                                                options={countryOptions}
-                                                emptyMessage="No results."
-                                                placeholder="Select your country"
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                         </div>
                         <DialogFooter className="mt-4">
                             <DialogClose
@@ -195,31 +172,19 @@ export const CreateSubspaceDialog: React.FC = () => {
                                     Object.keys(form.formState.errors).length > 0 ||
                                     mutation.isPending ||
                                     !workspaceData ||
-                                    !country.value ||
-                                    !country.label ||
                                     !industry ||
                                     !name
                                 }
-                                className="disabled:cursor-not-allowed"
+                                type="submit"
+                                className={cn(
+                                    buttonVariants({ variant: "default" }),
+                                    "disabled:cursor-not-allowed px-6 py-5",
+                                )}
                             >
-                                <Button
-                                    disabled={
-                                        Object.keys(form.formState.errors).length > 0 ||
-                                        mutation.isPending ||
-                                        !workspaceData ||
-                                        !country.value ||
-                                        !country.label ||
-                                        !industry ||
-                                        !name
-                                    }
-                                    type="submit"
-                                    className="px-6 py-5"
-                                >
-                                    {mutation.isPending && (
-                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                    )}
-                                    Add client
-                                </Button>
+                                {mutation.isPending && (
+                                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                                )}
+                                Add client
                             </DialogClose>
                         </DialogFooter>
                     </form>

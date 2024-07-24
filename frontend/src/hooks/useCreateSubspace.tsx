@@ -18,7 +18,6 @@ const createSubspaceApi = async ({
         {
             workspace: workspace_id,
             name: data.name,
-            country: "US",
             industry: `${data.industry}`,
         },
         {
@@ -38,7 +37,9 @@ export function useCreateSubspace() {
     const mutation = useMutation({
         mutationFn: createSubspaceApi,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["subspaceData"] });
+            const validationdata = queryClient.invalidateQueries({ queryKey: ["subspaceData"] });
+            console.log(validationdata);
+            console.log("Subspace created successfully!");
             toast.success("Subspace created successfully!");
         },
         onError: (error) => {
