@@ -22,11 +22,11 @@ const GetStartedPage: React.FC = () => {
                 />
             </div>
 
-            <p className="text-2xl sm:text-3xl xl:text-5xl min-[1240px]:text-6xl 2xl:text-7xl text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-400 dark:from-neutral-400 to-neutral-700 dark:to-neutral-600">
+            <p className="text-2xl sm:text-3xl tablet:text-5xl min-[1240px]:text-6xl 2xl:text-7xl text-center font-mainhead font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-400 dark:from-neutral-400 to-neutral-700 dark:to-neutral-600">
                 Welcome to Kleenestar
             </p>
             <div className="px-9 my-12 text-center">
-                <p className="xl:max-w-2xl max-w-md w-full text-muted-foreground font-medium">
+                <p className="tablet:max-w-2xl max-w-md w-full text-muted-foreground font-medium">
                     Kleenestar collects every event from your marketing effort and provides
                     real-time decision-making insights and recommendations in natural language.
                 </p>

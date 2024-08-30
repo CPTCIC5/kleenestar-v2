@@ -100,10 +100,10 @@ const config = {
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
             screens: {
-                xs: "380px",
-                ms: "480px",
-                xl: "750px",
-                xlg: "1100px",
+                xphone: "380px",
+                phone: "480px",
+                tablet: "750px",
+                laptop: "1100px",
             },
             backgroundImage: {
                 "custom-radial-gradient":

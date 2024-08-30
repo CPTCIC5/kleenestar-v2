@@ -99,7 +99,7 @@ export default function TeamMembersPage() {
                             </span>
 
                             <Select>
-                                <SelectTrigger className="w-24 !mt-0 max-xs:hidden">
+                                <SelectTrigger className="w-24 !mt-0 max-xphone:hidden">
                                     <SelectValue placeholder="member" />
                                 </SelectTrigger>
                                 <SelectContent className="min-w-24">

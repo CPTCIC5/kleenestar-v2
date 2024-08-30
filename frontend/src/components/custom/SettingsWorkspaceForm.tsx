@@ -109,7 +109,7 @@ export function WorkspaceNotificationForm() {
             <CardContent>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-                        <div className="flex gap-3 w-full max-ms:flex-col">
+                        <div className="flex gap-3 w-full max-phone:flex-col">
                             <FormField
                                 control={form.control}
                                 name="workspaceName"

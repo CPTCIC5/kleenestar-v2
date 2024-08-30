@@ -21,7 +21,7 @@ export default function SettingsPage() {
                     <CardDescription>Manage your account settings.</CardDescription>
                 </div>
                 <Tabs defaultValue="profile" className="w-full">
-                    <div className="w-full flex bg-muted rounded-sm max-ms:flex-col h-full">
+                    <div className="w-full flex bg-muted rounded-sm max-phone:flex-col h-full">
                         <TabsList className="grid w-full grid-cols-2 h-12">
                             <TabsTrigger className="rounded-sm py-2" value="profile">
                                 Account

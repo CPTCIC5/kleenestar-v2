@@ -14,12 +14,12 @@ const RegisterOptionPage: React.FC = () => {
             <span className="w-full text-center font-bold font-mainhead text-4xl">
                 Let&apos;s get started
             </span>
-            <span className="max-w-lg xl:max-w-2xl w-full text-center text-sm sm:text-base text-muted-foreground font-medium">
+            <span className="max-w-lg tablet:max-w-2xl w-full text-center text-sm sm:text-base text-muted-foreground font-medium">
                 Join a Workspace to collaborate with your team by entering your workspace code or
                 Create a Workspace to set up your own and begin organizing and analyzing your
                 marketing data across multiple platforms.
             </span>
-            <div className="flex items-center justify-center flex-col sm:flex-row gap-5 xl:gap-6">
+            <div className="flex items-center justify-center flex-col sm:flex-row gap-5 tablet:gap-6">
                 <WorkspaceCard
                     href="/invited-register"
                     icon={<Icons.workspaceYes className="w-full h-full" />}

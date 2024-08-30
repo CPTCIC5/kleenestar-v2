@@ -8,7 +8,7 @@ const RegisterPage: React.FC = () => {
             <Link href="/login">
                 <Button
                     variant="secondary"
-                    className="absolute right-4 top-[34px] md:right-8 max-xs:top-[30px]"
+                    className="absolute right-4 top-[34px] md:right-8 max-xphone:top-[30px]"
                 >
                     Login
                 </Button>

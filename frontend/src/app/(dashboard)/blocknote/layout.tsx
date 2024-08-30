@@ -46,17 +46,17 @@ export default function BlocknotesLayout({
         handleSearch();
     }, [debounceValue, isSuccess, blocknotesData]);
 
-    // make this as a sheet when the size < xlg
+    // make this as a sheet when the size < laptop
 
     return (
-        <div className="w-full h-screen flex-1  bg-muted/40 max-sm:pt-[72px] p-4 xlg:pl-2 flex items-center justify-center gap-5 flex-col xlg:flex-row">
-            <div className="max-w-full xlg:max-w-md w-full h-fit xlg:h-full xlg:flex flex-col gap-4">
+        <div className="w-full h-screen flex-1  bg-muted/40 max-sm:pt-[72px] p-4 laptop:pl-2 flex items-center justify-center gap-5 flex-col laptop:flex-row">
+            <div className="max-w-full laptop:max-w-md w-full h-fit laptop:h-full laptop:flex flex-col gap-4">
                 <div className="w-full h-14 rounded-2xl bg-background py-4 px-5 flex items-center justify-between gap-4">
-                    <BlocknotesSheetSidebar className="xlg:hidden" />
+                    <BlocknotesSheetSidebar className="laptop:hidden" />
                     <span className="font-mainhead">Blocknotes</span>
                     <CreateBlocknoteDialog />
                 </div>
-                <Card className="w-full h-full bg-inherit overflow-hidden max-xlg:hidden">
+                <Card className="w-full h-full bg-inherit overflow-hidden max-laptop:hidden">
                     <CardHeader className="w-full h-full p-3 space-y-4 ">
                         <SearchBox
                             type="text"
@@ -67,11 +67,7 @@ export default function BlocknotesLayout({
                         />
                         {isLoading ? (
                             <div className="w-full h-full rounded-xl bg-background p-3 space-y-3 ">
-                                <Skeleton className="w-full h-16 rounded-xd " />
-                                <Skeleton className="w-full h-16 rounded-xd " />
-                                <Skeleton className="w-full h-16 rounded-xd " />
-                                <Skeleton className="w-full h-16 rounded-xd " />
-                                <Skeleton className="w-full h-16 rounded-xd " />
+                                
                             </div>
                         ) : blocknotes.length === 0 ? (
                             <div className="w-full h-full flex justify-center items-center">

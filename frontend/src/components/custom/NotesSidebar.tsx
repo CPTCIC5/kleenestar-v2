@@ -33,7 +33,7 @@ export default function NotesSidebar({ className }: { className?: string }) {
                 </div>
                 <Separator className="w-full" />
 
-                <div className="columns-1 ms:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin text-black">
+                <div className="columns-1 phone:columns-2 gap-4 space-y-4 overflow-auto scrollbar-thin text-black">
                     <div className="rounded-xl p-4 break-inside-avoid   bg-green-100 dark:bg-opacity-50">
                         <div>
                             I got this insight today concerning our active campaigns, the pattern is

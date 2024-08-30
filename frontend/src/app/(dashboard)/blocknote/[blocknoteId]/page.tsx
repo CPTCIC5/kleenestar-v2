@@ -89,7 +89,7 @@ function NotePage({ params }: { params: { blocknoteId: string } }) {
                     </CardDescription>
                 </div>
             ) : (
-                <div className="columns-1 md:columns-2  max-w-full xlg:columns-1 xlg:max-w-xl min-[1350px]:columns-2 min-[1350px]:max-w-4xl 2xl:max-w-5xl min-[1900px]:max-w-7xl h-full  gap-4 space-y-4 ">
+                <div className="columns-1 md:columns-2  max-w-full laptop:columns-1 laptop:max-w-xl min-[1350px]:columns-2 min-[1350px]:max-w-4xl 2xl:max-w-5xl min-[1900px]:max-w-7xl h-full  gap-4 space-y-4 ">
                     {notes.map((note: Note) => {
                         return (
                             <div

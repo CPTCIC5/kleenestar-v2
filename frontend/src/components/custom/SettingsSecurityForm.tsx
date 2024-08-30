@@ -94,7 +94,7 @@ export function SettingsSecurityForm() {
                             )}
                         />
 
-                        <div className="flex gap-3 w-full max-ms:flex-col">
+                        <div className="flex gap-3 w-full max-phone:flex-col">
                             <FormField
                                 control={form.control}
                                 name="new_password"

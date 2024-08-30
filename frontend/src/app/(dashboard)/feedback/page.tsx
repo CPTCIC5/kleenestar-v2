@@ -43,10 +43,10 @@ export default function Feedback() {
                 </div>
                 <div className="pt-2">
                     <Card className="h-14 flex items-center w-full shadow-none">
-                        <div className="flex justify-between gap-5 w-full px-5 max-xl:px-2">
+                        <div className="flex justify-between gap-5 w-full px-5 max-tablet:px-2">
                             <div className="flex gap-2 items-center">
                                 <Label className="font-mainhead">Attachment:</Label>
-                                <p className="text-[11px] max-xl:text-[10px] text-muted-foreground">
+                                <p className="text-[11px] max-tablet:text-[10px] text-muted-foreground">
                                     {file ? file : "A screenshot will help a lot."}
                                 </p>
                             </div>

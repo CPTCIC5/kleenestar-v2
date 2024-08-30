@@ -83,7 +83,7 @@ const SelectSubspacePage: React.FC = () => {
             <Button
                 onClick={() => mutation.mutate()}
                 variant="secondary"
-                className="absolute right-4 top-[34px] md:right-8 max-xs:top-[30px]"
+                className="absolute right-4 top-[34px] md:right-8 max-xphone:top-[30px]"
             >
                 Logout
             </Button>
@@ -97,7 +97,7 @@ const SelectSubspacePage: React.FC = () => {
                             </span>
                             ’s Clients
                         </CardTitle>
-                        <CardDescription className="font-medium hidden xs:block">
+                        <CardDescription className="font-medium hidden xphone:block">
                             Pick a client from the list below and jump right into their workspace
                             for more insights!
                         </CardDescription>
@@ -172,7 +172,7 @@ const SelectSubspacePage: React.FC = () => {
                         )}
                     </div>
 
-                    <div className="flex items-center flex-col gap-3 xs:flex-row justify-between w-full px-2">
+                    <div className="flex items-center flex-col gap-3 xphone:flex-row justify-between w-full px-2">
                         <CardDescription>
                             Showing{" "}
                             <span className="text-pop-blue font-bold">

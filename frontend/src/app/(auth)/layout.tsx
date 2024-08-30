@@ -12,7 +12,7 @@ export default function AuthLayout({
             <div className="absolute top-8 left-8 flex items-center gap-3  z-10 max-lg:text-foreground">
                 <Icons.logoDark className="h-9 w-9 dark:hidden" />
                 <Icons.logoLight className="h-9 w-9 hidden dark:block" />
-                <span className=" font-mainhead text-3xl max-xs:hidden">Kleenestar</span>
+                <span className=" font-mainhead text-3xl max-xphone:hidden">Kleenestar</span>
             </div>
             <GridBackground />
 

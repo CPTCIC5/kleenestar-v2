@@ -61,7 +61,7 @@ const CreateBlocknoteDialog: React.FC<CreateBlocknoteDialogProps> = () => {
                 </div>
             </DialogTrigger>
             <DialogContent
-                className="rounded-xl sm:rounded-2xl w-[calc(100%-1.25rem)] max-w-xl max-xs:p-2"
+                className="rounded-xl sm:rounded-2xl w-[calc(100%-1.25rem)] max-w-xl max-xphone:p-2"
                 overlayClassName="backdrop-blur-sm"
             >
                 <DialogHeader className="mt-4 sm:mt-0 text-left">
@@ -73,7 +73,7 @@ const CreateBlocknoteDialog: React.FC<CreateBlocknoteDialogProps> = () => {
                 <div className="space-y-3">
                     <div className="space-y-2">
                         <Label className="font-bold">Blocknote icon</Label>
-                        <div className="flex flex-col ms:flex-row gap-3 items-start justify-between">
+                        <div className="flex flex-col phone:flex-row gap-3 items-start justify-between">
                             <div>
                                 <Avatar className="w-16 h-16 rounded-full border-2 border-muted flex items-center justify-center bg-accent">
                                     <AvatarImage
