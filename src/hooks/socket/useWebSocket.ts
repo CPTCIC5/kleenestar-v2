@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useChatStore } from "@/providers/stores/ChatStoreProvider";
 import { useShallow } from "zustand/react/shallow";
@@ -20,10 +22,11 @@ export function useWebSocket() {
             const BASEURL = development
                 ? process.env.NEXT_PUBLIC_WS_DEV_URL
                 : process.env.NEXT_PUBLIC_WS_PROD_URL;
-            const sessionid = await getCookie("sessionid");
+
+            const sessionId = await getCookie("sessionid");
 
             if (!BASEURL) throw new Error("BASEURL is not defined");
-            if (!sessionid) throw new Error("sessionid is not defined");
+            if (!sessionId) throw new Error("sessionId is not defined");
 
             let wsUrl = "";
 
@@ -33,13 +36,15 @@ export function useWebSocket() {
                 wsUrl = "wss://";
             }
 
-            wsUrl += window.location.host + "/api/ws/?sessionid=${sessionid}";
+            wsUrl += `${BASEURL}` + `/api/ws/`;
 
             wsRef.current = new WebSocket(wsUrl);
 
             wsRef.current.onopen = () => {
+                wsRef.current?.send(JSON.stringify({ sessionid: sessionId })); // Send data after connection is open
                 console.log("ws connected +_+");
                 isConnected.current = true;
+                ("use client");
             };
 
             wsRef.current.onmessage = (event: MessageEvent) => {

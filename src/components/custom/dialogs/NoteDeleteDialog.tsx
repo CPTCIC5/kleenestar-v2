@@ -8,36 +8,42 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
+    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useDeleteConvo } from "@/hooks/convo/useDeleteConvos";
+import { Trash } from "@phosphor-icons/react/dist/ssr";
+import { useDeleteNote } from "@/hooks/blocknotes/useDeleteNote";
 
-interface ConvoDeleteDialogProps {
-    isConvoDeleteDialogOpen: boolean;
-    setIsConvoDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    convoId: number;
+interface NoteDeleteDialogProps {
+    noteId: number;
+    blocknoteId: number;
 }
 
-export function ConvoDeleteDialog({
-    isConvoDeleteDialogOpen,
-    setIsConvoDeleteDialogOpen,
-    convoId,
-}: ConvoDeleteDialogProps) {
-    const { mutate, isPending } = useDeleteConvo();
+export function NoteDeleteDialog({ noteId, blocknoteId }: NoteDeleteDialogProps) {
+    const { mutate, isPending } = useDeleteNote();
 
     return (
-        <AlertDialog open={isConvoDeleteDialogOpen} onOpenChange={setIsConvoDeleteDialogOpen}>
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    className="size-7 flex items-center justify-center text-destructive bg-destructive/40 hover:bg-destructive/50"
+                >
+                    <Trash weight="duotone" className="size-4" />
+                </Button>
+            </AlertDialogTrigger>
             <AlertDialogContent
                 className="max-w-80 w-[calc(100%-1.25rem)] p-4 rounded-xl space-y-3"
                 overlayClassName="backdrop-blur-sm"
             >
-                <AlertDialogHeader className="space-y-0">
+                <AlertDialogHeader>
                     <AlertDialogTitle className="text-base font-bricolage">
-                        Delete Convo?
+                        Delete note?
                     </AlertDialogTitle>
                     <AlertDialogDescription className="text-xs">
-                        This conversation will be deleted permanently.
+                        This note will be deleted permanently.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -50,7 +56,7 @@ export function ConvoDeleteDialog({
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={() => mutate(convoId)}
+                        onClick={() => mutate({ noteId, blocknoteId })}
                         disabled={isPending}
                         className={cn(
                             buttonVariants({ variant: "destructive" }),

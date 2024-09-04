@@ -47,12 +47,12 @@ export function DashboardSidebarSheet() {
             label: "Channels",
             active: pathname === "/dashboard/channels/",
         },
-        {
-            href: "/dashboard/billing",
-            icon: Invoice,
-            label: "Billing",
-            active: pathname === "/dashboard/billing/",
-        },
+        // {
+        //     href: "/dashboard/billing",
+        //     icon: Invoice,
+        //     label: "Billing",
+        //     active: pathname === "/dashboard/billing/",
+        // },
         {
             href: "/dashboard/team",
             icon: Users,

@@ -90,8 +90,13 @@ export default function BlocknotesPage() {
                                     {blocknotes?.map((blocknote: Blocknote) => {
                                         return (
                                             <Card
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/dashboard/blocknotes/${blocknote.id}`,
+                                                    )
+                                                }
                                                 key={blocknote.id}
-                                                className="w-64 h-fit bg-secondary/40"
+                                                className="w-64 h-fit bg-secondary/40 cursor-pointer"
                                             >
                                                 <CardHeader className="w-full h-full space-y-6 p-4 items-start">
                                                     <div className="w-full flex items-start justify-between">
@@ -103,7 +108,10 @@ export default function BlocknotesPage() {
                                                             </span>
                                                         </div>
 
-                                                        <div className="flex items-start justify-center space-x-3">
+                                                        <div
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            className="flex items-start justify-center space-x-3"
+                                                        >
                                                             <BlocknoteEditDialog
                                                                 blocknote={blocknote}
                                                             />

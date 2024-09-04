@@ -46,12 +46,12 @@ interface Blocknote {
     title: string;
 }
 
-type NoteColorType = "default" | "red" | "emerald" | "sky" | "indigo";
-
 interface Note {
     id: number;
     note_text: string;
-    color: NoteColorType;
+    note_tag: string;
+    color: string;
+    blocknote: Blocknote;
     prompt: {
         convo: {
             id: number;
@@ -59,5 +59,11 @@ interface Note {
         };
         response_text: string;
     };
+    created_at: string;
+}
+
+interface KnowledgeSource {
+    id: number;
+    text_data: string;
     created_at: string;
 }

@@ -16,6 +16,7 @@ import { useFetchPrompts } from "@/hooks/prompt/useFetchPrompts";
 import { useCreatePrompt } from "@/hooks/prompt/useCreatePrompt";
 import { useWebSocket } from "@/hooks/socket/useWebSocket";
 import { NoteCreateDialog } from "@/components/custom/dialogs/NoteCreateDialog";
+import { PromptFeedbackDialog } from "@/components/custom/dialogs/PromptFeedbackDialog";
 
 interface ChatPageProps {
     params: {
@@ -116,7 +117,7 @@ export default function ChatPage({ params }: ChatPageProps) {
 
     return (
         <div className="flex flex-col items-center w-full h-full p-3">
-            <ChatNavbar />
+            <ChatNavbar chatName={prompts?.[0]?.convo?.title} convoId={convoId} />
             <div className="w-full h-full overflow-hidden">
                 {/* ENTER THE FURTHER LOGIC HERE */}
                 <div className="w-full h-full flex flex-col items-center space-y-1.5 py-4 px-2">
@@ -130,16 +131,19 @@ export default function ChatPage({ params }: ChatPageProps) {
                                             {prompt?.text_query}
                                         </div>
 
-                                        <div className=" w-fit h-fit px-5 py-4 max-w-[90%] xs:max-w-[70%] rounded-3xl bg-secondary/50 space-y-2">
+                                        <div className=" w-fit h-fit px-5 py-4 max-w-[90%] xs:max-w-[70%] rounded-3xl bg-secondary/50 space-y-3">
                                             <div className="w-full markdown-styles !text-sm">
                                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                                     {prompt?.response_text}
                                                 </ReactMarkdown>
                                             </div>
-                                            <NoteCreateDialog
-                                                promptId={prompt.id}
-                                                responseTextQuery={prompt?.response_text}
-                                            />
+                                            <div className="flex items-center justify-start gap-2">
+                                                <NoteCreateDialog
+                                                    promptId={prompt.id}
+                                                    responseTextQuery={prompt?.response_text}
+                                                />
+                                                <PromptFeedbackDialog promptId={prompt.id} />
+                                            </div>
                                         </div>
                                     </div>
                                 ))}

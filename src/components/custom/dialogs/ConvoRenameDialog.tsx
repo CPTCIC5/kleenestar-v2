@@ -27,12 +27,12 @@ interface ConvoRenameDialogProps {
     convoId: number;
 }
 
-export const ConvoRenameDialog: React.FC<ConvoRenameDialogProps> = ({
+export function ConvoRenameDialog({
     isConvoRenameDialogOpen,
     setIsConvoRenameDialogOpen,
     oldConvoName,
     convoId,
-}) => {
+}: ConvoRenameDialogProps) {
     const form = useForm<ConvoRenameDialogSchemaTypes>({
         resolver: zodResolver(ConvoRenameDialogSchema),
         mode: "onChange",
@@ -56,7 +56,7 @@ export const ConvoRenameDialog: React.FC<ConvoRenameDialogProps> = ({
                 className="max-w-80 w-[calc(100%-1.25rem)] p-4 rounded-xl"
                 overlayClassName="backdrop-blur-sm"
             >
-                <AlertDialogHeader className="space-y-1">
+                <AlertDialogHeader className="space-y-0">
                     <AlertDialogTitle className="text-base font-bricolage">
                         Rename Chat
                     </AlertDialogTitle>
@@ -111,4 +111,4 @@ export const ConvoRenameDialog: React.FC<ConvoRenameDialogProps> = ({
             </AlertDialogContent>
         </AlertDialog>
     );
-};
+}

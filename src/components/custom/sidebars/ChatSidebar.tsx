@@ -124,38 +124,61 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
                     />
                 </section>
                 <section className="h-[calc(100vh-261px)] w-full overflow-auto">
-                    {fetchConvosLoading ? (
+                    {fetchConvosSuccess ? (
+                        todayConvos?.length > 0 || previousConvos?.length > 0 ? (
+                            <div className="space-y-3">
+                                {todayConvos.length > 0 && (
+                                    <h3 className="text-sm text-muted-foreground font-bold">
+                                        Todays
+                                    </h3>
+                                )}
+                                {todayConvos.map((convo) => {
+                                    return (
+                                        <ConvoButton
+                                            onClick={() =>
+                                                router.push(`/dashboard/chat/${convo.id}`)
+                                            }
+                                            key={convo.id}
+                                            convo={convo}
+                                        />
+                                    );
+                                })}
+                                {previousConvos.length > 0 && (
+                                    <h3 className="text-sm text-muted-foreground font-bold">
+                                        Previous 7 days
+                                    </h3>
+                                )}
+                                {previousConvos.map((convo) => {
+                                    return (
+                                        <ConvoButton
+                                            onClick={() =>
+                                                router.push(`/dashboard/chat/${convo.id}`)
+                                            }
+                                            key={convo.id}
+                                            convo={convo}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center px-10 py-20 bg-secondary rounded-md ">
+                                <span className="text-sm text-muted-foreground text-center">
+                                    No chats found.
+                                </span>
+                            </div>
+                        )
+                    ) : (
                         <div className="space-y-3">
                             <Skeleton className="w-2/4 h-9 mb-4" />
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
-                            <Skeleton className="w-full h-9" />
                             <Skeleton className="w-2/4 h-9 my-4" />
-
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
-                            <Skeleton className="w-full h-9" />
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                            {todayConvos.length > 0 && (
-                                <h3 className="text-sm text-muted-foreground font-bold">Todays</h3>
-                            )}
-                            {todayConvos.map((convo) => {
-                                return <ConvoButton key={convo.id} convo={convo} />;
-                            })}
-                            {previousConvos.length > 0 && (
-                                <h3 className="text-sm text-muted-foreground font-bold">
-                                    Previous 7 days
-                                </h3>
-                            )}
-                            {previousConvos.map((convo) => {
-                                return <ConvoButton key={convo.id} convo={convo} />;
-                            })}
                         </div>
                     )}
                 </section>
@@ -194,7 +217,50 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
                     />
                 </section>
                 <section className="h-full w-full overflow-auto">
-                    {fetchConvosLoading ? (
+                    {fetchConvosSuccess ? (
+                        todayConvos?.length > 0 || previousConvos?.length > 0 ? (
+                            <div className="space-y-3">
+                                {todayConvos.length > 0 && (
+                                    <h3 className="text-sm text-muted-foreground font-bold">
+                                        Todays
+                                    </h3>
+                                )}
+                                {todayConvos.map((convo) => {
+                                    return (
+                                        <ConvoButton
+                                            onClick={() =>
+                                                router.push(`/dashboard/chat/${convo.id}`)
+                                            }
+                                            key={convo.id}
+                                            convo={convo}
+                                        />
+                                    );
+                                })}
+                                {previousConvos.length > 0 && (
+                                    <h3 className="text-sm text-muted-foreground font-bold">
+                                        Previous 7 days
+                                    </h3>
+                                )}
+                                {previousConvos.map((convo) => {
+                                    return (
+                                        <ConvoButton
+                                            onClick={() =>
+                                                router.push(`/dashboard/chat/${convo.id}`)
+                                            }
+                                            key={convo.id}
+                                            convo={convo}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center px-10 py-20 bg-secondary rounded-md ">
+                                <span className="text-sm text-muted-foreground text-center">
+                                    No chats found.
+                                </span>
+                            </div>
+                        )
+                    ) : (
                         <div className="space-y-3">
                             <Skeleton className="w-2/4 h-9 mb-4" />
                             <Skeleton className="w-full h-9" />
@@ -206,35 +272,6 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
                             <Skeleton className="w-full h-9" />
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                            {todayConvos.length > 0 && (
-                                <h3 className="text-sm text-muted-foreground font-bold">Todays</h3>
-                            )}
-                            {todayConvos.map((convo) => {
-                                return (
-                                    <ConvoButton
-                                        onClick={() => router.push(`/dashboard/chat/${convo.id}`)}
-                                        key={convo.id}
-                                        convo={convo}
-                                    />
-                                );
-                            })}
-                            {previousConvos.length > 0 && (
-                                <h3 className="text-sm text-muted-foreground font-bold">
-                                    Previous 7 days
-                                </h3>
-                            )}
-                            {previousConvos.map((convo) => {
-                                return (
-                                    <ConvoButton
-                                        onClick={() => router.push(`/dashboard/chat/${convo.id}`)}
-                                        key={convo.id}
-                                        convo={convo}
-                                    />
-                                );
-                            })}
                         </div>
                     )}
                 </section>

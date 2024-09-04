@@ -41,7 +41,7 @@ export default function NewChatPage() {
 
     return (
         <div className="flex flex-col items-center w-full h-full p-3">
-            <ChatNavbar />
+            <ChatNavbar chatName="New chat" />
             <div className="w-full h-full overflow-hidden">
                 {/* ENTER THE FURTHER LOGIC HERE */}
                 <div className="flex flex-col items-center w-full h-full p-0 md:p-4">

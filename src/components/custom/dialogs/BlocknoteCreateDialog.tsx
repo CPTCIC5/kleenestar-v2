@@ -21,10 +21,10 @@ interface BlocknoteCreateDialogProps {
     setIsBlocknoteCreateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const BlocknoteCreateDialog: React.FC<BlocknoteCreateDialogProps> = ({
+export function BlocknoteCreateDialog({
     isBlocknoteCreateDialogOpen,
     setIsBlocknoteCreateDialogOpen,
-}) => {
+}: BlocknoteCreateDialogProps) {
     const [blocknoteIcon, setBlocknoteIcon] = React.useState<string | null>(null);
     const [blocknoteTitle, setBlocknoteTitle] = React.useState<string>("");
 
@@ -81,6 +81,7 @@ export const BlocknoteCreateDialog: React.FC<BlocknoteCreateDialogProps> = ({
                             placeholder="Blocknote title…"
                             name="title"
                             value={blocknoteTitle}
+                            maxLength={50}
                             onChange={(e) => setBlocknoteTitle(e.target.value)}
                             className="bg-secondary"
                         />
@@ -108,4 +109,4 @@ export const BlocknoteCreateDialog: React.FC<BlocknoteCreateDialogProps> = ({
             </DialogContent>
         </Dialog>
     );
-};
+}

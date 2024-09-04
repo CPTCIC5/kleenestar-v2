@@ -22,7 +22,7 @@ interface BlocknoteEditDialogProps {
     blocknote: Blocknote;
 }
 
-export const BlocknoteEditDialog: React.FC<BlocknoteEditDialogProps> = ({ blocknote }) => {
+export function BlocknoteEditDialog({ blocknote }: BlocknoteEditDialogProps) {
     const [blocknoteIcon, setBlocknoteIcon] = React.useState<string | null>(blocknote.image);
     const [blocknoteTitle, setBlocknoteTitle] = React.useState<string>(blocknote.title);
 
@@ -113,4 +113,4 @@ export const BlocknoteEditDialog: React.FC<BlocknoteEditDialogProps> = ({ blockn
             </DialogContent>
         </Dialog>
     );
-};
+}

@@ -19,7 +19,7 @@ interface BlocknoteDeleteDialogProps {
     blocknoteId: number;
 }
 
-export const BlocknoteDeleteDialog: React.FC<BlocknoteDeleteDialogProps> = ({ blocknoteId }) => {
+export function BlocknoteDeleteDialog({ blocknoteId }: BlocknoteDeleteDialogProps) {
     const { mutate, isPending } = useDeleteBlocknote();
 
     return (
@@ -68,4 +68,4 @@ export const BlocknoteDeleteDialog: React.FC<BlocknoteDeleteDialogProps> = ({ bl
             </AlertDialogContent>
         </AlertDialog>
     );
-};
+}

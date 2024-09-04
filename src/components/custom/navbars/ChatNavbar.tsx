@@ -3,8 +3,14 @@ import { useUiStore } from "@/providers/stores/UiStoreProvider";
 import { BookmarkSimple, List } from "@phosphor-icons/react/dist/ssr";
 import React from "react";
 import { useShallow } from "zustand/react/shallow";
+import { ChatNotesSheet } from "../sheets/ChatNotesSheet";
 
-export default function ChatNavbar() {
+interface ChatNavbarProps {
+    chatName: string;
+    convoId?: number;
+}
+
+export default function ChatNavbar({ chatName, convoId }: ChatNavbarProps) {
     const { isChatSidebarOpen, setIsChatSidebarOpen, setChatSidebarType } = useUiStore(
         useShallow((state) => ({
             isChatSidebarOpen: state.isChatSidebarOpen,
@@ -28,10 +34,7 @@ export default function ChatNavbar() {
                     <List weight="duotone" className="size-6" />
                     <span className="sr-only">Toggle Menu</span>
                 </Button>
-                <Button size="icon" variant="secondary" className="size-9">
-                    <BookmarkSimple weight="duotone" className="size-6" />
-                    <span className="sr-only">Toggle Menu</span>
-                </Button>
+                {convoId && <ChatNotesSheet convoId={convoId} />}
             </div>
             <div className="w-full h-10 hidden md:flex items-center justify-between space-x-2">
                 <Button
@@ -47,12 +50,9 @@ export default function ChatNavbar() {
                     <span className="sr-only">Toggle Menu</span>
                 </Button>
                 <span className="w-full text-2xl font-bricolage font-extrabold bg-clip-text text-transparent bg-gradient-to-b from-foreground/60 to-foreground/95">
-                    Chat
+                    {chatName ? chatName : "Chat"}
                 </span>
-                <Button size="icon" variant="secondary" className="size-9">
-                    <BookmarkSimple weight="duotone" className="size-6" />
-                    <span className="sr-only">Toggle Menu</span>
-                </Button>
+                {convoId && <ChatNotesSheet convoId={convoId} />}
             </div>
         </React.Fragment>
     );

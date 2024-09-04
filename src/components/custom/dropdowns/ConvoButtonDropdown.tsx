@@ -33,6 +33,8 @@ export default function ConvoButtonDropdown({
             <DropdownMenuContent
                 align="start"
                 side="right"
+                alignOffset={20}
+                sideOffset={-5}
                 onClick={(e) => e.stopPropagation()}
                 onCloseAutoFocus={(e) => e.preventDefault()}
                 className="min-w-24"
