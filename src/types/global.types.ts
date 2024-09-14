@@ -35,6 +35,7 @@ interface Prompt {
     response_text: string;
     response_image: string;
     created_at: string;
+    similar_questions: string[];
 }
 
 // Blocknotes

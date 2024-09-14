@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toastAxiosError } from "@/lib/axios/toastAxiosError";
+import ReactDOM from "react-dom";
 
 interface CreatePromptProps {
     convoId: number;
@@ -30,7 +31,7 @@ export function useCreatePrompt() {
     return useMutation({
         mutationFn: createPrompt,
         onSuccess: (data, variables) => {
-            queryClient.invalidateQueries({ queryKey: ["prompts", variables.convoId] });
+            queryClient.invalidateQueries({ queryKey: ["prompts", variables.convoId] }); 
         },
         onError: (error) => {
             console.log(error);

@@ -5,6 +5,7 @@ import { useShallow } from "zustand/react/shallow";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
+import { useState } from "react";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import PromptInput from "@/components/custom/inputs/PromptInput";
@@ -17,7 +18,12 @@ import { useCreatePrompt } from "@/hooks/prompt/useCreatePrompt";
 import { useWebSocket } from "@/hooks/socket/useWebSocket";
 import { NoteCreateDialog } from "@/components/custom/dialogs/NoteCreateDialog";
 import { PromptFeedbackDialog } from "@/components/custom/dialogs/PromptFeedbackDialog";
-
+import { Component as LineCharts } from "@/components/ui/line-charts";
+import { Component as BarCharts } from "@/components/ui/bar-charts";
+import { Component as PieCharts } from "@/components/ui/pie-charts";
+import { PromptChartsDialog } from "@/components/custom/dialogs/ChartnoteCreateDialog";
+import { SelectDemo } from "@/components/ui/select-chartType";
+import { SpinnerGap, Chat } from "@phosphor-icons/react/dist/ssr"; 
 interface ChatPageProps {
     params: {
         convoId: string;
@@ -26,6 +32,8 @@ interface ChatPageProps {
 
 export default function ChatPage({ params }: ChatPageProps) {
     const convoId = Number(params.convoId);
+    const [showPieChart, setShowPieChart] = useState(false);
+    const [showLineChart, setShowLineChart] = useState(false);
     const hasRunOnce = React.useRef(false);
 
     const {
@@ -115,6 +123,13 @@ export default function ChatPage({ params }: ChatPageProps) {
         clearPromptInput();
     };
 
+    const togglePieChart = () => {
+      setShowPieChart(!showPieChart); // Toggle PieCharts visibility
+    };
+  
+    const toggleLineChart = () => {
+      setShowLineChart(!showLineChart); // Toggle LineCharts visibility
+    };
     return (
         <div className="flex flex-col items-center w-full h-full p-3">
             <ChatNavbar chatName={prompts?.[0]?.convo?.title} convoId={convoId} />
@@ -143,7 +158,45 @@ export default function ChatPage({ params }: ChatPageProps) {
                                                     responseTextQuery={prompt?.response_text}
                                                 />
                                                 <PromptFeedbackDialog promptId={prompt.id} />
+                                                <div onClick={togglePieChart}>
+                                                <Chat weight="duotone" className="size-4" /> 
+                                                </div>
+                                                {/* {showPieChart && (
+                                                  <div className="flex flex-col">
+                                                    <div className="flex">
+                                                      <PieCharts chart_data={prompt.chart_data} />
+                                                    </div>
+                                                    <div className="flex">
+                                                      <BarCharts chart_data={prompt.chart_data} />
+                                                    </div>
+                                                    <div className="flex">
+                                                    <LineCharts chart_data={prompt.chart_data} />
+                                                    </div>
+                                                  </div>
+                                                )} */}
+                                                <SelectDemo chart_data={prompt.chart_data} />
                                             </div>
+                                            {prompt?.similar_questions?.length > 0 && (
+                                                <div className="mt-4">
+                                                    <h4 className="text-sm font-medium mb-2">Similar Questions:</h4>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {prompt.similar_questions.map((question, index) => (
+                                                            <button
+                                                                key={index}
+                                                                className="text-sm px-3 py-1 bg-secondary/50 hover:bg-secondary/70 rounded-full transition-colors"
+                                                                onClick={() => {
+                                                                    setPromptInputText(question);
+                                                                    setTimeout(() => {
+                                                                        handleSendChatMessage();
+                                                                    }, 100);
+                                                                }}
+                                                            >
+                                                                {question}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
