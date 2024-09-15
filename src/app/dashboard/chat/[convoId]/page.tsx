@@ -114,12 +114,12 @@ export default function ChatPage({ params }: ChatPageProps) {
         }
     };
 
-    const handleSendChatMessage = async () => {
-        if (!promptInputText) {
+    const handleSendChatMessage = async (question: string) => {
+        if (!question) {
             toast.error("Please enter your message");
             return;
         }
-        handleCreatePrompt(promptInputText, promptInputFile);
+        await handleCreatePrompt(question, promptInputFile);
         clearPromptInput();
     };
 
@@ -152,15 +152,7 @@ export default function ChatPage({ params }: ChatPageProps) {
                                                     {prompt?.response_text}
                                                 </ReactMarkdown>
                                             </div>
-                                            <div className="flex items-center justify-start gap-2">
-                                                <NoteCreateDialog
-                                                    promptId={prompt.id}
-                                                    responseTextQuery={prompt?.response_text}
-                                                />
-                                                <PromptFeedbackDialog promptId={prompt.id} />
-                                                <div onClick={togglePieChart}>
-                                                <Chat weight="duotone" className="size-4" /> 
-                                                </div>
+                                            
                                                 {/* {showPieChart && (
                                                   <div className="flex flex-col">
                                                     <div className="flex">
@@ -175,6 +167,15 @@ export default function ChatPage({ params }: ChatPageProps) {
                                                   </div>
                                                 )} */}
                                                 <SelectDemo chart_data={prompt.chart_data} />
+                                                <div className="flex items-center justify-start gap-2">
+                                                <NoteCreateDialog
+                                                    promptId={prompt.id}
+                                                    responseTextQuery={prompt?.response_text}
+                                                />
+                                                <PromptFeedbackDialog promptId={prompt.id} />
+                                                <div onClick={togglePieChart}>
+                                                <Chat weight="duotone" className="size-4" /> 
+                                                </div>
                                             </div>
                                             {prompt?.similar_questions?.length > 0 && (
                                                 <div className="mt-4">
@@ -183,12 +184,9 @@ export default function ChatPage({ params }: ChatPageProps) {
                                                         {prompt.similar_questions.map((question, index) => (
                                                             <button
                                                                 key={index}
-                                                                className="text-sm px-3 py-1 bg-secondary/50 hover:bg-secondary/70 rounded-full transition-colors"
+                                                                className="text-sm px-3 py-1 bg-secondary/50 hover:bg-secondary/70 rounded-md transition-colors border border-secondary"
                                                                 onClick={() => {
-                                                                    setPromptInputText(question);
-                                                                    setTimeout(() => {
-                                                                        handleSendChatMessage();
-                                                                    }, 100);
+                                                                    handleSendChatMessage(question);
                                                                 }}
                                                             >
                                                                 {question}
@@ -231,7 +229,7 @@ export default function ChatPage({ params }: ChatPageProps) {
                         setPromptInputText={setPromptInputText}
                         setPromptInputFile={setPromptInputFile}
                         setPromptInputFileUrl={setPromptInputFileUrl}
-                        handlePromptInputFunction={handleSendChatMessage}
+                        handlePromptInputFunction={() => handleSendChatMessage(promptInputText)}
                         isDisabled={createPromptPending}
                     />
                 </div>
